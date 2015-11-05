@@ -22,9 +22,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 
 public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    private static final String PLACES_AUTOCOMPLETE_API = "https://maps.googleapis.com/maps/api/place/autocomplete/json";
-    private static final String PLACES_API_KEY = "AIzaSyD_pZcQHhzIbFjmVkO88oQ8DDaMm-jF3q4";
-
     private GoogleApiClient mGoogleApiClient;
     private PlaceAutocompleteAdapter mAdapter;
 
