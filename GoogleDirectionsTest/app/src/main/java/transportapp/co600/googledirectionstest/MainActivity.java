@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.model.DirectionsRoute;
+import com.google.maps.model.TravelMode;
 
 public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -74,12 +75,24 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             public void onClick(View v) {
                 setContentView(R.layout.directions_list_layout);
                 listView = (ListView) findViewById(R.id.directionsList);
-
+//                Button backButton = (Button) findViewById(R.id.back);
+//                backButton.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        setContentView(R.layout.activity_main);
+//
+//                    }
+//                });
                 try {
-                    DirectionsRoute[] routes = DirectionsApi.getDirections(geoApicontext, from.getText().toString(), to.getText().toString()).await();
+                    DirectionsRoute[] routes = DirectionsApi.newRequest(geoApicontext)
+                    .mode(TravelMode.DRIVING)
+                    .origin(from.getText().toString())
+                    .destination(to.getText().toString())
+                            .await();
+
                     values = new String[routes[0].legs.length];
                     for(int leg = 0; leg < values.length; leg++)  {
-                        values[leg] = routes[0].legs[leg].startAddress + " -> " + routes[0].legs[leg].endAddress;
+                        values[leg] = routes[0].legs[leg].startAddress + " -> " + routes[0].legs[leg].endAddress + "\n " + routes[0].legs[leg].distance.humanReadable + ", " + routes[0].legs[leg].duration.humanReadable;
                     }
                     adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, android.R.id.text1, values);
                 } catch (Exception e) {
