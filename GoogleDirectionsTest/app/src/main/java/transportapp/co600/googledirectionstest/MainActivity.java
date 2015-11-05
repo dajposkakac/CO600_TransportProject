@@ -28,7 +28,7 @@ import java.util.List;
 public class MainActivity extends Activity {
 
     private static final String PLACES_AUTOCOMPLETE_API = "https://maps.googleapis.com/maps/api/place/autocomplete/json";
-    private static final String PLACES_API_KEY = "AIzaSyA53q885qQCmo8cYe5UGVzE9b6aRSmhkn0";
+    private static final String PLACES_API_KEY = "AIzaSyD_pZcQHhzIbFjmVkO88oQ8DDaMm-jF3q4";
     static final HttpTransport HTTP_TRANSPORT = AndroidHttp.newCompatibleTransport();
     static final JsonFactory JSON_FACTORY = new JacksonFactory();
 
