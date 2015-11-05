@@ -1,3 +1,5 @@
+raw_data/
+
 
 # built application files
 *.apk
@@ -15,6 +17,9 @@ gen/
 
 # Local configuration file (sdk path, etc)
 local.properties
+
+# Eclipse
+*.classpath
 
 # Android Studio
 .idea/
