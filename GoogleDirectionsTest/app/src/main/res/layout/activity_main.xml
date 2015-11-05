@@ -35,7 +35,7 @@
         android:completionThreshold="3" />
 
     <Button
-        android:id="@+id/load_directions"
+        android:id="@+id/go"
         android:layout_gravity="fill_horizontal"
         android:text="Go" />
 

@@ -1,13 +1,17 @@
 package transportapp.co600.googledirectionstest;
 
 import android.app.Activity;
+import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -19,23 +23,35 @@ import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.maps.DirectionsApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.model.DirectionsRoute;
 
 public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
+    private GeoApiContext geoApicontext;
+    private Context context;
     private GoogleApiClient mGoogleApiClient;
     private PlaceAutocompleteAdapter mAdapter;
 
     private AutoCompleteTextView from;
     private AutoCompleteTextView to;
+    private Button goButton;
 
     private LatLngBounds BOUNDS_CURRENT_LOCATION;
     private Location mLastLocation;
+
+    private ListView listView;
+    private ArrayAdapter<String> adapter;
+    private String[] values;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        geoApicontext = new GeoApiContext().setApiKey("AIzaSyA7zjvluw5ono4sjIZQx2LTCQdr7d0uP5E");
+        context = this;
         buildGoogleApiClient();
 
         from = (AutoCompleteTextView) findViewById(R.id.from);
@@ -48,6 +64,35 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 null);
         from.setAdapter(mAdapter);
         to.setAdapter(mAdapter);
+
+
+
+
+        goButton = (Button) findViewById(R.id.go);
+        goButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setContentView(R.layout.directions_list_layout);
+                listView = (ListView) findViewById(R.id.directionsList);
+
+                try {
+                    DirectionsRoute[] routes = DirectionsApi.getDirections(geoApicontext, from.getText().toString(), to.getText().toString()).await();
+                    values = new String[routes[0].legs.length];
+                    for(int leg = 0; leg < values.length; leg++)  {
+                        values[leg] = routes[0].legs[leg].startAddress + " -> " + routes[0].legs[leg].endAddress;
+                    }
+                    adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, android.R.id.text1, values);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+//                final ArrayList<String> list = new ArrayList<String>();
+//                for (int i = 0; i < values.length; ++i) {
+//                    list.add(values[i]);
+//                }
+                listView.setAdapter(adapter);
+            }
+        });
     }
 
     protected synchronized void buildGoogleApiClient() {
