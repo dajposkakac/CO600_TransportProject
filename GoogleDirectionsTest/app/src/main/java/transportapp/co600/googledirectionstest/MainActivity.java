@@ -5,6 +5,7 @@ import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +30,9 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.TravelMode;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -52,7 +55,9 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     private ArrayAdapter<String> adapter;
     private String[] values;
 
-    private Socket client;
+    private static Socket client;
+    private static InputStreamReader inputStreamReader;
+    private static BufferedReader bufferedReader;
     private PrintWriter printwriter;
 
     @Override
@@ -89,10 +94,15 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                     client = new Socket("86.188.42.155", 4444); //connect to server
                     printwriter = new PrintWriter(client.getOutputStream(), true);
                     printwriter.write(from.getText().toString() + "!.!" + to.getText().toString()); //write the message to output stream
-
                     printwriter.flush();
                     printwriter.close();
-                    client.close(); //closing the connection
+
+                    inputStreamReader = new InputStreamReader(client.getInputStream());
+                    bufferedReader = new BufferedReader(inputStreamReader); //get the client message
+                    Log.d("result", bufferedReader.readLine());
+
+                    inputStreamReader.close();
+                    //client.close(); //closing the connection
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
