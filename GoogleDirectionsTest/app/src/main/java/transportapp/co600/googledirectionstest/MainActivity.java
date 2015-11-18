@@ -86,9 +86,9 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             @Override
             public void onClick(View v) {
                 try {
-                    client = new Socket("192.168.1.2", 4444); //connect to server
+                    client = new Socket("86.188.42.155", 4444); //connect to server
                     printwriter = new PrintWriter(client.getOutputStream(), true);
-                    printwriter.write(from.getText().toString() + ", " + to.getText().toString()); //write the message to output stream
+                    printwriter.write(from.getText().toString() + "!.!" + to.getText().toString()); //write the message to output stream
 
                     printwriter.flush();
                     printwriter.close();
