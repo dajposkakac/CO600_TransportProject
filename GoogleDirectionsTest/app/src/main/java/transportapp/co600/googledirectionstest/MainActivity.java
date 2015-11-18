@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,11 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.TravelMode;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private GeoApiContext geoApicontext;
@@ -46,10 +52,16 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     private ArrayAdapter<String> adapter;
     private String[] values;
 
+    private Socket client;
+    private PrintWriter printwriter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         geoApicontext = new GeoApiContext().setApiKey("AIzaSyA7zjvluw5ono4sjIZQx2LTCQdr7d0uP5E");
         context = this;
@@ -73,8 +85,23 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.directions_list_layout);
-                listView = (ListView) findViewById(R.id.directionsList);
+                try {
+                    client = new Socket("192.168.1.2", 4444); //connect to server
+                    printwriter = new PrintWriter(client.getOutputStream(), true);
+                    printwriter.write(from.getText().toString() + ", " + to.getText().toString()); //write the message to output stream
+
+                    printwriter.flush();
+                    printwriter.close();
+                    client.close(); //closing the connection
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+//                setContentView(R.layout.directions_list_layout);
+//                listView = (ListView) findViewById(R.id.directionsList);
 //                Button backButton = (Button) findViewById(R.id.back);
 //                backButton.setOnClickListener(new View.OnClickListener() {
 //                    @Override
@@ -83,27 +110,23 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 //
 //                    }
 //                });
-                try {
-                    DirectionsRoute[] routes = DirectionsApi.newRequest(geoApicontext)
-                    .mode(TravelMode.DRIVING)
-                    .origin(from.getText().toString())
-                    .destination(to.getText().toString())
-                            .await();
-
-                    values = new String[routes[0].legs.length];
-                    for(int leg = 0; leg < values.length; leg++)  {
-                        values[leg] = routes[0].legs[leg].startAddress + " -> " + routes[0].legs[leg].endAddress + "\n " + routes[0].legs[leg].distance.humanReadable + ", " + routes[0].legs[leg].duration.humanReadable;
-                    }
-                    adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, android.R.id.text1, values);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-//                final ArrayList<String> list = new ArrayList<String>();
-//                for (int i = 0; i < values.length; ++i) {
-//                    list.add(values[i]);
+//                try {
+//                    DirectionsRoute[] routes = DirectionsApi.newRequest(geoApicontext)
+//                    .mode(TravelMode.DRIVING)
+//                    .origin(from.getText().toString())
+//                    .destination(to.getText().toString())
+//                            .await();
+//
+//                    values = new String[routes[0].legs.length];
+//                    for(int leg = 0; leg < values.length; leg++)  {
+//                        values[leg] = routes[0].legs[leg].startAddress + " -> " + routes[0].legs[leg].endAddress + "\n " + routes[0].legs[leg].distance.humanReadable + ", " + routes[0].legs[leg].duration.humanReadable;
+//                    }
+//                    adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, android.R.id.text1, values);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
 //                }
-                listView.setAdapter(adapter);
+//
+//                listView.setAdapter(adapter);
             }
         });
     }
