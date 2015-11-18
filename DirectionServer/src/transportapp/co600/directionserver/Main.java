@@ -8,8 +8,10 @@ public class Main {
 	
 	public Main() throws Exception	{
 		GeoApiContext gaContext = new GeoApiContext().setApiKey("AIzaSyD_pZcQHhzIbFjmVkO88oQ8DDaMm-jF3q4");
-		DirectionsRoute[] routes = DirectionsApi.getDirections(gaContext, "Sydney, AU", "Melbourne, AU").await();
-		printer(routes);
+		Server server = new Server();
+		
+//		DirectionsRoute[] routes = DirectionsApi.getDirections(gaContext, "Sydney, AU", "Melbourne, AU").await();
+//		printer(routes);
 	}
 	
 	public void printer(DirectionsRoute[] routes) {
