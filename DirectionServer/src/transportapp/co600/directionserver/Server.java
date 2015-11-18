@@ -3,6 +3,7 @@ package transportapp.co600.directionserver;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,7 +13,10 @@ public class Server {
 	private static Socket clientSocket;
 	private static InputStreamReader inputStreamReader;
     private static BufferedReader bufferedReader;
+    private PrintWriter printwriter;
     private static String data;
+    
+    private DirectionsResult result;
     
     public Server()	{
     	try {
@@ -29,11 +33,18 @@ public class Server {
     		    inputStreamReader = new InputStreamReader(clientSocket.getInputStream());
     		    bufferedReader = new BufferedReader(inputStreamReader); //get the client message
     		    String data = bufferedReader.readLine();
-    		    System.out.println(data);
     		    String[] newData = data.split("!.!");
     		    
-    		    new DirectionsRequest(newData[0], newData[1]);
+    		    DirectionsRequest request = new DirectionsRequest(newData[0], newData[1]);
+    		    result = new DirectionsResult(request.getRoutes());
     		    
+    		    printwriter = new PrintWriter(clientSocket.getOutputStream(), true);
+    		    String resultString = result.getOrigin() + " -> " + result.getDestination() + "\n" + result.getDistance() + ", " + result.getDuration();
+    		    System.out.println(resultString);
+    		    printwriter.write(resultString);
+    		    
+    		    printwriter.flush();
+    		    printwriter.close();
     		    
     		    inputStreamReader.close();
     		    clientSocket.close();

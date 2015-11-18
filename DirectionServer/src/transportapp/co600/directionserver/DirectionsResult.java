@@ -8,12 +8,14 @@ public class DirectionsResult {
 	private String distance;
 	private String duration;
 	private String origin;
+	private String transitMode;
 	
 	public DirectionsResult(DirectionsRoute[] routes)	{
 		setDestination(routes[0].legs[0].endAddress);
 		setDistance(routes[0].legs[0].distance.humanReadable);
 		setDuration(routes[0].legs[0].duration.humanReadable);
 		setOrigin(routes[0].legs[0].startAddress);
+		//setTransitMode();
 	}
 
 	public String getOrigin() {
@@ -46,6 +48,14 @@ public class DirectionsResult {
 
 	public void setDuration(String duration) {
 		this.duration = duration;
+	}
+
+	public String getTransitMode() {
+		return transitMode;
+	}
+
+	public void setTransitMode(String transitMode) {
+		this.transitMode = transitMode;
 	}
 	
 	
