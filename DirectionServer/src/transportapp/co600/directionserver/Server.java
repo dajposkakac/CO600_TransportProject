@@ -12,7 +12,7 @@ public class Server {
 	private static Socket clientSocket;
 	private static InputStreamReader inputStreamReader;
     private static BufferedReader bufferedReader;
-    private static String message;
+    private static String data;
     
     public Server()	{
     	try {
@@ -28,14 +28,21 @@ public class Server {
     			clientSocket = serverSocket.accept(); //accept the client connection
     		    inputStreamReader = new InputStreamReader(clientSocket.getInputStream());
     		    bufferedReader = new BufferedReader(inputStreamReader); //get the client message
-    		    message = bufferedReader.readLine();
-
-    		    System.out.println(message);
+    		    String data = bufferedReader.readLine();
+    		    System.out.println(data);
+    		    String[] newData = data.split("!.!");
+    		    
+    		    new DirectionsRequest(newData[0], newData[1]);
+    		    
+    		    
     		    inputStreamReader.close();
     		    clientSocket.close();
-    		}	catch(IOException e)	{
+    		} catch(IOException e)	{
     			System.out.println("Problem in message reading");
-    		}
+    		} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	}
     }
 }
