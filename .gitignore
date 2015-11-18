@@ -20,6 +20,8 @@ local.properties
 
 # Eclipse
 *.classpath
+*.settings
+target/
 
 # Android Studio
 .idea/
