@@ -3,6 +3,8 @@ package transportapp.co600.googledirectionstest;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -90,24 +92,13 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    client = new Socket("86.188.42.155", 4444); //connect to server
-                    printwriter = new PrintWriter(client.getOutputStream(), true);
-                    printwriter.write(from.getText().toString() + "!.!" + to.getText().toString()); //write the message to output stream
-                    printwriter.flush();
-                    printwriter.close();
+                goHandler(v);
 
-                    inputStreamReader = new InputStreamReader(client.getInputStream());
-                    bufferedReader = new BufferedReader(inputStreamReader); //get the client message
-                    Log.d("result", bufferedReader.readLine());
-
-                    inputStreamReader.close();
-                    //client.close(); //closing the connection
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//                inputStreamReader = new InputStreamReader(client.getInputStream());
+//                bufferedReader = new BufferedReader(inputStreamReader); //get the client message
+//                Log.d("result", bufferedReader.readLine());
+//
+//                inputStreamReader.close();
 
 
 //                setContentView(R.layout.directions_list_layout);
@@ -139,6 +130,16 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 //                listView.setAdapter(adapter);
             }
         });
+    }
+
+    public void goHandler(View view)    {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
+        if(netInfo != null && netInfo.isConnected())    {
+            new ReceiveDirectionsTask().execute(to.getText().toString(), from.getText().toString());
+        }   else    {
+            Log.d("CONN", "No network connection");
+        }
     }
 
     protected synchronized void buildGoogleApiClient() {
