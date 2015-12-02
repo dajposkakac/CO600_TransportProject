@@ -35,7 +35,7 @@ public class Server {
     		    String data = bufferedReader.readLine();
     		    String[] newData = data.split("!.!");
     		    
-    		    DirectionsRequest request = new DirectionsRequest(newData[0], newData[1]);
+    		    DirectionsRequest request = new DirectionsRequest(newData[0], newData[1], newData[2]);
     		    result = new DirectionsResult(request.getRoutes());
     		    
     		    printwriter = new PrintWriter(clientSocket.getOutputStream(), true);

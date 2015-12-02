@@ -15,7 +15,7 @@ public class DirectionsResult {
 		setDistance(routes[0].legs[0].distance.humanReadable);
 		setDuration(routes[0].legs[0].duration.humanReadable);
 		setOrigin(routes[0].legs[0].startAddress);
-		//setTransitMode();
+//		setTransitMode();
 	}
 
 	public String getOrigin() {
