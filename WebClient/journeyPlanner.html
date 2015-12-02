@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Journey Planner</title>
+<script>
+var initialLocation;
+var siberia = new google.maps.LatLng(60, 105);
+var newyork = new google.maps.LatLng(40.69847032728747, -73.9514422416687);
+var browserSupportFlag =  new Boolean();
+
+function initialize() {
+  var myOptions = {
+    zoom: 6,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+  var map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+  // Try W3C Geolocation (Preferred)
+  if(navigator.geolocation) {
+    browserSupportFlag = true;
+    navigator.geolocation.getCurrentPosition(function(position) {
+      initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+      map.setCenter(initialLocation);
+    }, function() {
+      handleNoGeolocation(browserSupportFlag);
+    });
+  }
+  // Browser doesn't support Geolocation
+  else {
+    browserSupportFlag = false;
+    handleNoGeolocation(browserSupportFlag);
+  }
+
+  function handleNoGeolocation(errorFlag) {
+    if (errorFlag == true) {
+      alert("Geolocation service failed.");
+      initialLocation = newyork;
+    } else {
+      alert("Your browser doesn't support geolocation. We've placed you in Siberia.");
+      initialLocation = siberia;
+    }
+    map.setCenter(initialLocation);
+  }
+}
+</script>
+<script>
+function fill(){
+	document.getElementById("fieldloc").innerHTML = "filled"
+}
+function submitForm(){
+var start = document.mainform.fieldlocstart.value;
+var end = document.mainform.fieldlocend.value;
+var path = getPath();
+var car = mainorm.car.checked;
+var bus = mainorm.bus.checked;
+var train = mainorm.train.checked;
+}
+function getPath() {
+   if (document.mainform.path[0].checked ) {
+      return "short";
+   } else if(document.mainform.path[1].checked){
+   return "cheap"
+   }else {
+      return "quick";
+   }
+}
+
+</script>
+</head>
+<body>
+<p align="middle">LOGO</p>
+<br>
+<form align="middle" id="mainform">
+  From:
+  <br>
+  <input type="text" id="fieldlocstart" name="start">
+  <br>
+  <a onclick="fill()">Get current location</a> currently not implemented.
+  <br>
+  To:
+  <br>
+  <input type="text" id="fieldlocend" name="destination">
+  <br>Path:
+  <input name="path" type="radio" value="short"> Shortest Path
+  <input name="path" type="radio" value="cheap"> Cheapest Path
+  <input name="path" type="radio" value="quick"> Quickest Path
+  <br>
+  Preffered Transport
+  <br>
+  <input type="radio" name="car">
+  Car
+  <input type="radio" name="bus">
+  Bus
+  <input type="radio" name="train">
+  Train
+  <br>Preffered Transport:
+  <br>
+  <input name="car" type="checkbox" value="car"> Car
+  <input name="bus" type="checkbox" value="bus"> Bus
+  <input name="train" type="checkbox" value="train"> Train
+  <br>
+  <br>
+  <input type="submit" value="Search" onclick="submitForm()">
+</form>
+</body>
+</html>
