@@ -34,6 +34,12 @@
         android:layout_gravity="fill_horizontal"
         android:completionThreshold="3" />
 
+    <Spinner
+        android:id="@+id/transit_modes_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"/>
+
     <Button
         android:id="@+id/go"
         android:layout_gravity="fill_horizontal"

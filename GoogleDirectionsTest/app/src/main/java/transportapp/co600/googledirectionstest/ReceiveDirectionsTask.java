@@ -16,14 +16,19 @@ import java.net.UnknownHostException;
 public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
 
     private static final String TAG = "ReceiveDIR";
+    private final Request req;
     private String result = "hey";
+
+    public ReceiveDirectionsTask(Request pReq)   {
+        req = pReq;
+    }
 
     @Override
     protected String doInBackground(String... params) {
         try {
             Socket client = new Socket("86.170.118.205", 4444); //connect to server
             PrintWriter printwriter = new PrintWriter(client.getOutputStream(), true);
-            printwriter.write(params[0] + "!.!" + params[1]); //write the message to output stream
+            printwriter.write(req.getOrigin() + "!.!" + req.getDestination() + "!.!" + req.getTransitMode()); //write the message to output stream
             printwriter.flush();
             printwriter.close();
 

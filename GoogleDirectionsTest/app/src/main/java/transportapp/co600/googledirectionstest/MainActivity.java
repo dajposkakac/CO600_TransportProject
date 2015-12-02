@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -39,7 +40,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemSelectedListener {
 
     private GeoApiContext geoApicontext;
     private Context context;
@@ -49,49 +50,52 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     private AutoCompleteTextView from;
     private AutoCompleteTextView to;
     private Button goButton;
+    private Spinner transitModeSpinner;
 
     private LatLngBounds BOUNDS_CURRENT_LOCATION;
     private Location mLastLocation;
-
-    private ListView listView;
-    private ArrayAdapter<String> adapter;
-    private String[] values;
 
     private static Socket client;
     private static InputStreamReader inputStreamReader;
     private static BufferedReader bufferedReader;
     private PrintWriter printwriter;
+    private Request req;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
         geoApicontext = new GeoApiContext().setApiKey("AIzaSyA7zjvluw5ono4sjIZQx2LTCQdr7d0uP5E");
         context = this;
         buildGoogleApiClient();
+
+        req = new Request();
 
         from = (AutoCompleteTextView) findViewById(R.id.from);
         to = (AutoCompleteTextView) findViewById(R.id.to);
 
         from.setOnItemClickListener(mAutocompleteClickListener);
         to.setOnItemClickListener(mAutocompleteClickListener);
+        from.setText("London, United Kingdom");
+        to.setText("Glasgow");
 
         mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, BOUNDS_CURRENT_LOCATION,
                 null);
         from.setAdapter(mAdapter);
         to.setAdapter(mAdapter);
 
-
-
+        transitModeSpinner = (Spinner) findViewById(R.id.transit_modes_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.transit_mode_names));
+        transitModeSpinner.setAdapter(adapter);
+        transitModeSpinner.setOnItemSelectedListener(this);
 
         goButton = (Button) findViewById(R.id.go);
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                req.setOrigin(from.getText().toString());
+                req.setDestination(to.getText().toString());
                 goHandler(v);
 
 //                inputStreamReader = new InputStreamReader(client.getInputStream());
@@ -111,23 +115,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 //
 //                    }
 //                });
-//                try {
-//                    DirectionsRoute[] routes = DirectionsApi.newRequest(geoApicontext)
-//                    .mode(TravelMode.DRIVING)
-//                    .origin(from.getText().toString())
-//                    .destination(to.getText().toString())
-//                            .await();
-//
-//                    values = new String[routes[0].legs.length];
-//                    for(int leg = 0; leg < values.length; leg++)  {
-//                        values[leg] = routes[0].legs[leg].startAddress + " -> " + routes[0].legs[leg].endAddress + "\n " + routes[0].legs[leg].distance.humanReadable + ", " + routes[0].legs[leg].duration.humanReadable;
-//                    }
-//                    adapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, android.R.id.text1, values);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//                listView.setAdapter(adapter);
             }
         });
     }
@@ -136,7 +123,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
         if(netInfo != null && netInfo.isConnected())    {
-            new ReceiveDirectionsTask().execute(to.getText().toString(), from.getText().toString());
+            new ReceiveDirectionsTask(req).execute();
         }   else    {
             Log.d("CONN", "No network connection");
         }
@@ -156,21 +143,12 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            /*
-             Retrieve the place ID of the selected item from the Adapter.
-             The adapter stores each Place suggestion in a AutocompletePrediction from which we
-             read the place ID and title.
-              */
             final AutocompletePrediction item = mAdapter.getItem(position);
             final String placeId = item.getPlaceId();
             final CharSequence primaryText = item.getPrimaryText(null);
 
             //Log.i(TAG, "Autocomplete item selected: " + primaryText);
 
-            /*
-             Issue a request to the Places Geo Data API to retrieve a Place object with additional
-             details about the place.
-              */
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClient, placeId);
 //            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
@@ -180,48 +158,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             //Log.i(TAG, "Called getPlaceById to get Place details for " + placeId);
         }
     };
-
-//    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
-//            = new ResultCallback<PlaceBuffer>() {
-//        @Override
-//        public void onResult(PlaceBuffer places) {
-//            if (!places.getStatus().isSuccess()) {
-//                // Request did not complete successfully
-//                //Log.e(TAG, "Place query did not complete. Error: " + places.getStatus().toString());
-//                places.release();
-//                return;
-//            }
-//            // Get the Place object from the buffer.
-//            final Place place = places.get(0);
-//
-//            // Format details of the place for display and show it in a TextView.
-//            mPlaceDetailsText.setText(formatPlaceDetails(getResources(), place.getName(),
-//                    place.getId(), place.getAddress(), place.getPhoneNumber(),
-//                    place.getWebsiteUri()));
-//
-//            // Display the third party attributions if set.
-//            final CharSequence thirdPartyAttribution = places.getAttributions();
-//            if (thirdPartyAttribution == null) {
-//                mPlaceDetailsAttribution.setVisibility(View.GONE);
-//            } else {
-//                mPlaceDetailsAttribution.setVisibility(View.VISIBLE);
-//                mPlaceDetailsAttribution.setText(Html.fromHtml(thirdPartyAttribution.toString()));
-//            }
-//
-//            //Log.i(TAG, "Place details received: " + place.getName());
-//
-//            places.release();
-//        }
-//    };
-//
-//    private static Spanned formatPlaceDetails(Resources res, CharSequence name, String id,
-//                                              CharSequence address, CharSequence phoneNumber, Uri websiteUri) {
-//        Log.e(TAG, res.getString(R.string.place_details, name, id, address, phoneNumber,
-//                websiteUri));
-//        return Html.fromHtml(res.getString(R.string.place_details, name, id, address, phoneNumber,
-//                websiteUri));
-//
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -274,6 +210,16 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
     @Override
     public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        req.setTransitMode((String) parent.getItemAtPosition(position));
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }
