@@ -6,7 +6,6 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,17 +26,13 @@ import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
-import com.google.maps.model.DirectionsRoute;
-import com.google.maps.model.TravelMode;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemSelectedListener {
 
@@ -55,7 +49,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     private LatLngBounds BOUNDS_CURRENT_LOCATION;
     private Location mLastLocation;
 
-    private static Socket client;
+    private static Socket socket;
     private static InputStreamReader inputStreamReader;
     private static BufferedReader bufferedReader;
     private PrintWriter printwriter;
@@ -66,6 +60,16 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Thread netThread = new Thread()    {
+            public void run()   {
+                try {
+                    socket = new Socket("109.156.40.134", 4444); //connect to server
+                } catch (IOException e) {
+                    Log.e("netThread", e.getMessage());
+                }
+            }
+        };
+        netThread.start();
         geoApicontext = new GeoApiContext().setApiKey("AIzaSyA7zjvluw5ono4sjIZQx2LTCQdr7d0uP5E");
         context = this;
         buildGoogleApiClient();
@@ -124,7 +128,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
         if(netInfo != null && netInfo.isConnected())    {
             Log.d("CONN", "go");
-            new ReceiveDirectionsTask(req).execute();
+            new ReceiveDirectionsTask(socket, req).execute();
         }   else    {
             Log.d("CONN", "No network connection");
         }

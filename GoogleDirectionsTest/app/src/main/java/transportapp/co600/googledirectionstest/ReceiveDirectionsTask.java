@@ -18,16 +18,17 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
     private static final String TAG = "ReceiveDIR";
     private final Request req;
     private String result = "hey";
+    private Socket socket;
 
-    public ReceiveDirectionsTask(Request pReq)   {
+    public ReceiveDirectionsTask(Socket pSocket, Request pReq)   {
+        socket = pSocket;
         req = pReq;
     }
 
     @Override
     protected String doInBackground(String... params) {
         try {
-            Socket client = new Socket("109.156.40.134", 4444); //connect to server
-            PrintWriter printwriter = new PrintWriter(client.getOutputStream(), true);
+            PrintWriter printwriter = new PrintWriter(socket.getOutputStream(), true);
             String s = req.getOrigin() + "!.!" + req.getDestination() + "!.!" + req.getTransitMode();
             printwriter.write(s); //write the message to output stream
             printwriter.flush();
