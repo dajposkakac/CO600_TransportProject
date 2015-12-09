@@ -26,17 +26,16 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
         try {
-            Socket client = new Socket("86.170.118.205", 4444); //connect to server
+            Socket client = new Socket("109.156.40.134", 4444); //connect to server
             PrintWriter printwriter = new PrintWriter(client.getOutputStream(), true);
-            printwriter.write(req.getOrigin() + "!.!" + req.getDestination() + "!.!" + req.getTransitMode()); //write the message to output stream
+            String s = req.getOrigin() + "!.!" + req.getDestination() + "!.!" + req.getTransitMode();
+            printwriter.write(s); //write the message to output stream
             printwriter.flush();
             printwriter.close();
-
+            //Log.d(TAG, s);
             //client.close(); //closing the connection
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
         return "";
     }

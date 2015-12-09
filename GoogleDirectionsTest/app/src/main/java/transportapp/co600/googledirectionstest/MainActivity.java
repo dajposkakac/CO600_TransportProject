@@ -123,6 +123,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
         if(netInfo != null && netInfo.isConnected())    {
+            Log.d("CONN", "go");
             new ReceiveDirectionsTask(req).execute();
         }   else    {
             Log.d("CONN", "No network connection");
