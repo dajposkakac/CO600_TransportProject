@@ -1,5 +1,7 @@
 package transportapp.co600.googledirectionstest;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -15,10 +17,12 @@ import java.net.Socket;
 public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
 
     private static final String TAG = "ReceiveDIR";
+    private Activity activity;
     private Socket socket;
     private BufferedReader bufferedReader;
 
-    public ReceiveDirectionsTask(Socket pSocket)   {
+    public ReceiveDirectionsTask(Activity pActivity, Socket pSocket)   {
+        activity = pActivity;
         socket = pSocket;
     }
 
@@ -42,6 +46,6 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         Log.d("ReceiveRES", result);
-        
+        activity.startActivity(new Intent(activity, ResultsActivity.class));
     }
 }

@@ -1,5 +1,6 @@
 package transportapp.co600.googledirectionstest;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -16,11 +17,13 @@ import java.net.UnknownHostException;
 public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
 
     private static final String TAG = "RequestDIR";
+    private final Activity activity;
     private final Request req;
     private Socket socket;
     private PrintWriter printwriter;
 
-    public RequestDirectionsTask(Request pReq)   {
+    public RequestDirectionsTask(Activity pActivity, Request pReq)   {
+        activity = pActivity;
         req = pReq;
     }
 
@@ -30,7 +33,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
             socket = new Socket("109.155.198.170", 4444);
             printwriter = new PrintWriter(socket.getOutputStream(), true);
             String s = req.getOrigin() + "!.!" + req.getDestination() + "!.!" + req.getTransitMode() + "\n";
-//            Log.d(TAG, s);
+            Log.d(TAG, s);
             printwriter.write(s); //write the message to output stream
             printwriter.flush();
         } catch (Exception e) {
@@ -41,7 +44,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        new ReceiveDirectionsTask(socket).execute();
+        new ReceiveDirectionsTask(activity, socket).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
 //        printwriter.close();
         Log.d("RequestRES", result);
     }

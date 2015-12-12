@@ -5,6 +5,7 @@ import android.content.Context;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -71,7 +72,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         from.setOnItemClickListener(mAutocompleteClickListener);
         to.setOnItemClickListener(mAutocompleteClickListener);
         from.setText("London, United Kingdom");
-        to.setText("Glasgow");
+        to.setText("Oxford");
 
         mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, BOUNDS_CURRENT_LOCATION,
                 null);
@@ -109,7 +110,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
         if(netInfo != null && netInfo.isConnected())    {
-            new RequestDirectionsTask(req).execute();
+            new RequestDirectionsTask(this, req).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
         }   else    {
             Log.d("CONN", "No network connection");
         }
