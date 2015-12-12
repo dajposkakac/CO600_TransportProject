@@ -59,17 +59,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Thread netThread = new Thread()    {
-            public void run()   {
-                try {
-                    socket = new Socket("109.156.40.134", 4444); //connect to server
-                } catch (IOException e) {
-                    Log.e("netThread", e.getMessage());
-                }
-            }
-        };
-        netThread.start();
         geoApicontext = new GeoApiContext().setApiKey("AIzaSyA7zjvluw5ono4sjIZQx2LTCQdr7d0uP5E");
         context = this;
         buildGoogleApiClient();
@@ -102,13 +91,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 req.setDestination(to.getText().toString());
                 goHandler(v);
 
-//                inputStreamReader = new InputStreamReader(client.getInputStream());
-//                bufferedReader = new BufferedReader(inputStreamReader); //get the client message
-//                Log.d("result", bufferedReader.readLine());
-//
-//                inputStreamReader.close();
-
-
 //                setContentView(R.layout.directions_list_layout);
 //                listView = (ListView) findViewById(R.id.directionsList);
 //                Button backButton = (Button) findViewById(R.id.back);
@@ -127,8 +109,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
         if(netInfo != null && netInfo.isConnected())    {
-            Log.d("CONN", "go");
-            new ReceiveDirectionsTask(socket, req).execute();
+            new RequestDirectionsTask(req).execute();
         }   else    {
             Log.d("CONN", "No network connection");
         }
