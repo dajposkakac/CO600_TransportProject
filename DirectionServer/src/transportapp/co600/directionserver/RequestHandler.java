@@ -19,11 +19,11 @@ public class RequestHandler extends Thread {
 		    bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream())); //get the client message
 		    String data = bufferedReader.readLine();
 		    String[] newData = data.split("!.!");
-		    DirectionsRequest request = new DirectionsRequest(newData[0], newData[1], newData[2]);
-		    DirectionsResult result = new DirectionsResult(request.getRoutes());
-		    
+//		    DirectionsRequest request = new DirectionsRequest(newData[0], newData[1], newData[2]);
+//		    DirectionsResult result = new DirectionsResult(request.getRoutes());
+//		    String resultString = result.getOrigin() + " -> " + result.getDestination() + ", " + result.getDistance() + ", " + result.getDuration() + "\n";
+		    String resultString = "test";
 		    printWriter = new PrintWriter(socket.getOutputStream(), true);
-		    String resultString = result.getOrigin() + " -> " + result.getDestination() + ", " + result.getDistance() + ", " + result.getDuration() + "\n";
 		    System.out.println(resultString);
 		    printWriter.write(resultString);
 		    printWriter.flush();
