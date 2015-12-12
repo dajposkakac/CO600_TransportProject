@@ -23,7 +23,7 @@ public class RequestHandler extends Thread {
 		    DirectionsResult result = new DirectionsResult(request.getRoutes());
 		    
 		    printWriter = new PrintWriter(socket.getOutputStream(), true);
-		    String resultString = result.getOrigin() + " -> " + result.getDestination() + "\n" + result.getDistance() + ", " + result.getDuration();
+		    String resultString = result.getOrigin() + " -> " + result.getDestination() + ", " + result.getDistance() + ", " + result.getDuration() + "\n";
 		    System.out.println(resultString);
 		    printWriter.write(resultString);
 		    printWriter.flush();
