@@ -30,7 +30,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
         try {
-            socket = new Socket("109.155.198.170", 4444);
+            socket = new Socket("81.153.177.105", 4444);
             printwriter = new PrintWriter(socket.getOutputStream(), true);
             String s = req.getOrigin() + "!.!" + req.getDestination() + "!.!" + req.getTransitMode() + "\n";
             Log.d(TAG, s);
