@@ -2,14 +2,11 @@ package transportapp.co600.googledirectionstest;
 
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class ResultsActivity extends AppCompatActivity {
@@ -23,11 +20,12 @@ public class ResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
         results = new LinkedHashMap<>();
+        results.put("transitMode", "Car");
         results.put("origin", "London");
-        results.put("destination", "kondon");
+        results.put("destination", "Canterbury");
         results.put("distance", "3km");
         results.put("duration", "15h 43min");
-        results.put("price", "pisiont groszy");
+        results.put("price", "£5");
         resultsList = (ListView) findViewById(R.id.list);
         resultsAdapter = new ResultsAdapter(this, results);
         resultsList.setAdapter(resultsAdapter);

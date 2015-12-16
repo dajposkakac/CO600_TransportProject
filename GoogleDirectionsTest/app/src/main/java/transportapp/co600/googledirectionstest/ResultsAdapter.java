@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+
 import java.util.LinkedHashMap;
 
 /**
@@ -31,6 +32,7 @@ public class ResultsAdapter extends ArrayAdapter<String> {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(layout, parent, false);
             holder = new ViewHolder();
+            holder.transitMode = (TextView) convertView.findViewById(R.id.transit_mode);
             holder.origin = (TextView) convertView.findViewById(R.id.origin);
             holder.destination = (TextView) convertView.findViewById(R.id.destination);
             holder.distance = (TextView) convertView.findViewById(R.id.distance);
@@ -41,6 +43,7 @@ public class ResultsAdapter extends ArrayAdapter<String> {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        holder.transitMode.setText(results.get("transitMode"));
         holder.origin.setText(results.get("origin"));
         holder.destination.setText(results.get("destination"));
         holder.distance.setText(results.get("distance"));
@@ -54,6 +57,7 @@ public class ResultsAdapter extends ArrayAdapter<String> {
 
 
     static class ViewHolder	{
+        TextView transitMode;
         TextView origin;
         TextView destination;
         TextView distance;
