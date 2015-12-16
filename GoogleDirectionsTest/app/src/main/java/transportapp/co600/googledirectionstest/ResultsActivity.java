@@ -1,22 +1,37 @@
 package transportapp.co600.googledirectionstest;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.ListView;
 
-public class ResultsActivity extends ActionBarActivity {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
+public class ResultsActivity extends AppCompatActivity {
+
+    private ListView resultsList;
+    private ResultsAdapter resultsAdapter;
+    private LinkedHashMap<String, String> results;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
+        results = new LinkedHashMap<>();
+        results.put("origin", "London");
+        results.put("destination", "kondon");
+        results.put("distance", "3km");
+        results.put("duration", "15h 43min");
+        results.put("price", "pisiont groszy");
+        resultsList = (ListView) findViewById(R.id.list);
+        resultsAdapter = new ResultsAdapter(this, results);
+        resultsList.setAdapter(resultsAdapter);
+        Log.d("adapter", "" + resultsAdapter.getCount());
         //getActionBar().setDisplayHomeAsUpEnabled(true);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);

@@ -26,13 +26,13 @@ public class RequestHandler extends Thread {
 	public void run()	{
 		try	{
 		    bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream())); //get the client message
-		    Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(bufferedReader.readLine())));
-		    HashMap<String, String> data = parseToMap(xmlDoc);
-		    DirectionsRequest request = new DirectionsRequest(data.get("origin"), data.get("destination"), data.get("transitMode"));
-		    DirectionsResult result = new DirectionsResult(request.getRoutes());
-		    
-		    String resultString = result.getOrigin() + " -> " + result.getDestination() + ", " + result.getDistance() + ", " + result.getDuration() + "\n";
-//		    String resultString = "test";
+//		    Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(bufferedReader.readLine())));
+//		    HashMap<String, String> data = parseToMap(xmlDoc);
+//		    DirectionsRequest request = new DirectionsRequest(data.get("origin"), data.get("destination"), data.get("transitMode"));
+//		    DirectionsResult result = new DirectionsResult(request.getRoutes());
+//		    
+//		    String resultString = result.getOrigin() + " -> " + result.getDestination() + ", " + result.getDistance() + ", " + result.getDuration() + "\n";
+		    String resultString = "test";
 		    printWriter = new PrintWriter(socket.getOutputStream(), true);
 		    System.out.println(resultString);
 		    printWriter.write(resultString);

@@ -49,7 +49,7 @@
             android:name=".ResultsActivity"
             android:label="@string/title_activity_results"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light">
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="transportapp.co600.googledirectionstest.MainActivity" />
