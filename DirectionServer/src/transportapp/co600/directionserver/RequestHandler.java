@@ -39,14 +39,14 @@ public class RequestHandler extends Thread {
 		    Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(bufferedReader.readLine())));
 		    HashMap<String, String> data = parseToMap(xmlDoc);
 		    DirectionsRequest request = new DirectionsRequest(data.get("origin"), data.get("destination"), data.get("transitMode"));
-		    DirectionsResult result = new DirectionsResult(request.getRoutes(), request.getTravelMode());
+		    Document r2rXmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(request.getR2RData())));
+		    DirectionsResult result = new DirectionsResult(request.getRoutes(), request.getTravelMode(), parseR2RXml(r2rXmlDoc));
 		    String resultString = createXMLResponse(result);
 //		    String resultString = "test";
 		    printWriter = new PrintWriter(socket.getOutputStream(), true);
 		    System.out.println(resultString);
 		    printWriter.write(resultString);
 		    printWriter.flush();
-//		    printWriter.close();
 		}	catch(Exception e)	{
 			e.printStackTrace();
 		}	finally {
@@ -69,6 +69,20 @@ public class RequestHandler extends Thread {
 		return map;
 	}
 	
+	private String parseR2RXml(Document doc)	{
+		NodeList nodes = doc.getFirstChild().getChildNodes();
+		for(int i = 0; i < nodes.getLength(); i++)	{
+			Node n = nodes.item(i);
+			String nn = n.getNodeName();
+			if(nn.equals("Route"))	{
+				if(n.getAttributes().getNamedItem("name").getTextContent().equals("Train") || n.getAttributes().getNamedItem("name").getTextContent().equals("Drive"))	{
+					return n.getFirstChild().getAttributes().getNamedItem("price").getTextContent();
+				}
+			}
+		}
+		return "-1";
+	}
+	
 	private String createXMLResponse(DirectionsResult res) throws ParserConfigurationException, IOException, TransformerException, SAXException {
         Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File("templates/response_template.xml"));
         NodeList nodes = xmlDoc.getFirstChild().getChildNodes();
@@ -85,6 +99,8 @@ public class RequestHandler extends Thread {
             	n.setTextContent(res.getDistance());
             }	else if(nn.equals("duration"))	{
             	n.setTextContent(res.getDuration());
+            }	else if(nn.equals("price"))	{
+            	n.setTextContent(res.getPrice());
             }
         }
         Transformer transformer = TransformerFactory.newInstance().newTransformer();

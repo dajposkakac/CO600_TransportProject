@@ -21,7 +21,6 @@ public class ResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
         results = (HashMap<String, String>) getIntent().getSerializableExtra("results");
-        results.put("price", "£5");
         resultsList = (ListView) findViewById(R.id.list);
         resultsAdapter = new ResultsAdapter(this, results);
         resultsList.setAdapter(resultsAdapter);

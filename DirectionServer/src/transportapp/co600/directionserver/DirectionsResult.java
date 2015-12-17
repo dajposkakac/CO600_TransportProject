@@ -10,13 +10,15 @@ public class DirectionsResult {
 	private String duration;
 	private String origin;
 	private String transitMode;
+	private String price;
 	
-	public DirectionsResult(DirectionsRoute[] routes, TravelMode travelMode)	{
+	public DirectionsResult(DirectionsRoute[] routes, TravelMode travelMode, String pPrice)	{
 		setDestination(routes[0].legs[0].endAddress);
 		setDistance(routes[0].legs[0].distance.humanReadable);
 		setDuration(routes[0].legs[0].duration.humanReadable);
 		setOrigin(routes[0].legs[0].startAddress);
 		setTransitMode(travelMode.toString());
+		setPrice(pPrice);
 	}
 
 	public String getOrigin() {
@@ -58,6 +60,13 @@ public class DirectionsResult {
 	public void setTransitMode(String transitMode) {
 		this.transitMode = transitMode;
 	}
-	
+
+	public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
+	}
 	
 }

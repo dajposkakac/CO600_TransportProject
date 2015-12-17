@@ -49,9 +49,7 @@ public class ResultsAdapter extends ArrayAdapter<String> {
         holder.destination.setText(results.get("destination"));
         holder.distance.setText(results.get("distance"));
         holder.duration.setText(results.get("duration"));
-        holder.price.setText(results.get("price"));
-
-
+        holder.price.setText("£" + results.get("price"));
 
         return convertView;
     }

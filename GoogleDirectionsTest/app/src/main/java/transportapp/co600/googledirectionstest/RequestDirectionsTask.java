@@ -51,7 +51,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
         try {
-            socket = new Socket("81.153.177.105", 4444);
+            socket = new Socket("86.170.118.163", 4444);
             printwriter = new PrintWriter(socket.getOutputStream(), true);
             String xmlReq = createXMLRequest(req);
             Log.d(TAG, xmlReq);
