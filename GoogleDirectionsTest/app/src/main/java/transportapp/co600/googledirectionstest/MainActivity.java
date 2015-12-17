@@ -29,6 +29,7 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.GeoApiContext;
+import com.google.maps.model.TravelMode;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -204,7 +205,23 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        req.setTransitMode((String) parent.getItemAtPosition(position));
+        TravelMode tm = TravelMode.UNKNOWN;
+        switch (position)   {
+            case 1:
+                tm = TravelMode.DRIVING;
+                break;
+            case 2:
+                tm = TravelMode.TRANSIT;
+                break;
+            case 3:
+                tm = TravelMode.WALKING;
+                break;
+            case 4:
+                tm = TravelMode.BICYCLING;
+                break;
+        }
+        req.setTransitMode(tm);
+
     }
 
     @Override

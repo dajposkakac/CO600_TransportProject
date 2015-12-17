@@ -39,7 +39,7 @@ public class RequestHandler extends Thread {
 		    Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(bufferedReader.readLine())));
 		    HashMap<String, String> data = parseToMap(xmlDoc);
 		    DirectionsRequest request = new DirectionsRequest(data.get("origin"), data.get("destination"), data.get("transitMode"));
-		    DirectionsResult result = new DirectionsResult(request.getRoutes());
+		    DirectionsResult result = new DirectionsResult(request.getRoutes(), request.getTravelMode());
 		    String resultString = createXMLResponse(result);
 //		    String resultString = "test";
 		    printWriter = new PrintWriter(socket.getOutputStream(), true);

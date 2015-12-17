@@ -1,6 +1,7 @@
 package transportapp.co600.directionserver;
 
 import com.google.maps.model.DirectionsRoute;
+import com.google.maps.model.TravelMode;
 
 public class DirectionsResult {
 	
@@ -10,12 +11,12 @@ public class DirectionsResult {
 	private String origin;
 	private String transitMode;
 	
-	public DirectionsResult(DirectionsRoute[] routes)	{
+	public DirectionsResult(DirectionsRoute[] routes, TravelMode travelMode)	{
 		setDestination(routes[0].legs[0].endAddress);
 		setDistance(routes[0].legs[0].distance.humanReadable);
 		setDuration(routes[0].legs[0].duration.humanReadable);
 		setOrigin(routes[0].legs[0].startAddress);
-//		setTransitMode();
+		setTransitMode(travelMode.toString());
 	}
 
 	public String getOrigin() {

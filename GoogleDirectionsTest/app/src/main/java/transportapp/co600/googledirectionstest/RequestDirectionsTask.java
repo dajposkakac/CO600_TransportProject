@@ -81,7 +81,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
             }   else if(nn.equals("destination"))   {
                 n.setTextContent(req.getDestination());
             }   else if(nn.equals("transitMode"))  {
-                n.setTextContent(req.getTransitMode());
+                n.setTextContent(req.getTransitMode().toString());
             }
         }
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
