@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 /**
@@ -17,9 +18,9 @@ public class ResultsAdapter extends ArrayAdapter<String> {
 
     private final Context context;
     private static int layout;
-    private LinkedHashMap<String, String> results;
+    private HashMap<String, String> results;
 
-    public ResultsAdapter(Context pContext, LinkedHashMap<String, String> pResults) {
+    public ResultsAdapter(Context pContext, HashMap<String, String> pResults) {
         super(pContext, layout = R.layout.result_row, pResults.keySet().toArray(new String[pResults.size()]));
         context = pContext;
         results = pResults;

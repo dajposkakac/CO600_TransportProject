@@ -7,24 +7,20 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class ResultsActivity extends AppCompatActivity {
 
     private ListView resultsList;
     private ResultsAdapter resultsAdapter;
-    private LinkedHashMap<String, String> results;
+    private HashMap<String, String> results;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
-        results = new LinkedHashMap<>();
-        results.put("transitMode", "Car");
-        results.put("origin", "London");
-        results.put("destination", "Canterbury");
-        results.put("distance", "3km");
-        results.put("duration", "15h 43min");
+        results = (HashMap<String, String>) getIntent().getSerializableExtra("results");
         results.put("price", "£5");
         resultsList = (ListView) findViewById(R.id.list);
         resultsAdapter = new ResultsAdapter(this, results);
