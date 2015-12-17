@@ -51,8 +51,12 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
             Log.e(TAG, e.getMessage());
         }   finally {
             try {
-                bufferedReader.close();
-                socket.close(); //closing the connection
+                if(bufferedReader != null) {
+                    bufferedReader.close();
+                }
+                if(!socket.isClosed()) {
+                    socket.close(); //closing the connection
+                }
             } catch (IOException e) {}
         }
         return "";
