@@ -54,6 +54,11 @@ public class ResultsAdapter extends ArrayAdapter<String> {
         return convertView;
     }
 
+    @Override
+    public int getCount()   {
+        return 1;
+    }
+
 
     static class ViewHolder	{
         TextView transitMode;
