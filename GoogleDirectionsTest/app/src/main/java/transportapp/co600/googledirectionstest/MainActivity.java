@@ -62,7 +62,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         geoApicontext = new GeoApiContext().setApiKey("AIzaSyA7zjvluw5ono4sjIZQx2LTCQdr7d0uP5E");
         context = this;
         buildGoogleApiClient();
@@ -182,6 +181,13 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         mGoogleApiClient.disconnect();
         super.onStop();
     }
+
+    @Override
+    protected void onResume()   {
+        super.onResume();
+        findViewById(R.id.loading).setVisibility(View.INVISIBLE);
+    }
+
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {

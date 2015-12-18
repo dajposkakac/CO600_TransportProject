@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.res.XmlResourceParser;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -46,12 +47,14 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
     public RequestDirectionsTask(Activity pActivity, Request pReq)   {
         activity = pActivity;
         req = pReq;
+
     }
 
     @Override
     protected String doInBackground(String... params) {
         try {
-            socket = new Socket("86.170.118.163", 4444);
+
+            socket = new Socket("31.50.220.102", 4444);
             printwriter = new PrintWriter(socket.getOutputStream(), true);
             String xmlReq = createXMLRequest(req);
             Log.d(TAG, xmlReq);
@@ -65,6 +68,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
+        activity.findViewById(R.id.loading).setVisibility(View.VISIBLE);
         new ReceiveDirectionsTask(activity, socket).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
 //        printwriter.close();
         Log.d("RequestRES", result);
