@@ -39,23 +39,22 @@ import javax.xml.transform.stream.StreamResult;
 public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
 
     private static final String TAG = "RequestDIR";
+    private static final String SERVER_IP = "86.183.210.161";
+    private static final int SERVER_PORT = 4444;
     private final Activity activity;
     private final Request req;
     private Socket socket;
-    private PrintWriter printwriter;
 
     public RequestDirectionsTask(Activity pActivity, Request pReq)   {
         activity = pActivity;
         req = pReq;
-
     }
 
     @Override
     protected String doInBackground(String... params) {
         try {
-
-            socket = new Socket("86.183.210.161", 4444);
-            printwriter = new PrintWriter(socket.getOutputStream(), true);
+            socket = new Socket(SERVER_IP, SERVER_PORT);
+            PrintWriter printwriter = new PrintWriter(socket.getOutputStream(), true);
             String xmlReq = createXMLRequest(req);
             Log.d(TAG, xmlReq);
             printwriter.write(xmlReq); //write the message to output stream
@@ -69,7 +68,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         activity.findViewById(R.id.loading).setVisibility(View.VISIBLE);
-        new ReceiveDirectionsTask(activity, socket).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+        new ReceiveDirectionsTask(activity, socket).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
 //        printwriter.close();
         Log.d("RequestRES", result);
     }

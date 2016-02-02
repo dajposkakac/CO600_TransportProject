@@ -42,7 +42,7 @@ public class RequestHandler extends Thread {
 		    Document r2rXmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(request.getR2RData())));
 		    DirectionsResults result = new DirectionsResults(request.getRoutes(), request.getTravelMode(), parseR2RXml(r2rXmlDoc));
 		    String resultString = createXMLResponse(result);
-//		    String resultString = "test";
+//		    TODO String resultString = "test";
 		    printWriter = new PrintWriter(socket.getOutputStream(), true);
 		    System.out.println(resultString);
 		    printWriter.write(resultString);
