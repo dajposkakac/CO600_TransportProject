@@ -40,7 +40,7 @@ public class RequestHandler extends Thread {
 		    HashMap<String, String> data = parseToMap(xmlDoc);
 		    DirectionsRequest request = new DirectionsRequest(data.get("origin"), data.get("destination"), data.get("transitMode"));
 		    Document r2rXmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(request.getR2RData())));
-		    DirectionsResult result = new DirectionsResult(request.getRoutes(), request.getTravelMode(), parseR2RXml(r2rXmlDoc));
+		    DirectionsResults result = new DirectionsResults(request.getRoutes(), request.getTravelMode(), parseR2RXml(r2rXmlDoc));
 		    String resultString = createXMLResponse(result);
 //		    String resultString = "test";
 		    printWriter = new PrintWriter(socket.getOutputStream(), true);
@@ -83,7 +83,7 @@ public class RequestHandler extends Thread {
 		return "-1";
 	}
 	
-	private String createXMLResponse(DirectionsResult res) throws ParserConfigurationException, IOException, TransformerException, SAXException {
+	private String createXMLResponse(DirectionsResults res) throws ParserConfigurationException, IOException, TransformerException, SAXException {
         Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File("templates/response_template.xml"));
         NodeList nodes = xmlDoc.getFirstChild().getChildNodes();
         for(int i = 0; i < nodes.getLength(); i++)  {

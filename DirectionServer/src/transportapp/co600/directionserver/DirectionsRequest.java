@@ -10,6 +10,7 @@ import java.net.URL;
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
+import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
@@ -24,7 +25,7 @@ public class DirectionsRequest {
 	private static final String R2RURL4 = "&currencyCode=";
 	private static final String R2RURL5 = "&flags=";
 	private final GeoApiContext gaContext;
-	private DirectionsRoute[] routes;
+	private DirectionsResult routes;
 	private TravelMode travelMode;
 	private String r2rData;
 	
@@ -55,7 +56,7 @@ public class DirectionsRequest {
 		return response.toString();
 	}
 
-	public DirectionsRoute[] getRoutes() {
+	public DirectionsResult getRoutes() {
 		return routes;
 	}
 	
