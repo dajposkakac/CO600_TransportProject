@@ -20,7 +20,7 @@
   	<dependency>
   		<groupId>com.google.maps</groupId>
   		<artifactId>google-maps-services</artifactId>
-  		<version>0.1.9</version>
+  		<version>0.1.10</version>
   	</dependency>
   </dependencies>
 </project>

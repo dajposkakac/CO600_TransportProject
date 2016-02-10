@@ -1,21 +1,24 @@
 package transportapp.co600.directionserver;
 
-import com.google.maps.model.DirectionsRoute;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.TravelMode;
 
-public class DirectionsResult {
+public class DirectionsResults {
 	
 	private String destination;
 	private String distance;
 	private String duration;
 	private String origin;
 	private String transitMode;
+	private String price;
 	
-	public DirectionsResult(DirectionsRoute[] routes)	{
-		setDestination(routes[0].legs[0].endAddress);
-		setDistance(routes[0].legs[0].distance.humanReadable);
-		setDuration(routes[0].legs[0].duration.humanReadable);
-		setOrigin(routes[0].legs[0].startAddress);
-//		setTransitMode();
+	public DirectionsResults(DirectionsResult directionsResult, TravelMode travelMode, String pPrice)	{
+		setDestination(directionsResult.routes[0].legs[0].endAddress);
+		setDistance(directionsResult.routes[0].legs[0].distance.humanReadable);
+		setDuration(directionsResult.routes[0].legs[0].duration.humanReadable);
+		setOrigin(directionsResult.routes[0].legs[0].startAddress);
+		setTransitMode(travelMode.toString());
+		setPrice(pPrice);
 	}
 
 	public String getOrigin() {
@@ -57,6 +60,13 @@ public class DirectionsResult {
 	public void setTransitMode(String transitMode) {
 		this.transitMode = transitMode;
 	}
-	
+
+	public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
+	}
 	
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.res.XmlResourceParser;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -38,10 +39,11 @@ import javax.xml.transform.stream.StreamResult;
 public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
 
     private static final String TAG = "RequestDIR";
+    private static final String SERVER_IP = "86.183.210.161";
+    private static final int SERVER_PORT = 4444;
     private final Activity activity;
     private final Request req;
     private Socket socket;
-    private PrintWriter printwriter;
 
     public RequestDirectionsTask(Activity pActivity, Request pReq)   {
         activity = pActivity;
@@ -51,8 +53,8 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
         try {
-            socket = new Socket("81.153.177.105", 4444);
-            printwriter = new PrintWriter(socket.getOutputStream(), true);
+            socket = new Socket(SERVER_IP, SERVER_PORT);
+            PrintWriter printwriter = new PrintWriter(socket.getOutputStream(), true);
             String xmlReq = createXMLRequest(req);
             Log.d(TAG, xmlReq);
             printwriter.write(xmlReq); //write the message to output stream
@@ -65,7 +67,8 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        new ReceiveDirectionsTask(activity, socket).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+        activity.findViewById(R.id.loading).setVisibility(View.VISIBLE);
+        new ReceiveDirectionsTask(activity, socket).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
 //        printwriter.close();
         Log.d("RequestRES", result);
     }
@@ -81,7 +84,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
             }   else if(nn.equals("destination"))   {
                 n.setTextContent(req.getDestination());
             }   else if(nn.equals("transitMode"))  {
-                n.setTextContent(req.getTransitMode());
+                n.setTextContent(req.getTransitMode().toString());
             }
         }
         Transformer transformer = TransformerFactory.newInstance().newTransformer();

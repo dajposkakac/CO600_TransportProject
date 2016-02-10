@@ -1,22 +1,29 @@
 package transportapp.co600.googledirectionstest;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.ListView;
 
-public class ResultsActivity extends ActionBarActivity {
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
+public class ResultsActivity extends AppCompatActivity {
+
+    private HashMap<String, String> results;
+
+    @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
+        results = (HashMap<String, String>) getIntent().getSerializableExtra("results");
+        ListView resultsList = (ListView) findViewById(R.id.list);
+        ResultsAdapter resultsAdapter = new ResultsAdapter(this, results);
+        resultsList.setAdapter(resultsAdapter);
+        Log.d("adapter", "" + resultsAdapter.getCount());
         //getActionBar().setDisplayHomeAsUpEnabled(true);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);

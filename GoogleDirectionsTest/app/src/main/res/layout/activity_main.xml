@@ -45,4 +45,12 @@
         android:layout_gravity="fill_horizontal"
         android:text="Go" />
 
+    <TextView
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Loading..."
+        android:layout_gravity="center_horizontal"
+        android:visibility="invisible"/>
+
 </GridLayout>

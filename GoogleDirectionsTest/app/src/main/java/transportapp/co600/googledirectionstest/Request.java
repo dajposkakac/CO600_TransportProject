@@ -1,12 +1,14 @@
 package transportapp.co600.googledirectionstest;
 
+import com.google.maps.model.TravelMode;
+
 /**
  * Created by daj on 02/12/2015.
  */
 public class Request {
     private String destination;
     private String origin;
-    private String transitMode;
+    private TravelMode transitMode;
 
     public String getOrigin() {
         return origin;
@@ -24,11 +26,11 @@ public class Request {
         this.destination = destination;
     }
 
-    public String getTransitMode() {
+    public TravelMode getTransitMode() {
         return transitMode;
     }
 
-    public void setTransitMode(String transitMode) {
+    public void setTransitMode(TravelMode transitMode) {
         this.transitMode = transitMode;
     }
 }

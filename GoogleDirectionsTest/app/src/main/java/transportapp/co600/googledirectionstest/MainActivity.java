@@ -2,12 +2,13 @@ package transportapp.co600.googledirectionstest;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,12 +30,7 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.GeoApiContext;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
+import com.google.maps.model.TravelMode;
 
 public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemSelectedListener {
 
@@ -45,23 +41,14 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
     private AutoCompleteTextView from;
     private AutoCompleteTextView to;
-    private Button goButton;
-    private Spinner transitModeSpinner;
 
-    private LatLngBounds BOUNDS_CURRENT_LOCATION;
-    private Location mLastLocation;
-
-    private static Socket socket;
-    private static InputStreamReader inputStreamReader;
-    private static BufferedReader bufferedReader;
-    private PrintWriter printwriter;
+    private LatLngBounds boundsCurrentLocation;
     private Request req;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         geoApicontext = new GeoApiContext().setApiKey("AIzaSyA7zjvluw5ono4sjIZQx2LTCQdr7d0uP5E");
         context = this;
         buildGoogleApiClient();
@@ -76,44 +63,33 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         from.setText("London, United Kingdom");
         to.setText("Oxford");
 
-        mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, BOUNDS_CURRENT_LOCATION,
+        mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, boundsCurrentLocation,
                 null);
         from.setAdapter(mAdapter);
         to.setAdapter(mAdapter);
 
-        transitModeSpinner = (Spinner) findViewById(R.id.transit_modes_spinner);
+        Spinner transitModeSpinner = (Spinner) findViewById(R.id.transit_modes_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.transit_mode_names));
         transitModeSpinner.setAdapter(adapter);
         transitModeSpinner.setOnItemSelectedListener(this);
 
-        goButton = (Button) findViewById(R.id.go);
+        Button goButton = (Button) findViewById(R.id.go);
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 req.setOrigin(from.getText().toString());
                 req.setDestination(to.getText().toString());
                 goHandler(v);
-
-//                setContentView(R.layout.directions_list_layout);
-//                listView = (ListView) findViewById(R.id.directionsList);
-//                Button backButton = (Button) findViewById(R.id.back);
-//                backButton.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        setContentView(R.layout.activity_main);
-//
-//                    }
-//                });
             }
         });
     }
 
-    public void goHandler(View view)    {
+    public void goHandler(View view) {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
-        if(netInfo != null && netInfo.isConnected())    {
-            new RequestDirectionsTask(this, req).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
-        }   else    {
+        if (netInfo != null && netInfo.isConnected()) {
+            new RequestDirectionsTask(this, req).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
+        } else {
             Log.d("CONN", "No network connection");
         }
     }
@@ -183,17 +159,28 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        findViewById(R.id.loading).setVisibility(View.INVISIBLE);
+    }
+
+
+    @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
 
     @Override
     public void onConnected(Bundle bundle) {
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        if (mLastLocation != null) {
-            LatLng loc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            BOUNDS_CURRENT_LOCATION = new LatLngBounds(loc, loc);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                    mGoogleApiClient);
+            if (mLastLocation != null) {
+                LatLng loc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                boundsCurrentLocation = new LatLngBounds(loc, loc);
+            }
+            return;
         }
     }
 
@@ -204,7 +191,23 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        req.setTransitMode((String) parent.getItemAtPosition(position));
+        TravelMode tm = TravelMode.UNKNOWN;
+        switch (position)   {
+            case 1:
+                tm = TravelMode.DRIVING;
+                break;
+            case 2:
+                tm = TravelMode.TRANSIT;
+                break;
+            case 3:
+                tm = TravelMode.WALKING;
+                break;
+            case 4:
+                tm = TravelMode.BICYCLING;
+                break;
+        }
+        req.setTransitMode(tm);
+
     }
 
     @Override

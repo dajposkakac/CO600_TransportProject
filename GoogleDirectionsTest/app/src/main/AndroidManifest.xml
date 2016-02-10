@@ -10,6 +10,7 @@
         android:name="transportapp.co600.googledirectionstest.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="transportapp.co600.googledirectionstest.permission.MAPS_RECEIVE" />
 
     <!-- Network connectivity permissions -->
@@ -49,7 +50,7 @@
             android:name=".ResultsActivity"
             android:label="@string/title_activity_results"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light">
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="transportapp.co600.googledirectionstest.MainActivity" />
