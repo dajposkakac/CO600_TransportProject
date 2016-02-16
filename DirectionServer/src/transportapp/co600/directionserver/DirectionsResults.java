@@ -5,52 +5,40 @@ import com.google.maps.model.TravelMode;
 
 public class DirectionsResults {
 	
-	private String destination;
-	private String distance;
-	private String duration;
-	private String origin;
+	private final DirectionsResult result;
+	private TravelMode mode;
 	private String transitMode;
 	private String price;
 	
+	
 	public DirectionsResults(DirectionsResult directionsResult, TravelMode travelMode, String pPrice)	{
-		setDestination(directionsResult.routes[0].legs[0].endAddress);
-		setDistance(directionsResult.routes[0].legs[0].distance.humanReadable);
-		setDuration(directionsResult.routes[0].legs[0].duration.humanReadable);
-		setOrigin(directionsResult.routes[0].legs[0].startAddress);
+		result = directionsResult;
 		setTransitMode(travelMode.toString());
 		setPrice(pPrice);
 	}
-
-	public String getOrigin() {
-		return origin;
+	
+	public String getDestinationForRoute(int route)	{
+		return result.routes[route].legs[0].endAddress;
 	}
-
-	public void setOrigin(String origin) {
-		this.origin = origin;
+	
+	public String getOriginForRoute(int route)	{
+		return result.routes[route].legs[0].startAddress;
 	}
-
-	public String getDestination() {
-		return destination;
+	
+	public String getDistanceForRoute(int route)	{
+		return result.routes[route].legs[0].distance.humanReadable;
 	}
-
-	public void setDestination(String destination) {
-		this.destination = destination;
+	
+	public String getDurationForRoute(int route)	{
+		return result.routes[route].legs[0].duration.humanReadable;
 	}
-
-	public String getDistance() {
-		return distance;
+	
+	public String getDurationForRoute()	{
+		return mode.toString();
 	}
-
-	public void setDistance(String distance) {
-		this.distance = distance;
-	}
-
-	public String getDuration() {
-		return duration;
-	}
-
-	public void setDuration(String duration) {
-		this.duration = duration;
+	
+	public int getNumberOfRoutes()	{
+		return result.routes.length;
 	}
 
 	public String getTransitMode() {

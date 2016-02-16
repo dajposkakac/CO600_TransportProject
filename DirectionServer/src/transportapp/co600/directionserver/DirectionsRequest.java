@@ -7,9 +7,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import com.google.maps.DirectionsApi;
+import com.google.maps.DistanceMatrixApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
@@ -30,7 +32,7 @@ public class DirectionsRequest {
 	public DirectionsRequest(String origin, String destination, String transitMode) throws Exception	{
 		gaContext = new GeoApiContext().setApiKey("AIzaSyD_pZcQHhzIbFjmVkO88oQ8DDaMm-jF3q4");
 		travelMode = TravelMode.valueOf(transitMode.toUpperCase());
-		routes = DirectionsApi.getDirections(gaContext, origin, destination).mode(travelMode).await();
+		routes = DirectionsApi.getDirections(gaContext, origin, destination).mode(travelMode).alternatives(true).await();
 		r2rData = r2rSearch(getOriginLatLng(origin), getOriginLatLng(destination));
 	}
 	

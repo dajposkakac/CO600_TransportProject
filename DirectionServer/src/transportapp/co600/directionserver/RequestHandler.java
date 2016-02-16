@@ -19,6 +19,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -89,24 +90,60 @@ public class RequestHandler extends Thread {
         for(int i = 0; i < nodes.getLength(); i++)  {
             Node n = nodes.item(i);
             String nn = n.getNodeName();
-            if(nn.equals("origin"))    {
-                n.setTextContent(res.getOrigin());
-            }   else if(nn.equals("destination"))   {
-                n.setTextContent(res.getDestination());
-            }   else if(nn.equals("transitMode"))  {
-                n.setTextContent(res.getTransitMode());
-            }	else if(nn.equals("distance"))	{
-            	n.setTextContent(res.getDistance());
-            }	else if(nn.equals("duration"))	{
-            	n.setTextContent(res.getDuration());
-            }	else if(nn.equals("price"))	{
-            	n.setTextContent(res.getPrice());
+            if(nn.equals("info"))	{
+            	NodeList infoNodes = n.getChildNodes();
+            	for(int j = 0; j < infoNodes.getLength(); j++)	{
+            		Node infoNode = infoNodes.item(j);
+                    String infoNodeName = infoNode.getNodeName();
+		            if(infoNodeName.equals("origin"))    {
+		            	infoNode.setTextContent(res.getOriginForRoute(0));
+		            }   else if(infoNodeName.equals("destination"))   {
+		            	infoNode.setTextContent(res.getDestinationForRoute(0));
+		            }   
+            	}
+            }	else if(nn.equals("results"))	{
+            	NodeList resultsNodes = n.getChildNodes();
+            	for(int k = 0; k < res.getNumberOfRoutes(); k++)	{
+            		Element result = xmlDoc.createElement("result");
+            		Element transitMode = xmlDoc.createElement("transitMode");
+            		Element distance = xmlDoc.createElement("distance");
+            		Element duration = xmlDoc.createElement("duration");
+            		Element price = xmlDoc.createElement("price");
+            		transitMode.appendChild(xmlDoc.createTextNode(res.getTransitMode()));
+            		distance.appendChild(xmlDoc.createTextNode(res.getDistanceForRoute(k)));
+            		duration.appendChild(xmlDoc.createTextNode(res.getDurationForRoute(k)));
+            		price.appendChild(xmlDoc.createTextNode(res.getPrice()));
+            		result.appendChild(distance);
+            		result.appendChild(duration);
+            		result.appendChild(transitMode);
+            		result.appendChild(price);
+            		n.appendChild(result);
+//            		Node resultNode = resultsNodes.item(k);
+//                    String resultNodeName = resultNode.getNodeName();
+//                    if(resultNodeName.equals("result"))	{
+//                    	NodeList dataNodes = resultNode.getChildNodes();
+//                    	for(int l = 0; l < dataNodes.getLength(); l++)	{
+//                    		Node dataNode = dataNodes.item(l);
+//                    		String dataNodeName = dataNode.getNodeName();
+//                    		if(dataNodeName.equals("transitMode"))  {
+//                    			dataNode.setTextContent(res.getTransitMode());
+//                            }	else if(dataNodeName.equals("distance"))	{
+//                            	dataNode.setTextContent(res.getDistance());
+//                            }	else if(dataNodeName.equals("duration"))	{
+//                            	dataNode.setTextContent(res.getDuration());
+//                            }	else if(dataNodeName.equals("price"))	{
+//                            	dataNode.setTextContent(res.getPrice());
+//                            }
+//                    	}
+//                    }
+            	}
+            	
             }
         }
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         StreamResult sr = new StreamResult(new StringWriter());
         DOMSource source = new DOMSource(xmlDoc);
         transformer.transform(source, sr);
-        return sr.getWriter().toString() + "\n";
+        return sr.getWriter().toString().trim().replaceAll("[\n\t\r]+", "") + "\n";
     }
 }
