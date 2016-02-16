@@ -1,1 +1,9 @@
-<?xml version = "1.0" encoding = "UTF-8"?><request><info><origin></origin><destination></destination></info><results><result><distance></distance><duration></duration><transitMode></transitMode><price></price></result></results></request>
+<?xml version = "1.0" encoding = "UTF-8"?>
+<response>
+	<info>
+		<origin></origin>
+		<destination></destination>
+	</info>
+	<results>
+	</results>
+</response>
