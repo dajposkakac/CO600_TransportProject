@@ -12,16 +12,18 @@ import java.util.LinkedHashMap;
 
 public class ResultsActivity extends AppCompatActivity {
 
-    private HashMap<String, String> results;
+    private HashMap<String, String> info;
+    private HashMap<Integer, HashMap<String, String>> results;
 
     @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
-        results = (HashMap<String, String>) getIntent().getSerializableExtra("results");
+        info = (HashMap<String, String>) getIntent().getSerializableExtra("info");
+        results = (HashMap<Integer, HashMap<String, String>>) getIntent().getSerializableExtra("results");
         ListView resultsList = (ListView) findViewById(R.id.list);
-        ResultsAdapter resultsAdapter = new ResultsAdapter(this, results);
+        ResultsAdapter resultsAdapter = new ResultsAdapter(this, info, results);
         resultsList.setAdapter(resultsAdapter);
         Log.d("adapter", "" + resultsAdapter.getCount());
         //getActionBar().setDisplayHomeAsUpEnabled(true);
