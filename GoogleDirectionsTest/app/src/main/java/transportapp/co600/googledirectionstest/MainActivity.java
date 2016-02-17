@@ -2,6 +2,7 @@ package transportapp.co600.googledirectionstest;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.ConnectivityManager;
@@ -21,12 +22,16 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.AutocompletePrediction;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.GeoApiContext;
@@ -38,9 +43,13 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     private Context context;
     private GoogleApiClient mGoogleApiClient;
     private PlaceAutocompleteAdapter mAdapter;
+    private Intent ppIntent;
 
     private AutoCompleteTextView from;
     private AutoCompleteTextView to;
+    private Button fromMapButton;
+    private Button toMapButton;
+    private int mapButtonId;
 
     private LatLngBounds boundsCurrentLocation;
     private Request req;
@@ -52,7 +61,15 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         geoApicontext = new GeoApiContext().setApiKey("AIzaSyA7zjvluw5ono4sjIZQx2LTCQdr7d0uP5E");
         context = this;
         buildGoogleApiClient();
-
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            ppIntent = builder.build(this);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+        mapButtonId = -1;
         req = new Request();
 
         from = (AutoCompleteTextView) findViewById(R.id.from);
@@ -67,6 +84,11 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 null);
         from.setAdapter(mAdapter);
         to.setAdapter(mAdapter);
+
+        fromMapButton = (Button) findViewById(R.id.from_map);
+        toMapButton = (Button) findViewById(R.id.to_map);
+        fromMapButton.setOnClickListener(mapButtonListener);
+        toMapButton.setOnClickListener(mapButtonListener);
 
         Spinner transitModeSpinner = (Spinner) findViewById(R.id.transit_modes_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.transit_mode_names));
@@ -123,6 +145,33 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             //Log.i(TAG, "Called getPlaceById to get Place details for " + placeId);
         }
     };
+
+    private View.OnClickListener mapButtonListener
+            = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int bId = v.getId();
+            if(bId == R.id.from_map)  {
+                mapButtonId = bId;
+            }   else if (bId == R.id.to_map)    {
+                mapButtonId = bId;
+            }
+            startActivityForResult(ppIntent, 1);
+        }
+    };
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(this, data);
+                if(mapButtonId == R.id.from_map)    {
+                    from.setText(String.format("%s", place.getAddress()));
+                }   else if(mapButtonId == R.id.to_map) {
+                    to.setText(String.format("%s", place.getAddress()));
+                }
+            }
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
