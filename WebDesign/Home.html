@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Journey Organizer</title>
+<link href="CSS/Cascade.css" rel="stylesheet" type="text/css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+function tog(v){return v?'addClass':'removeClass';} 
+$(document).on('input', '.textbox', function(){
+    $(this)[tog(this.value)]('x');
+}).on('mousemove', '.x', function( e ){
+    $(this)[tog(this.offsetWidth-18 < e.clientX-this.getBoundingClientRect().left)]('onX');
+}).on('touchstart click', '.onX', function( ev ){
+    ev.preventDefault();
+    $(this).removeClass('x onX').val('').change();
+});
+</script>
+
+<script type="text/javascript">
+var expanded = "false";
+function displayopt()
+{
+	if(expanded == "false")
+	{
+		document.getElementById("advopt").value = "Hide travel options";
+		document.getElementById("h1").style.fontSize = "38pt";
+		document.getElementById("form").style.width = "70em";
+		document.getElementById("basic").style.width = "26em";
+		$('#advanced').toggle();
+		document.getElementById("submit1").style.display = "none";
+		expanded = "true";
+	}
+	else
+	{
+		document.getElementById("advopt").value = "Show travel options";
+		document.getElementById("h1").style.fontSize = "25pt";
+		document.getElementById("form").style.width = "25em";
+		document.getElementById("basic").style.width = "100%";
+		$('#advanced').toggle();
+		document.getElementById("submit1").style.display = "initial";
+		expanded = "false";
+	}
+}
+</script>
+
+</head>
+
+<body>
+
+<div id="header">
+<img src="images/logo.jpg" id="logo">
+</div>
+
+<div id="container">
+<form id="form">
+<h1 id="h1">PLAN A JOURNEY</h1>
+<div id="basic">
+<h2>From</h2>
+<div class="textboxmod">
+<input type="text" class="textbox" id="from" placeholder="Street, town or postcode"/>
+</div>
+<h2>To</h2>
+<div class="textboxmod">
+<input type="text" class="textbox" id="to" placeholder="Street, town or postcode"/>
+</div>
+<fieldset>
+<legend><h3>Timing options</h3></legend>
+<input type="radio" class="rad1" id="radarrive" value="arrive" name="radgroup1">
+<label for="arrive" id="lblarrive">Arriving</label>
+<input type="radio" class="rad1" id="raddepart" value="depart" name="radgroup1">
+<label for="depart" id="lbldepart">Departing</label>
+</fieldset>
+<input type="button" class="button" id="advopt" value="Show travel options" onclick="displayopt()">
+<input type="submit" class="button" id="submit1" name="action" value="Search" onclick="">
+</div>
+
+
+
+<div id="advanced">
+<fieldset>
+<legend><h3>Routing options</h3></legend>
+<input type="radio">Distance
+<input type="radio">Time
+<input type="radio">Cost
+</fieldset>
+
+<fieldset>
+<legend><h3>Transport options</h3></legend>
+
+<div class="transportcheck">
+<table>
+<tr>
+<td>
+<input id="car" type="checkbox" name="creditcard" value="car"/>
+<label class="transportchoice car" for="car"></label>
+</td>
+<td>
+<input id="train" type="checkbox" name="creditcard" value="train"/>
+<label class="transportchoice train" for="train"></label>
+</td>
+<td>
+<input id="walk" type="checkbox" name="creditcard" value="walk"/>
+<label class="transportchoice walk" for="walk"></label>
+</td>
+</tr>
+<tr>
+<td>
+<input id="bus" type="checkbox" name="creditcard" value="bus"/>
+<label class="transportchoice bus" for="bus"></label>
+</td>
+<td>
+<input id="plane" type="checkbox" name="creditcard" value="plane"/>
+<label class="transportchoice plane" for="plane"></label>
+</td>
+<td>
+<input id="cycle" type="checkbox" name="creditcard" value="cycle"/>
+<label class="transportchoice cycle" for="cycle"></label>
+</td>
+</tr>
+</table>
+</div>
+
+</fieldset>
+<input type="submit" class="button" id="submit2" name="action" value="Search" onclick="">
+</div>
+
+</form>
+</div>
+
+<div id="footer">
+</div>
+
+</body>
+</html>
