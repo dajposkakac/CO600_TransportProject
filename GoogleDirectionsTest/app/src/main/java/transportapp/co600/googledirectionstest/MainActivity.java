@@ -166,8 +166,12 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 Place place = PlacePicker.getPlace(this, data);
                 if(mapButtonId == R.id.from_map)    {
                     from.setText(String.format("%s", place.getAddress()));
+                    from.requestFocus();
+                    from.setSelection(from.getText().length());
                 }   else if(mapButtonId == R.id.to_map) {
                     to.setText(String.format("%s", place.getAddress()));
+                    to.requestFocus();
+                    to.setSelection(to.getText().length());
                 }
             }
         }
