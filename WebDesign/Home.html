@@ -59,26 +59,42 @@ window.addEvent('domready', function () {
     });
 });
 </script>
-
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+<script>
+        var autocomplete;
+        function initialize() {
+        autocomplete = new google.maps.places.Autocomplete(
+                  /** @type {HTMLInputElement} */(document.getElementById('start')),
+                  { types: ['geocode'] });
+              google.maps.event.addListener(start, 'place_changed', function() {
+              });
+			  var autocomplet;
+			  autocomplet = new google.maps.places.Autocomplete(
+                  /** @type {HTMLInputElement} */(document.getElementById('end')),
+                  { types: ['geocode'] });
+              google.maps.event.addListener(end, 'place_changed', function() {
+              });
+            }
+</script>
 </head>
 
-<body>
+<body onload="initialize()">
 
 <div id="header">
 <img src="images/logo.png" id="logo">
 </div>
 
 <div id="container">
-<form id="form">
+<form id="form" action="jpmap.php" method="post" align="middle">
 <h1 id="h1">PLAN A JOURNEY</h1>
 <div id="basic">
 <h2>From</h2>
 <div class="textboxmod">
-<input type="text" class="textbox" id="from" placeholder="Street, town or postcode"/>
+<input onFocus="geolocate()" type="text" id="start" name="start" class="textbox" placeholder="Street, town or postcode"/>
 </div>
 <h2>To</h2>
 <div class="textboxmod">
-<input type="text" class="textbox" id="to" placeholder="Street, town or postcode"/>
+<input onFocus="geolocate()" type="text" id="end" name="end" class="textbox" placeholder="Street, town or postcode"/>
 </div>
 
 <input type="button" class="button" id="advopt" value="Show travel options" onclick="displayopt()">
@@ -107,29 +123,29 @@ window.addEvent('domready', function () {
 <table>
 <tr>
 <td>
-<input id="car" type="checkbox" name="creditcard" value="car"/>
+<input id="car" type="checkbox" name="mode" value="DRIVING"/>
 <label class="transportchoice car" for="car"></label>
 </td>
 <td>
-<input id="train" type="checkbox" name="creditcard" value="train"/>
+<input id="train" type="checkbox" name="mode" value="TRAIN"/>
 <label class="transportchoice train" for="train"></label>
 </td>
 <td>
-<input id="walk" type="checkbox" name="creditcard" value="walk"/>
+<input id="walk" type="checkbox" name="mode" value="WALKING"/>
 <label class="transportchoice walk" for="walk"></label>
 </td>
 </tr>
 <tr>
 <td>
-<input id="bus" type="checkbox" name="creditcard" value="bus"/>
+<input id="bus" type="checkbox" name="mode" value="TRANSIT"/>
 <label class="transportchoice bus" for="bus"></label>
 </td>
 <td>
-<input id="plane" type="checkbox" name="creditcard" value="plane"/>
+<input id="plane" type="checkbox" name="mode" value="TRANSIT"/>
 <label class="transportchoice plane" for="plane"></label>
 </td>
 <td>
-<input id="cycle" type="checkbox" name="creditcard" value="cycle"/>
+<input id="cycle" type="checkbox" name="mode" value="CYCLING"/>
 <label class="transportchoice cycle" for="cycle"></label>
 </td>
 </tr>
