@@ -9,6 +9,7 @@ import android.content.res.XmlResourceParser;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
@@ -83,15 +84,11 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
             activity.startActivity(intent);
         }   else    {
             activity.findViewById(R.id.loading).setVisibility(View.INVISIBLE);
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setTitle("Error").setMessage("code: " + status).setNeutralButton("Close", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            Bundle bundle = new Bundle();
+            bundle.putInt("STATUS_KEY", status);
+            ErrorDialogFragment errorDialogFragment = new ErrorDialogFragment();
+            errorDialogFragment.setArguments(bundle);
+            activity.getFragmentManager().beginTransaction().add(errorDialogFragment, "errorDialog").commitAllowingStateLoss();
         }
     }
 
@@ -164,10 +161,5 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
         return map;
     }
 
-    public static class ErrorDialogFragment extends DialogFragment    {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            return super.onCreateDialog(savedInstanceState);
-        }
-    }
+
 }
