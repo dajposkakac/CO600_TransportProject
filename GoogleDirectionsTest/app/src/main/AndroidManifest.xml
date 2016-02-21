@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="transportapp.co600.googledirectionstest"> <!-- Specify the correct minSDK and targetSDK versions. -->
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="17" />
+        android:minSdkVersion="15"
+        android:targetSdkVersion="23" />
 
     <!-- Google Maps related permissions -->
     <permission
@@ -31,15 +31,15 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:label="@string/app_name">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD_pZcQHhzIbFjmVkO88oQ8DDaMm-jF3q4" />
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
