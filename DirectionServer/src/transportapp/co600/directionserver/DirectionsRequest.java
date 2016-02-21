@@ -10,6 +10,8 @@ import com.google.maps.DirectionsApi;
 import com.google.maps.DistanceMatrixApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
+import com.google.maps.errors.NotFoundException;
+import com.google.maps.errors.ZeroResultsException;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.GeocodingResult;
@@ -17,7 +19,6 @@ import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 
 public class DirectionsRequest {
-	
 	private static final String R2RKEY = "ZMjs2oRB";
 	private static final String R2RURL1 = "http://free.rome2rio.com/api/1.2/xml/Search?key=";
 	private static final String R2RURL2 = "&oPos=";
@@ -28,12 +29,29 @@ public class DirectionsRequest {
 	private DirectionsResult routes;
 	private TravelMode travelMode;
 	private String r2rData;
+	private int status;
 	
-	public DirectionsRequest(String origin, String destination, String transitMode) throws Exception	{
+	public DirectionsRequest(String origin, String destination, String transitMode)	{
+		status = 0;
 		gaContext = new GeoApiContext().setApiKey("AIzaSyD_pZcQHhzIbFjmVkO88oQ8DDaMm-jF3q4");
 		travelMode = TravelMode.valueOf(transitMode.toUpperCase());
-		routes = DirectionsApi.getDirections(gaContext, origin, destination).mode(travelMode).alternatives(true).await();
-		r2rData = r2rSearch(getOriginLatLng(origin), getOriginLatLng(destination));
+		makeRequests(origin, destination);
+	}
+	
+	private void makeRequests(String origin, String destination)	{
+		LatLng originLatLng = null;
+		LatLng destinationLatLng = null;
+		try {
+			originLatLng = geocodeAddress(origin);
+			destinationLatLng = geocodeAddress(destination);
+			routes = DirectionsApi.newRequest(gaContext).origin(originLatLng).destination(destinationLatLng).mode(travelMode).alternatives(true).await();
+			r2rData = r2rSearch(originLatLng, destinationLatLng);
+		} catch (NotFoundException e) {
+			status = 1;
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private String r2rSearch(LatLng originLatLng, LatLng destinationLatLng) throws IOException {
@@ -64,8 +82,12 @@ public class DirectionsRequest {
 		return travelMode;
 	}
 	
-	private LatLng getOriginLatLng(String origin) throws Exception	{
-		GeocodingResult[] results = GeocodingApi.geocode(gaContext, origin).await();
+	private LatLng geocodeAddress(String address) throws NotFoundException, Exception	{
+		GeocodingResult[] results =  GeocodingApi.newRequest(gaContext).address(address).await();
+		if(results.length < 1)	{
+			status = 1;
+			throw new NotFoundException(address);
+		}
 		return results[0].geometry.location;
 	}
 	
@@ -81,6 +103,10 @@ public class DirectionsRequest {
 	
 	public String getR2RData()	{
 		return r2rData;
+	}
+
+	public int getStatus() {
+		return status;
 	}
 	
 }

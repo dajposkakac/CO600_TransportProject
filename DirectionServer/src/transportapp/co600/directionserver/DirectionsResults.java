@@ -6,15 +6,22 @@ import com.google.maps.model.TravelMode;
 public class DirectionsResults {
 	
 	private final DirectionsResult result;
+	private int status;
 	private TravelMode mode;
 	private String transitMode;
 	private String price;
 	
 	
-	public DirectionsResults(DirectionsResult directionsResult, TravelMode travelMode, String pPrice)	{
+	public DirectionsResults(int status, DirectionsResult directionsResult, TravelMode travelMode, String pPrice)	{
+		setStatus(status);
 		result = directionsResult;
 		setTransitMode(travelMode.toString());
 		setPrice(pPrice);
+	}
+	
+	public DirectionsResults(int status)	{
+		result = null;
+		setStatus(status);
 	}
 	
 	public String getDestinationForRoute(int route)	{
@@ -56,5 +63,14 @@ public class DirectionsResults {
 	public void setPrice(String price) {
 		this.price = price;
 	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	
 	
 }

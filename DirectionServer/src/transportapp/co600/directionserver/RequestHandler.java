@@ -40,8 +40,14 @@ public class RequestHandler extends Thread {
 		    Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(bufferedReader.readLine())));
 		    HashMap<String, String> data = parseToMap(xmlDoc);
 		    DirectionsRequest request = new DirectionsRequest(data.get("origin"), data.get("destination"), data.get("transitMode"));
-		    Document r2rXmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(request.getR2RData())));
-		    DirectionsResults result = new DirectionsResults(request.getRoutes(), request.getTravelMode(), parseR2RXml(r2rXmlDoc));
+		    DirectionsResults result = null;
+		    if(request.getStatus() == 0)	{
+		    	Document r2rXmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(request.getR2RData())));
+		    	result = new DirectionsResults(request.getStatus(), request.getRoutes(), request.getTravelMode(), parseR2RXml(r2rXmlDoc));
+		    }	else	{
+		    	result = new DirectionsResults(request.getStatus());
+		    }
+		    
 		    String resultString = createXMLResponse(result);
 //		    String resultString = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><request><origin>London, UK</origin><destination>Oxford, Oxford, UK</destination><distance>85.3 km</distance><duration>1 hour 35 mins</duration><transitMode>transit</transitMode><price>33</price></request>";
 		    printWriter = new PrintWriter(socket.getOutputStream(), true);
@@ -85,61 +91,48 @@ public class RequestHandler extends Thread {
 	}
 	
 	private String createXMLResponse(DirectionsResults res) throws ParserConfigurationException, IOException, TransformerException, SAXException {
-        Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File("templates/response_template.xml"));
-        NodeList nodes = xmlDoc.getFirstChild().getChildNodes();
-        for(int i = 0; i < nodes.getLength(); i++)  {
-            Node n = nodes.item(i);
-            String nn = n.getNodeName();
-            if(nn.equals("info"))	{
-            	NodeList infoNodes = n.getChildNodes();
-            	for(int j = 0; j < infoNodes.getLength(); j++)	{
-            		Node infoNode = infoNodes.item(j);
-                    String infoNodeName = infoNode.getNodeName();
-		            if(infoNodeName.equals("origin"))    {
-		            	infoNode.setTextContent(res.getOriginForRoute(0));
-		            }   else if(infoNodeName.equals("destination"))   {
-		            	infoNode.setTextContent(res.getDestinationForRoute(0));
-		            }   
-            	}
-            }	else if(nn.equals("results"))	{
-            	NodeList resultsNodes = n.getChildNodes();
-            	for(int k = 0; k < res.getNumberOfRoutes(); k++)	{
-            		Element result = xmlDoc.createElement("result");
-            		Element transitMode = xmlDoc.createElement("transitMode");
-            		Element distance = xmlDoc.createElement("distance");
-            		Element duration = xmlDoc.createElement("duration");
-            		Element price = xmlDoc.createElement("price");
-            		transitMode.appendChild(xmlDoc.createTextNode(res.getTransitMode()));
-            		distance.appendChild(xmlDoc.createTextNode(res.getDistanceForRoute(k)));
-            		duration.appendChild(xmlDoc.createTextNode(res.getDurationForRoute(k)));
-            		price.appendChild(xmlDoc.createTextNode(res.getPrice()));
-            		result.appendChild(distance);
-            		result.appendChild(duration);
-            		result.appendChild(transitMode);
-            		result.appendChild(price);
-            		n.appendChild(result);
-//            		Node resultNode = resultsNodes.item(k);
-//                    String resultNodeName = resultNode.getNodeName();
-//                    if(resultNodeName.equals("result"))	{
-//                    	NodeList dataNodes = resultNode.getChildNodes();
-//                    	for(int l = 0; l < dataNodes.getLength(); l++)	{
-//                    		Node dataNode = dataNodes.item(l);
-//                    		String dataNodeName = dataNode.getNodeName();
-//                    		if(dataNodeName.equals("transitMode"))  {
-//                    			dataNode.setTextContent(res.getTransitMode());
-//                            }	else if(dataNodeName.equals("distance"))	{
-//                            	dataNode.setTextContent(res.getDistance());
-//                            }	else if(dataNodeName.equals("duration"))	{
-//                            	dataNode.setTextContent(res.getDuration());
-//                            }	else if(dataNodeName.equals("price"))	{
-//                            	dataNode.setTextContent(res.getPrice());
-//                            }
-//                    	}
-//                    }
-            	}
-            	
-            }
-        }
+		Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+		
+		//root
+		Element response = xmlDoc.createElement("response");
+		xmlDoc.appendChild(response);
+	
+		//status
+		Element status = xmlDoc.createElement("status");
+		status.appendChild(xmlDoc.createTextNode(String.valueOf(res.getStatus())));
+		response.appendChild(status);
+		
+		if(res.getStatus() == 0)	{
+			//info
+			Element info = xmlDoc.createElement("info");
+			response.appendChild(info);
+			Element origin = xmlDoc.createElement("origin");
+			Element destination = xmlDoc.createElement("destination");
+			origin.appendChild(xmlDoc.createTextNode(res.getOriginForRoute(0)));
+			destination.appendChild(xmlDoc.createTextNode(res.getDestinationForRoute(0)));
+			info.appendChild(origin);
+			info.appendChild(destination);
+			
+			//results
+			Element results = xmlDoc.createElement("results");
+			response.appendChild(results);
+			for(int k = 0; k < res.getNumberOfRoutes(); k++)	{
+	    		Element result = xmlDoc.createElement("result");
+	    		Element transitMode = xmlDoc.createElement("transitMode");
+	    		Element distance = xmlDoc.createElement("distance");
+	    		Element duration = xmlDoc.createElement("duration");
+	    		Element price = xmlDoc.createElement("price");
+	    		transitMode.appendChild(xmlDoc.createTextNode(res.getTransitMode()));
+	    		distance.appendChild(xmlDoc.createTextNode(res.getDistanceForRoute(k)));
+	    		duration.appendChild(xmlDoc.createTextNode(res.getDurationForRoute(k)));
+	    		price.appendChild(xmlDoc.createTextNode(res.getPrice()));
+	    		result.appendChild(distance);
+	    		result.appendChild(duration);
+	    		result.appendChild(transitMode);
+	    		result.appendChild(price);
+	    		results.appendChild(result);
+			}
+		}
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         StreamResult sr = new StreamResult(new StringWriter());
         DOMSource source = new DOMSource(xmlDoc);
