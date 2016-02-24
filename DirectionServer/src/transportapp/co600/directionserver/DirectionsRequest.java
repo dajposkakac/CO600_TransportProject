@@ -41,15 +41,36 @@ public class DirectionsRequest {
 	private void makeRequests(String origin, String destination)	{
 		LatLng originLatLng = null;
 		LatLng destinationLatLng = null;
+		if(origin.matches("([+-]?\\d+\\.?\\d+)\\s*,\\s*([+-]?\\d+\\.?\\d+)"))	{
+			String[] originTemp = origin.split(",");
+			originLatLng = new LatLng(Double.valueOf(originTemp[0]), Double.valueOf(originTemp[1]));
+		}	else	{
+			try {
+				originLatLng = geocodeAddress(origin);
+			} catch (NotFoundException e) {
+				status = 1;
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if(destination.matches("([+-]?\\d+\\.?\\d+)\\s*,\\s*([+-]?\\d+\\.?\\d+)"))	{
+			String[] destinationTemp = destination.split(",");
+			destinationLatLng = new LatLng(Double.valueOf(destinationTemp[0]), Double.valueOf(destinationTemp[1]));
+		}	else	{
+			try {
+				destinationLatLng = geocodeAddress(destination);
+			} catch (NotFoundException e) {
+				status = 1;
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		try {
-			originLatLng = geocodeAddress(origin);
-			destinationLatLng = geocodeAddress(destination);
 			routes = DirectionsApi.newRequest(gaContext).origin(originLatLng).destination(destinationLatLng).mode(travelMode).alternatives(true).await();
 			r2rData = r2rSearch(originLatLng, destinationLatLng);
-		} catch (NotFoundException e) {
-			status = 1;
-			e.printStackTrace();
-		} catch (Exception e) {
+		}	catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
