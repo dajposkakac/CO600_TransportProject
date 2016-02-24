@@ -205,13 +205,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
+                String result = null;
                 Place place = PlacePicker.getPlace(this, data);
+                String placeAddress = place.getAddress().toString();
+                if(placeAddress.isEmpty())  {
+                    result = place.getLatLng().latitude + "," + place.getLatLng().longitude;
+                }   else {
+                    result = placeAddress;
+                }
                 if(mapButtonId == R.id.from_map)    {
-                    from.setText(String.format("%s", place.getAddress()));
+                    from.setText(String.format("%s", result));
                     from.requestFocus();
                     from.setSelection(from.getText().length());
                 }   else if(mapButtonId == R.id.to_map) {
-                    to.setText(String.format("%s", place.getAddress()));
+                    to.setText(String.format("%s", result));
                     to.requestFocus();
                     to.setSelection(to.getText().length());
                 }
