@@ -52,6 +52,13 @@ function btntest_onclick()
     window.location.href = "localhost/Home.html";
 }
 </script>
+
+<script type="text/javascript">
+function display()
+{
+	document.getElementById("btn1").value = "kupa"
+}
+</script>
 </head>
 <body>
 <div id="header">
@@ -59,12 +66,14 @@ function btntest_onclick()
 </div>
 
 <div id="container">
+<form id="form">
+<input type="button" class="button" id="btn1" value="value" onclick="display()">
 
-</div>
-
-<div id="footer">
-</div>
 <input class="button" id="btntest"  type="button" value="Back" onclick="return btntest_onclick()" />
+</form>
+</div>
+
+
 <div id="footer">
 </div>
 </body>
