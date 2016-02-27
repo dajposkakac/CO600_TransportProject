@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Journey Planner</title>
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+<script>
+        var autocomplete;
+        function initialize() {
+        autocomplete = new google.maps.places.Autocomplete(
+                  /** @type {HTMLInputElement} */(document.getElementById('start')),
+                  { types: ['geocode'] });
+              google.maps.event.addListener(start, 'place_changed', function() {
+              });
+			  var autocomplet;
+			  autocomplet = new google.maps.places.Autocomplete(
+                  /** @type {HTMLInputElement} */(document.getElementById('end')),
+                  { types: ['geocode'] });
+              google.maps.event.addListener(end, 'place_changed', function() {
+              });
+            }
+</script>
+</head>
+<body onload="initialize()">
+<p align="middle">LOGO</p>
+<br>
+<form action="jpmap.php" method="post" align="middle" id="mainform">
+  From:
+  <br>
+  <input placeholder="Enter Start Location" onFocus="geolocate()" type="text" id="start" name="start">
+  <br>
+  <a onclick="fill()">Get current location</a> currently not implemented.
+  <br>
+  To:
+  <br>
+  <input placeholder="Enter Destination" onFocus="geolocate()" type="text" id="end" name="end">
+  <br>Path:
+  <input name="path" type="radio" value="short"> Shortest Path
+  <input name="path" type="radio" value="cheap"> Cheapest Path
+  <input name="path" type="radio" value="quick"> Quickest Path
+  <br>Preffered Transport:
+  <br>
+  <input name="mode" type="radio" value="DRIVING"> Car
+  <input name="mode" type="radio" value="TRANSIT"> Bus
+  <input name="mode" type="radio" value="TRAIN"> Train
+  <br>
+  <input type="submit" value="Search" onclick="<?php $foo->$send(); ?>">
+</form>
+<script>echo driving;</script>
+</body>
+</html>

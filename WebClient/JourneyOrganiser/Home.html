@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Journey Organizer</title>
+<link href="CSS/Cascade.css" rel="stylesheet" type="text/css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools-yui-compressed.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+<script type="text/javascript" src="JShome.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Bootstrap stuff -->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <!-- Location picker -->
+    <script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false&libraries=places'></script>
+    <script src="../dist/locationpicker.jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body onload="initialize()">
+<div id="header">
+<img src="images/logo.png" id="logo">
+</div>
+
+<div id="container">
+<div id="map"></div>
+<form id="form" action="jpmap.php" method="post" align="middle">
+<h1 id="h1">PLAN A JOURNEY</h1>
+<div id="basic">
+<h2>From</h2>
+<div class="textboxmod">
+<input onFocus="geolocate()" type="text" id="start" name="start" class="textbox" placeholder="Street, town or postcode"/>
+</div>
+<div id="us2" style="width: 300px; height: 250px;"></div>				
+<script>$('#us2').locationpicker({
+	location: {latitude: 51.15242437752303, longitude: 2.7470703125},	
+	radius: 10,
+	inputBinding: {
+        locationNameInput: $('#start')
+    }
+	});
+</script>
+<h2>To</h2>
+<div class="textboxmod">
+<input onFocus="geolocate()" type="text" id="end" name="end" class="textbox" placeholder="Street, town or postcode"/>
+</div>
+<div id="us3" style="width: 300px; height: 250px;"></div>				
+<script>$('#us3').locationpicker({
+	location: {latitude: 51.49662437752303, longitude: 0.1448703125},	
+	radius: 10,
+	inputBinding: {
+        locationNameInput: $('#end')
+    }
+	});
+</script>
+<input type="button" class="button" id="advopt" value="Show travel options" onclick="displayopt()">
+<input type="submit" class="button" id="submit1" name="action" value="Search" onclick="">
+</div>
+
+<div id="advanced">
+<fieldset>
+<legend><h3>Sort route by</h3></legend>
+<div class="routecheck">
+<label class="radbutton" id="left">Distance
+<input name="route" type="radio" value="distance"/>
+</label>
+<label class="radbutton" id="middle">Time
+<input name="route" type="radio" value="time"/>
+</label>
+<label class="radbutton" id="right">Cost
+<input name="route" type="radio" value="cost"/>
+</label>
+</div>
+</fieldset>
+
+<fieldset>
+<legend><h3>Transport choices</h3></legend>
+<div class="transportcheck">
+<table>
+<tr>
+<td>
+<input id="car" type="checkbox" name="mode" value="DRIVING"/>
+<label class="transportchoice car" for="car"></label>
+</td>
+<td>
+<input id="train" type="checkbox" name="mode" value="TRAIN"/>
+<label class="transportchoice train" for="train"></label>
+</td>
+<td>
+<input id="walk" type="checkbox" name="mode" value="WALKING"/>
+<label class="transportchoice walk" for="walk"></label>
+</td>
+</tr>
+<tr>
+<td>
+<input id="bus" type="checkbox" name="mode" value="TRANSIT"/>
+<label class="transportchoice bus" for="bus"></label>
+</td>
+<td>
+<input id="plane" type="checkbox" name="mode" value="TRANSIT"/>
+<label class="transportchoice plane" for="plane"></label>
+</td>
+<td>
+<input id="cycle" type="checkbox" name="mode" value="CYCLING"/>
+<label class="transportchoice cycle" for="cycle"></label>
+</td>
+</tr>
+</table>
+</div>
+</fieldset>
+
+<input type="submit" class="button" id="submit2" name="action" value="Search" onclick="">
+</div>
+
+</form>
+</div>
+
+<div id="footer">
+</div>
+<script type="text/javascript" src="map.js"></script>
+</body>
+</html>
