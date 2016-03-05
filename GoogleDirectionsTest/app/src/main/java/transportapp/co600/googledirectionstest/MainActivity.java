@@ -1,5 +1,6 @@
 package transportapp.co600.googledirectionstest;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,9 +15,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,6 +28,15 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+import android.widget.TimePicker;
+import android.app.TimePickerDialog;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -64,10 +76,49 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private ActionBarDrawerToggle mDrawerToggle;
     private String mDrawerTitle;
 
+    private EditText fromDateEtxt;
+    private DatePickerDialog fromDatePickerDialog;
+    private SimpleDateFormat dateFormatter;
+
+    private EditText timePicker;
+    private Calendar calendar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        timePicker = (EditText) findViewById(R.id.timeText);
+
+        timePicker.setInputType(InputType.TYPE_NULL);
+
+        timePicker.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                DialogFragment newFragment = new TimeDialogFragment();
+                newFragment.show(getFragmentManager(), "timePicker");
+                return false;
+            }
+        });
+
+        calendar = Calendar.getInstance();
+
+        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.UK);
+
+        setDateTimeField();
+
+        fromDateEtxt = (EditText) findViewById(R.id.date);
+        fromDateEtxt.setInputType(InputType.TYPE_NULL);
+
+        fromDateEtxt.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                fromDatePickerDialog.show();
+                return false;
+            }
+        });
+
+
         mDrawerTitle = getTitle().toString();
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setHomeButtonEnabled(true);
@@ -97,6 +148,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
+
+
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
 
@@ -146,6 +199,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 goHandler(v);
             }
         });
+    }
+
+    private void setDateTimeField() {
+        fromDatePickerDialog = new DatePickerDialog(this, new OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                fromDateEtxt.setText(dateFormatter.format(newDate.getTime()));
+            }
+
+        },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 
     public void goHandler(View view) {
@@ -225,6 +290,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         }
     }
+
+
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
