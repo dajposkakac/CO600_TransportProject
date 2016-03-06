@@ -92,12 +92,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         timePicker.setInputType(InputType.TYPE_NULL);
 
-        timePicker.setOnTouchListener(new View.OnTouchListener() {
+        timePicker.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void onClick(View v) {
                 DialogFragment newFragment = new TimeDialogFragment();
                 newFragment.show(getFragmentManager(), "timePicker");
-                return false;
             }
         });
 
