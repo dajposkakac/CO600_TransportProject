@@ -9,6 +9,9 @@ public class Request {
     private String destination;
     private String origin;
     private TravelMode transitMode;
+    private String time;
+    private String date;
+    private String departureOption;
 
     public String getOrigin() {
         return origin;
@@ -33,4 +36,16 @@ public class Request {
     public void setTransitMode(TravelMode transitMode) {
         this.transitMode = transitMode;
     }
+
+    public String getTime() {return time;}
+
+    public void setTime(String time) {this.time = time;}
+
+    public String getDate() {return date;}
+
+    public void setDate(String date) {this.date = date;}
+
+    public String getDepartureOption() {return departureOption;}
+
+    public void setDepartureOption(String departureOption) {this.departureOption = departureOption;}
 }
