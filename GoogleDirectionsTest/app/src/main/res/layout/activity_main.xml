@@ -97,24 +97,34 @@
                     android:id="@+id/timeText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:width="50dp"
+                    android:gravity="center_horizontal"
                     android:layout_below="@id/to_layout"
-                    android:hint="@string/time"
                     android:textIsSelectable="true"/>
 
                 <EditText
                     android:id="@+id/date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:width="110dp"
+                    android:gravity="center_horizontal"
                     android:layout_toRightOf="@id/timeText"
                     android:layout_below="@id/to_layout"
-                    android:hint="@string/date"
                     android:textIsSelectable="true"/>
+
+                <Spinner
+                    android:id="@+id/dateSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/date"
+                    android:layout_below="@id/to_layout"
+                    android:spinnerMode="dropdown"/>
 
                 <Spinner
                     android:id="@+id/transit_modes_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/date"
+                    android:layout_below="@id/dateSpinner"
                     android:spinnerMode="dropdown"/>
 
                 <Button

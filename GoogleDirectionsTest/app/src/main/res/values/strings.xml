@@ -4,6 +4,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string-array name="dateNames">
+        <item>Depart at</item>
+        <item>Arrive at</item>
+    </string-array>
+
     <string-array name="transit_mode_names">
         <item>Any</item>
         <item>Car</item>

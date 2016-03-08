@@ -1,5 +1,6 @@
 package transportapp.co600.googledirectionstest;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
@@ -16,20 +17,24 @@ import java.util.Calendar;
  * Created by Homo King on 04/03/2016.
  */
 public class TimeDialogFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+
+    private MainActivity activity;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        activity = (MainActivity) getActivity();
         final Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
 
-        return new TimePickerDialog(getActivity(), this, hour, minute,
-                DateFormat.is24HourFormat(getActivity()));
+        return new TimePickerDialog(activity, this, hour, minute,
+                DateFormat.is24HourFormat(activity));
     }
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-       EditText timeText = (EditText) getActivity().findViewById(R.id.timeText);
-        timeText.setText(hourOfDay + ":" + minute);
+       EditText timeText = (EditText) activity.findViewById(R.id.timeText);
+        timeText.setText(activity.addMissingZero(hourOfDay) + ":" + activity.addMissingZero(minute));
         timeText.setFocusable(false);
     }
 }

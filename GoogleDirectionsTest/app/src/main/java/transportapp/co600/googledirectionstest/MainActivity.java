@@ -88,9 +88,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        calendar = Calendar.getInstance();
+
         timePicker = (EditText) findViewById(R.id.timeText);
 
         timePicker.setInputType(InputType.TYPE_NULL);
+
+        timePicker.setText(addMissingZero(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + addMissingZero(calendar.get(Calendar.MINUTE)));
 
         timePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,20 +104,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
 
-        calendar = Calendar.getInstance();
-
         dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.UK);
 
-        setDateTimeField();
+       // setDateTimeField();
 
         fromDateEtxt = (EditText) findViewById(R.id.date);
         fromDateEtxt.setInputType(InputType.TYPE_NULL);
+        fromDateEtxt.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR));
 
-        fromDateEtxt.setOnTouchListener(new View.OnTouchListener() {
+        fromDateEtxt.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                fromDatePickerDialog.show();
-                return false;
+            public void onClick(View v) {
+                DialogFragment newFragment = new DateDialogFragment();
+                newFragment.show(getFragmentManager(), "DatePicker");
             }
         });
 
@@ -184,8 +187,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         fromMapButton.setOnClickListener(mapButtonListener);
         toMapButton.setOnClickListener(mapButtonListener);
 
+        Spinner dateSpinner = (Spinner) findViewById(R.id.dateSpinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.dateNames));
+        dateSpinner.setAdapter(adapter);
+        dateSpinner.setOnItemSelectedListener(this);
+
         Spinner transitModeSpinner = (Spinner) findViewById(R.id.transit_modes_spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.transit_mode_names));
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.transit_mode_names));
         transitModeSpinner.setAdapter(adapter);
         transitModeSpinner.setOnItemSelectedListener(this);
 
@@ -198,18 +206,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 goHandler(v);
             }
         });
-    }
-
-    private void setDateTimeField() {
-        fromDatePickerDialog = new DatePickerDialog(this, new OnDateSetListener() {
-
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                fromDateEtxt.setText(dateFormatter.format(newDate.getTime()));
-            }
-
-        },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 
     public void goHandler(View view) {
@@ -410,6 +406,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
         req.setTransitMode(tm);
 
+    }
+
+    public String addMissingZero(int time)    {
+        String timeString = String.valueOf(time);
+        if(time < 10 && time > -1)  {
+            timeString = "0" + timeString;
+        }
+        return timeString;
     }
 
     @Override
