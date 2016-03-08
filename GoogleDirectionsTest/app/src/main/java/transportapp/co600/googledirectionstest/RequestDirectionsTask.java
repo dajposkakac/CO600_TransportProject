@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -39,7 +40,7 @@ import javax.xml.transform.stream.StreamResult;
 public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
 
     private static final String TAG = "RequestDIR";
-    private static final String SERVER_IP = "5.81.182.74";
+    private static final String SERVER_IP = "31.50.220.36";
     private static final int SERVER_PORT = 4444;
     private final Activity activity;
     private final Request req;
@@ -74,19 +75,23 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
     }
 
     private String createXMLRequest(Request req) throws ParserConfigurationException, IOException, SAXException, TransformerException {
-        Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(activity.getResources().openRawResource(R.raw.request_template));
-        NodeList nodes = xmlDoc.getFirstChild().getChildNodes();
-        for(int i = 0; i < nodes.getLength(); i++)  {
-            Node n = nodes.item(i);
-            String nn = n.getNodeName();
-            if(nn.equals("origin"))    {
-                n.setTextContent(req.getOrigin());
-            }   else if(nn.equals("destination"))   {
-                n.setTextContent(req.getDestination());
-            }   else if(nn.equals("transitMode"))  {
-                n.setTextContent(req.getTransitMode().toString());
-            }
-        }
+        Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+
+        Element request = xmlDoc.createElement("request");
+        xmlDoc.appendChild(request);
+
+        Element origin = xmlDoc.createElement("origin");
+        Element destination = xmlDoc.createElement("destination");
+        Element transitMode = xmlDoc.createElement("transitMode");
+
+        origin.appendChild(xmlDoc.createTextNode(req.getOrigin()));
+        destination.appendChild(xmlDoc.createTextNode(req.getDestination()));
+        transitMode.appendChild(xmlDoc.createTextNode(req.getTransitMode().toString()));
+
+        request.appendChild(origin);
+        request.appendChild(destination);
+        request.appendChild(transitMode);
+
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         StreamResult sr = new StreamResult(new StringWriter());
         DOMSource source = new DOMSource(xmlDoc);
