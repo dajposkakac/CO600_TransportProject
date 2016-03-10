@@ -2,17 +2,13 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="ThemeOverlay.AppCompat.Dark">
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimary">@color/titleBar</item>
         <item name="android:statusBarColor">@color/statusBar</item>
+        <item name="android:colorBackground">@color/backgroundColor</item>
+        <item name="android:colorButtonNormal">@color/buttonColor</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="JourneyTheme" parent="AppTheme.NoActionBar" >
-        <item name="colorPrimary">@android:color/titleBar</item>
-        <item name="android:colorBackground">@color/colorPrimary</item>
-    </style>
-
 </resources>

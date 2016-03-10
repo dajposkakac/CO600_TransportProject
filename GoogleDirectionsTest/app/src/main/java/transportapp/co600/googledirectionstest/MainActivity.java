@@ -96,7 +96,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         timePicker.setInputType(InputType.TYPE_NULL);
 
-        timePicker.setText(addMissingZero(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + addMissingZero(calendar.get(Calendar.MINUTE)));
+        String time = addMissingZero(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + addMissingZero(calendar.get(Calendar.MINUTE));
+
+        timePicker.setText(time);
 
         timePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +114,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         fromDateEtxt = (EditText) findViewById(R.id.date);
         fromDateEtxt.setInputType(InputType.TYPE_NULL);
-        fromDateEtxt.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR));
+
+        String date = calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR);
+        
+        fromDateEtxt.setText(date);
 
         fromDateEtxt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_action_menu);
-
+        toolbar.setTitle("Journey Organiser");
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -170,6 +175,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
         mapButtonId = -1;
         req = new Request();
+
+        req.setTime(time);
+        req.setDate(date);
 
         from = (AutoCompleteTextView) findViewById(R.id.from);
         to = (AutoCompleteTextView) findViewById(R.id.to);

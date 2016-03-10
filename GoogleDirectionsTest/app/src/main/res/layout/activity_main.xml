@@ -43,7 +43,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/from_label"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/label_margin">
 
                     <AutoCompleteTextView
                         android:id="@+id/from"
@@ -75,7 +77,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/to_label"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/label_margin">
+
                     <AutoCompleteTextView
                         android:id="@+id/to"
                         android:layout_width="0dp"
@@ -100,7 +105,8 @@
                     android:width="50dp"
                     android:gravity="center_horizontal"
                     android:layout_below="@id/to_layout"
-                    android:textIsSelectable="true"/>
+                    android:textIsSelectable="true"
+                    android:layout_marginBottom="@dimen/default_margin"/>
 
                 <EditText
                     android:id="@+id/date"
@@ -110,7 +116,8 @@
                     android:gravity="center_horizontal"
                     android:layout_toRightOf="@id/timeText"
                     android:layout_below="@id/to_layout"
-                    android:textIsSelectable="true"/>
+                    android:textIsSelectable="true"
+                    android:layout_marginBottom="@dimen/default_margin"/>
 
                 <Spinner
                     android:id="@+id/dateSpinner"
@@ -118,14 +125,16 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/date"
                     android:layout_below="@id/to_layout"
-                    android:spinnerMode="dropdown"/>
+                    android:spinnerMode="dropdown"
+                    android:layout_marginBottom="@dimen/default_margin"/>
 
                 <Spinner
                     android:id="@+id/transit_modes_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/dateSpinner"
-                    android:spinnerMode="dropdown"/>
+                    android:spinnerMode="dropdown"
+                    android:layout_marginBottom="@dimen/default_margin"/>
 
                 <Button
                     android:id="@+id/go"
@@ -133,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/transit_modes_spinner"
                     android:layout_gravity="fill_horizontal"
-                    android:text="Go" />
+                    android:text="Show Travel Options" />
 
                 <TextView
                     android:id="@+id/loading"
