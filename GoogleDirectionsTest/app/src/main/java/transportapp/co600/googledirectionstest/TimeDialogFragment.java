@@ -34,7 +34,9 @@ public class TimeDialogFragment extends DialogFragment implements TimePickerDial
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
        EditText timeText = (EditText) activity.findViewById(R.id.timeText);
-        timeText.setText(activity.addMissingZero(hourOfDay) + ":" + activity.addMissingZero(minute));
+        String time = activity.addMissingZero(hourOfDay) + ":" + activity.addMissingZero(minute);
+        timeText.setText(time);
         timeText.setFocusable(false);
+        activity.getRequest().setTime(time);
     }
 }

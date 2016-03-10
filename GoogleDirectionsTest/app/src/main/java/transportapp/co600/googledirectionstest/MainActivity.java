@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private EditText timePicker;
     private Calendar calendar;
+    private Spinner transitModeSpinner;
+    private Spinner dateSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,13 +189,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         fromMapButton.setOnClickListener(mapButtonListener);
         toMapButton.setOnClickListener(mapButtonListener);
 
-        Spinner dateSpinner = (Spinner) findViewById(R.id.dateSpinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.dateNames));
-        dateSpinner.setAdapter(adapter);
+        dateSpinner = (Spinner) findViewById(R.id.dateSpinner);
+        ArrayAdapter<String> dateAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.dateNames));
+        dateSpinner.setAdapter(dateAdapter);
         dateSpinner.setOnItemSelectedListener(this);
 
-        Spinner transitModeSpinner = (Spinner) findViewById(R.id.transit_modes_spinner);
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.transit_mode_names));
+        transitModeSpinner = (Spinner) findViewById(R.id.transit_modes_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.transit_mode_names));
         transitModeSpinner.setAdapter(adapter);
         transitModeSpinner.setOnItemSelectedListener(this);
 
@@ -389,23 +391,28 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        TravelMode tm = TravelMode.UNKNOWN;
-        switch (position)   {
-            case 1:
-                tm = TravelMode.DRIVING;
-                break;
-            case 2:
-                tm = TravelMode.TRANSIT;
-                break;
-            case 3:
-                tm = TravelMode.WALKING;
-                break;
-            case 4:
-                tm = TravelMode.BICYCLING;
-                break;
+        int parentId = parent.getId();
+        if(parentId == dateSpinner.getId()) {
+            String[] departureSpinner = getResources().getStringArray(R.array.dateNames);
+            req.setDepartureOption(departureSpinner[position]);
+        }   else if(parentId == transitModeSpinner.getId()) {
+            TravelMode tm = TravelMode.UNKNOWN;
+            switch (position) {
+                case 1:
+                    tm = TravelMode.DRIVING;
+                    break;
+                case 2:
+                    tm = TravelMode.TRANSIT;
+                    break;
+                case 3:
+                    tm = TravelMode.WALKING;
+                    break;
+                case 4:
+                    tm = TravelMode.BICYCLING;
+                    break;
+            }
+            req.setTransitMode(tm);
         }
-        req.setTransitMode(tm);
-
     }
 
     public String addMissingZero(int time)    {
@@ -419,5 +426,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    public Request getRequest() {
+        return req;
     }
 }

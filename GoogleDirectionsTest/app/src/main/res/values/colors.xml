@@ -1,3 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="colorPrimary">#919da1</color>
+    <color name="titleBar">#0056a5</color>
+    <color name="statusBar">#004483</color>
 </resources>
