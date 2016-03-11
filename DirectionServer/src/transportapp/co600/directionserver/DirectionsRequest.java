@@ -125,11 +125,18 @@ public class DirectionsRequest {
 	}
 	
 	private DateTime extractDateTime(String time, String date) throws DateInPastException	{
-		int[] timeData = Arrays.stream(time.split(":")).mapToInt(Integer::parseInt).toArray();
-		int[] dateData = Arrays.stream(date.split("/")).mapToInt(Integer::parseInt).toArray();
-		DateTime dt = new DateTime(dateData[2], dateData[1], dateData[0], timeData[0], timeData[1]);
+		DateTime dt = new DateTime();
+		if(!time.equals("now"))	{
+			int[] timeData = Arrays.stream(time.split(":")).mapToInt(Integer::parseInt).toArray();
+			dt = dt.withHourOfDay(timeData[0]).withMinuteOfHour(timeData[1]);
+		}
+		if(!date.equals("now"))	{
+			int[] dateData = Arrays.stream(date.split("/")).mapToInt(Integer::parseInt).toArray();
+			dt = dt.withYear(dateData[2]).withMonthOfYear(dateData[1]).withDayOfMonth(dateData[0]);
+		}
+		dt = dt.plusMillis(250);
 		if(!dt.isAfterNow())	{
-			throw new DateInPastException(dt.toString() + "is in the past");
+			throw new DateInPastException(dt.toString() + " is in the past");
 		}
 		return dt;
 	}

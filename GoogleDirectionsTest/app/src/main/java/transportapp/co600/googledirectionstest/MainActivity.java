@@ -64,160 +64,38 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private AutoCompleteTextView from;
     private AutoCompleteTextView to;
-    private Button fromMapButton;
-    private Button toMapButton;
     private int mapButtonId;
 
     private LatLngBounds boundsCurrentLocation;
     private Request req;
 
-    private ListView mDrawerList;
-    private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mDrawerTitle;
 
-    private EditText fromDateEtxt;
-    private DatePickerDialog fromDatePickerDialog;
-    private SimpleDateFormat dateFormatter;
-
-    private EditText timePicker;
-    private Calendar calendar;
     private Spinner transitModeSpinner;
     private Spinner dateSpinner;
+    private EditText timePicker;
+    private EditText datePicker;
+
+    private Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        calendar = Calendar.getInstance();
-
-        timePicker = (EditText) findViewById(R.id.timeText);
-
-        timePicker.setInputType(InputType.TYPE_NULL);
-
-        String timeAddedZero = addMissingZero(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + addMissingZero(calendar.get(Calendar.MINUTE));
-
-        String time = calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE);
-
-        timePicker.setText(timeAddedZero);
-
-        timePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment newFragment = new TimeDialogFragment();
-                newFragment.show(getFragmentManager(), "timePicker");
-            }
-        });
-
-        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.UK);
-
-       // setDateTimeField();
-
-        fromDateEtxt = (EditText) findViewById(R.id.date);
-        fromDateEtxt.setInputType(InputType.TYPE_NULL);
-
-        String date = calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR);
-
-        fromDateEtxt.setText(date);
-
-        fromDateEtxt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment newFragment = new DateDialogFragment();
-                newFragment.show(getFragmentManager(), "DatePicker");
-            }
-        });
-
-
-        mDrawerTitle = getTitle().toString();
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setHomeButtonEnabled(true);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_action_menu);
-        toolbar.setTitle("Journey Organiser");
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item));
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                toolbar, R.string.drawer_open, R.string.drawer_close) {
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                //getSupportActionBar().setTitle(mDrawerTitle);
-                //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                //getSupportActionBar().setTitle(mDrawerTitle);
-                //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-
-
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-
         geoApicontext = new GeoApiContext().setApiKey("AIzaSyA7zjvluw5ono4sjIZQx2LTCQdr7d0uP5E");
-        context = this;
         buildGoogleApiClient();
-        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-        try {
-            ppIntent = builder.build(this);
-        } catch (GooglePlayServicesRepairableException e) {
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-        }
-        mapButtonId = -1;
-        req = new Request();
 
-        req.setTime(time);
-        req.setDate(date);
+        context = this;
 
-        from = (AutoCompleteTextView) findViewById(R.id.from);
-        to = (AutoCompleteTextView) findViewById(R.id.to);
+        initNavigationDrawer();
+        initLocationPickers();
+        initTimePickers();
+        initModesSpinner();
+        initGoButton();
+        initRequest();
 
-        from.setOnItemClickListener(mAutocompleteClickListener);
-        to.setOnItemClickListener(mAutocompleteClickListener);
-        from.setText("London, United Kingdom");
-        to.setText("Oxford");
-
-        mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, boundsCurrentLocation,
-                null);
-        from.setAdapter(mAdapter);
-        to.setAdapter(mAdapter);
-
-        fromMapButton = (Button) findViewById(R.id.from_map);
-        toMapButton = (Button) findViewById(R.id.to_map);
-        fromMapButton.setOnClickListener(mapButtonListener);
-        toMapButton.setOnClickListener(mapButtonListener);
-
-        dateSpinner = (Spinner) findViewById(R.id.dateSpinner);
-        ArrayAdapter<String> dateAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.dateNames));
-        dateSpinner.setAdapter(dateAdapter);
-        dateSpinner.setOnItemSelectedListener(this);
-
-        transitModeSpinner = (Spinner) findViewById(R.id.transit_modes_spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.transit_mode_names));
-        transitModeSpinner.setAdapter(adapter);
-        transitModeSpinner.setOnItemSelectedListener(this);
-
-        Button goButton = (Button) findViewById(R.id.go);
-        goButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                req.setOrigin(from.getText().toString());
-                req.setDestination(to.getText().toString());
-                goHandler(v);
-            }
-        });
     }
 
     public void goHandler(View view) {
@@ -238,6 +116,133 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 .addApi(Places.PLACE_DETECTION_API)
                 .addApi(LocationServices.API)
                 .build();
+    }
+
+    private void initLocationPickers()  {
+        from = (AutoCompleteTextView) findViewById(R.id.from);
+        to = (AutoCompleteTextView) findViewById(R.id.to);
+
+        from.setOnItemClickListener(mAutocompleteClickListener);
+        to.setOnItemClickListener(mAutocompleteClickListener);
+        from.setText("London, United Kingdom");
+        to.setText("Oxford");
+
+        mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, boundsCurrentLocation,
+                null);
+        from.setAdapter(mAdapter);
+        to.setAdapter(mAdapter);
+
+        initMapButtons();
+    }
+
+    private void initMapButtons()   {
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            ppIntent = builder.build(this);
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+        mapButtonId = -1;
+        Button fromMapButton = (Button) findViewById(R.id.from_map);
+        Button toMapButton = (Button) findViewById(R.id.to_map);
+        fromMapButton.setOnClickListener(mapButtonListener);
+        toMapButton.setOnClickListener(mapButtonListener);
+    }
+
+    private void initNavigationDrawer() {
+        mDrawerTitle = getTitle().toString();
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setHomeButtonEnabled(true);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_action_menu);
+        toolbar.setTitle("Journey Organiser");
+
+        DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ListView mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+                R.layout.drawer_list_item));
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                toolbar, R.string.drawer_open, R.string.drawer_close) {
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                //getSupportActionBar().setTitle(mDrawerTitle);
+                //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                //getSupportActionBar().setTitle(mDrawerTitle);
+                //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+    }
+
+    private void initTimePickers()  {
+        calendar = Calendar.getInstance();
+        timePicker = (EditText) findViewById(R.id.time);
+        timePicker.setInputType(InputType.TYPE_NULL);
+        timePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment newFragment = new TimeDialogFragment();
+                newFragment.show(getFragmentManager(), "timePicker");
+            }
+        });
+
+        datePicker = (EditText) findViewById(R.id.date);
+        datePicker.setInputType(InputType.TYPE_NULL);
+        datePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment newFragment = new DateDialogFragment();
+                newFragment.show(getFragmentManager(), "datePicker");
+            }
+        });
+
+        dateSpinner = (Spinner) findViewById(R.id.dateSpinner);
+        ArrayAdapter<String> dateAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.dateNames));
+        dateSpinner.setAdapter(dateAdapter);
+        dateSpinner.setOnItemSelectedListener(this);
+    }
+
+    private void initModesSpinner() {
+        transitModeSpinner = (Spinner) findViewById(R.id.transit_modes_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.transit_mode_names));
+        transitModeSpinner.setAdapter(adapter);
+        transitModeSpinner.setOnItemSelectedListener(this);
+    }
+
+    private void initGoButton() {
+        Button goButton = (Button) findViewById(R.id.go);
+        goButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                req.setOrigin(from.getText().toString());
+                req.setDestination(to.getText().toString());
+                String time = timePicker.getText().toString();
+                if(time.isEmpty())  {
+                    time = "now";
+                }
+                req.setTime(time);
+                String date = datePicker.getText().toString();
+                if(date.isEmpty())  {
+                    date = "now";
+                }
+                req.setDate(date);
+                goHandler(v);
+            }
+        });
+    }
+
+    private void initRequest()   {
+        req = new Request();
     }
 
     private AdapterView.OnItemClickListener mAutocompleteClickListener
