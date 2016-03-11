@@ -96,9 +96,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         timePicker.setInputType(InputType.TYPE_NULL);
 
-        String time = addMissingZero(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + addMissingZero(calendar.get(Calendar.MINUTE));
+        String timeAddedZero = addMissingZero(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + addMissingZero(calendar.get(Calendar.MINUTE));
 
-        timePicker.setText(time);
+        String time = calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE);
+
+        timePicker.setText(timeAddedZero);
 
         timePicker.setOnClickListener(new View.OnClickListener() {
             @Override
