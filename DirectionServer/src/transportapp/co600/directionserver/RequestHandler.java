@@ -37,9 +37,11 @@ public class RequestHandler extends Thread {
 	public void run()	{
 		try	{
 		    bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream())); //get the client message
-		    Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(bufferedReader.readLine())));
+		    String xmlString = bufferedReader.readLine();
+		    System.out.println(xmlString);
+		    Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(xmlString)));
 		    HashMap<String, String> data = parseToMap(xmlDoc);
-		    DirectionsRequest request = new DirectionsRequest(data.get("origin"), data.get("destination"), data.get("transitMode"));
+		    DirectionsRequest request = new DirectionsRequest(data);
 		    DirectionsResults result = null;
 		    if(request.getStatus() == 0)	{
 		    	Document r2rXmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(request.getR2RData())));
@@ -122,14 +124,23 @@ public class RequestHandler extends Thread {
 	    		Element distance = xmlDoc.createElement("distance");
 	    		Element duration = xmlDoc.createElement("duration");
 	    		Element price = xmlDoc.createElement("price");
+	    		Element time = xmlDoc.createElement("time");
+	    		Element date = xmlDoc.createElement("date");
+	    		Element departureOption = xmlDoc.createElement("departureOption");
 	    		transitMode.appendChild(xmlDoc.createTextNode(res.getTransitMode()));
 	    		distance.appendChild(xmlDoc.createTextNode(res.getDistanceForRoute(k)));
 	    		duration.appendChild(xmlDoc.createTextNode(res.getDurationForRoute(k)));
 	    		price.appendChild(xmlDoc.createTextNode(res.getPrice()));
+//	    		time.appendChild(xmlDoc.createTextNode(res.getTime()));
+//	    		date.appendChild(xmlDoc.createTextNode(res.getDate()));
+//	    		departureOption.appendChild(xmlDoc.createTextNode(res.getDepartureOption()));
 	    		result.appendChild(distance);
 	    		result.appendChild(duration);
 	    		result.appendChild(transitMode);
 	    		result.appendChild(price);
+	    		result.appendChild(time);
+	    		result.appendChild(date);
+	    		result.appendChild(departureOption);
 	    		results.appendChild(result);
 			}
 		}

@@ -5,6 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.HashMap;
+
+import javax.xml.crypto.Data;
+
+import org.joda.time.DateTime;
 
 import com.google.maps.DirectionsApi;
 import com.google.maps.DistanceMatrixApi;
@@ -30,17 +36,22 @@ public class DirectionsRequest {
 	private TravelMode travelMode;
 	private String r2rData;
 	private int status;
+	private HashMap<String, String> request;
 	
-	public DirectionsRequest(String origin, String destination, String transitMode)	{
+	public DirectionsRequest(HashMap<String, String> data)	{
 		status = 0;
+		request = data;
 		gaContext = new GeoApiContext().setApiKey("AIzaSyD_pZcQHhzIbFjmVkO88oQ8DDaMm-jF3q4");
-		travelMode = TravelMode.valueOf(transitMode.toUpperCase());
-		makeRequests(origin, destination);
+		travelMode = TravelMode.valueOf(request.get("transitMode").toUpperCase());
+		makeRequests();
 	}
 	
-	private void makeRequests(String origin, String destination)	{
+	private void makeRequests()	{
+		String origin = request.get("origin");
+		String destination = request.get("destination");
 		LatLng originLatLng = null;
 		LatLng destinationLatLng = null;
+		String departureOption = request.get("departureOption");
 		if(origin.matches("([+-]?\\d+\\.?\\d+)\\s*,\\s*([+-]?\\d+\\.?\\d+)"))	{
 			String[] originTemp = origin.split(",");
 			originLatLng = new LatLng(Double.valueOf(originTemp[0]), Double.valueOf(originTemp[1]));
@@ -68,8 +79,18 @@ public class DirectionsRequest {
 			}
 		}
 		try {
-			routes = DirectionsApi.newRequest(gaContext).origin(originLatLng).destination(destinationLatLng).mode(travelMode).alternatives(true).await();
+			DateTime time = extractDateTime(request.get("time"), request.get("date"));
+			if(departureOption.startsWith("Arrive"))	{
+				routes = DirectionsApi.newRequest(gaContext).origin(originLatLng).destination(destinationLatLng).arrivalTime(time).mode(travelMode).alternatives(true).await();
+			}	else	{
+				routes = DirectionsApi.newRequest(gaContext).origin(originLatLng).destination(destinationLatLng).departureTime(time).mode(travelMode).alternatives(true).await();
+			}
 			r2rData = r2rSearch(originLatLng, destinationLatLng);
+		}	catch (DateInPastException dipe)	{
+			status = 2;
+			dipe.printStackTrace();
+			Thread.currentThread().interrupt();
+			return;
 		}	catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -101,6 +122,16 @@ public class DirectionsRequest {
 	
 	public TravelMode getTravelMode() {
 		return travelMode;
+	}
+	
+	private DateTime extractDateTime(String time, String date) throws DateInPastException	{
+		int[] timeData = Arrays.stream(time.split(":")).mapToInt(Integer::parseInt).toArray();
+		int[] dateData = Arrays.stream(date.split("/")).mapToInt(Integer::parseInt).toArray();
+		DateTime dt = new DateTime(dateData[2], dateData[1], dateData[0], timeData[0], timeData[1]);
+		if(!dt.isAfterNow())	{
+			throw new DateInPastException(dt.toString() + "is in the past");
+		}
+		return dt;
 	}
 	
 	private LatLng geocodeAddress(String address) throws NotFoundException, Exception	{
