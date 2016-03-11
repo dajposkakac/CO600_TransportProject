@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         fromDateEtxt.setInputType(InputType.TYPE_NULL);
 
         String date = calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR);
-        
+
         fromDateEtxt.setText(date);
 
         fromDateEtxt.setOnClickListener(new View.OnClickListener() {

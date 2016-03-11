@@ -102,7 +102,7 @@
                     android:id="@+id/timeText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:width="50dp"
+                    android:width="55dp"
                     android:gravity="center_horizontal"
                     android:layout_below="@id/to_layout"
                     android:textIsSelectable="true"
