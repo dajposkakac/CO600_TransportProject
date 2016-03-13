@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.XmlResourceParser;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -32,6 +33,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -53,6 +56,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.GeoApiContext;
 import com.google.maps.model.TravelMode;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import org.xmlpull.v1.XmlPullParserException;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemSelectedListener {
 
@@ -84,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        geoApicontext = new GeoApiContext().setApiKey("AIzaSyA7zjvluw5ono4sjIZQx2LTCQdr7d0uP5E");
+        geoApicontext = new GeoApiContext().setApiKey(readKey("google_key_android"));
         buildGoogleApiClient();
 
         context = this;
@@ -445,5 +457,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     public Request getRequest() {
         return req;
+    }
+
+    private String readKey(String keyName)  {
+        try {
+            Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(getResources().openRawResource(R.raw.supersecretsecret));
+            NodeList nodes = xmlDoc.getFirstChild().getChildNodes();
+            for(int i = 0; i < nodes.getLength(); i++)  {
+                Node node = nodes.item(i);
+                if(node.getNodeName().equals(keyName))    {
+                    return node.getTextContent();
+                }
+            }
+        } catch (SAXException | IOException | ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
