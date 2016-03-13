@@ -136,11 +136,11 @@ public class DirectionsRequest {
 	
 	private DateTime extractDateTime(String time, String date) throws DateInPastException	{
 		DateTime dt = new DateTime();
-		if(!time.equals("now"))	{
+		if(time != null && !time.equals("now"))	{
 			int[] timeData = Arrays.stream(time.split(":")).mapToInt(Integer::parseInt).toArray();
 			dt = dt.withHourOfDay(timeData[0]).withMinuteOfHour(timeData[1]);
 		}
-		if(!date.equals("now"))	{
+		if(time != null && !date.equals("now"))	{
 			int[] dateData = Arrays.stream(date.split("/")).mapToInt(Integer::parseInt).toArray();
 			dt = dt.withYear(dateData[2]).withMonthOfYear(dateData[1]).withDayOfMonth(dateData[0]);
 		}
