@@ -25,24 +25,32 @@ import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 
 public class DirectionsRequest {
+
+	//Data constants
+	public static final String TRANSIT_MODE = "transitMode";
+	public static final String DEPARTURE_OPTION = "departureOption";
+	
+	//R2R URL constants
 	private static final String R2RKEY = "ZMjs2oRB";
 	private static final String R2RURL1 = "http://free.rome2rio.com/api/1.2/xml/Search?key=";
 	private static final String R2RURL2 = "&oPos=";
 	private static final String R2RURL3 = "&dPos=";
 	private static final String R2RURL4 = "&currencyCode=";
 	private static final String R2RURL5 = "&flags=";
+	
 	private final GeoApiContext gaContext;
 	private DirectionsResult routes;
-	private TravelMode travelMode;
 	private String r2rData;
+	private HashMap<String, String> additionalData;
 	private int status;
 	private HashMap<String, String> request;
 	
 	public DirectionsRequest(HashMap<String, String> data)	{
 		status = 0;
 		request = data;
+		additionalData = new HashMap<>();
 		gaContext = new GeoApiContext().setApiKey("AIzaSyD_pZcQHhzIbFjmVkO88oQ8DDaMm-jF3q4");
-		travelMode = TravelMode.valueOf(request.get("transitMode").toUpperCase());
+		gatherAdditionalData();
 		makeRequests();
 	}
 	
@@ -51,7 +59,8 @@ public class DirectionsRequest {
 		String destination = request.get("destination");
 		LatLng originLatLng = null;
 		LatLng destinationLatLng = null;
-		String departureOption = request.get("departureOption");
+		String departureOption = request.get(DEPARTURE_OPTION);
+		TravelMode travelMode = TravelMode.valueOf(additionalData.get(TRANSIT_MODE));
 		if(origin.matches("([+-]?\\d+\\.?\\d+)\\s*,\\s*([+-]?\\d+\\.?\\d+)"))	{
 			String[] originTemp = origin.split(",");
 			originLatLng = new LatLng(Double.valueOf(originTemp[0]), Double.valueOf(originTemp[1]));
@@ -85,7 +94,7 @@ public class DirectionsRequest {
 			}	else	{
 				routes = DirectionsApi.newRequest(gaContext).origin(originLatLng).destination(destinationLatLng).departureTime(time).mode(travelMode).alternatives(true).await();
 			}
-			r2rData = r2rSearch(originLatLng, destinationLatLng);
+			r2rData = r2rSearch(originLatLng, destinationLatLng, travelMode);
 		}	catch (DateInPastException dipe)	{
 			status = 2;
 			dipe.printStackTrace();
@@ -96,7 +105,12 @@ public class DirectionsRequest {
 		}
 	}
 	
-	private String r2rSearch(LatLng originLatLng, LatLng destinationLatLng) throws IOException {
+	private void gatherAdditionalData()	{
+		additionalData.put(TRANSIT_MODE, request.get(TRANSIT_MODE).toUpperCase());
+		additionalData.put(DEPARTURE_OPTION, request.get(DEPARTURE_OPTION));
+	}
+	
+	private String r2rSearch(LatLng originLatLng, LatLng destinationLatLng, TravelMode travelMode) throws IOException {
 		String sUrl = R2RURL1 + R2RKEY + R2RURL2 + originLatLng.toString() + R2RURL3 + destinationLatLng.toString() + R2RURL4 + "GBP" + R2RURL5 + getTravelModeFlags(travelMode);
 		System.out.println(sUrl);
 		URL url = new URL(sUrl);
@@ -118,10 +132,6 @@ public class DirectionsRequest {
 
 	public DirectionsResult getRoutes() {
 		return routes;
-	}
-	
-	public TravelMode getTravelMode() {
-		return travelMode;
 	}
 	
 	private DateTime extractDateTime(String time, String date) throws DateInPastException	{
@@ -166,6 +176,10 @@ public class DirectionsRequest {
 
 	public int getStatus() {
 		return status;
+	}
+	
+	public HashMap<String, String> getAdditionalData()	{
+		return additionalData;
 	}
 	
 }

@@ -1,21 +1,24 @@
 package transportapp.co600.directionserver;
 
+import java.util.HashMap;
+
+import org.joda.time.DateTime;
+
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.TravelMode;
 
 public class DirectionsResults {
 	
 	private final DirectionsResult result;
+	private HashMap<String, String> additionalData;
 	private int status;
-	private TravelMode mode;
-	private String transitMode;
 	private String price;
 	
 	
-	public DirectionsResults(int status, DirectionsResult directionsResult, TravelMode travelMode, String pPrice)	{
+	public DirectionsResults(int status, DirectionsResult directionsResult, HashMap<String, String> pAdditionalData, String pPrice)	{
 		setStatus(status);
 		result = directionsResult;
-		setTransitMode(travelMode.toString());
+		additionalData = pAdditionalData;
 		setPrice(pPrice);
 	}
 	
@@ -40,8 +43,20 @@ public class DirectionsResults {
 		return result.routes[route].legs[0].duration.humanReadable;
 	}
 	
-	public String getDurationForRoute()	{
-		return mode.toString();
+	public String getArrivalTimeForRoute(int route)	{
+		return getTimeReadable(result.routes[route].legs[0].arrivalTime);
+	}
+	
+	public String getDepartureTimeForRoute(int route)	{
+		return getTimeReadable(result.routes[route].legs[0].departureTime);
+	}
+	
+	public String getArrivalDateForRoute(int route)	{
+		return getDateReadable(result.routes[route].legs[0].arrivalTime);
+	}
+	
+	public String getDepartureDateForRoute(int route)	{
+		return getDateReadable(result.routes[route].legs[0].departureTime);
 	}
 	
 	public int getNumberOfRoutes()	{
@@ -49,12 +64,16 @@ public class DirectionsResults {
 	}
 
 	public String getTransitMode() {
-		return transitMode;
+		return additionalData.get(DirectionsRequest.TRANSIT_MODE);
+	}
+	
+	public String getDepartureOption()	{
+		return additionalData.get(DirectionsRequest.DEPARTURE_OPTION);
 	}
 
-	public void setTransitMode(String transitMode) {
-		this.transitMode = transitMode;
-	}
+//	public void setTransitMode(String transitMode) {
+//		this.transitMode = transitMode;
+//	}
 
 	public String getPrice() {
 		return price;
@@ -70,6 +89,14 @@ public class DirectionsResults {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	
+	private String getTimeReadable(DateTime dt)	{
+		return dt.getHourOfDay() + ":" + dt.getMinuteOfHour();
+	}
+	
+	private String getDateReadable(DateTime dt)	{
+		return dt.getDayOfMonth() + "/" + dt.getMonthOfYear() + "/" + dt.getYear();
 	}
 	
 	
