@@ -121,28 +121,30 @@ public class RequestHandler extends Thread {
 			for(int k = 0; k < res.getNumberOfRoutes(); k++)	{
 	    		Element result = xmlDoc.createElement("result");
 	    		Element transitMode = xmlDoc.createElement(DirectionsRequest.TRANSIT_MODE);
-	    		Element distance = xmlDoc.createElement("distance");
-	    		Element duration = xmlDoc.createElement("duration");
-	    		Element price = xmlDoc.createElement("price");
-	    		Element arrivalTime = xmlDoc.createElement("arrivalTime");
-	    		Element departureTime = xmlDoc.createElement("departureTime");
-	    		Element date = xmlDoc.createElement("date");
-	    		Element departureOption = xmlDoc.createElement(DirectionsRequest.DEPARTURE_OPTION);
 	    		transitMode.appendChild(xmlDoc.createTextNode(res.getTransitMode()));
-	    		distance.appendChild(xmlDoc.createTextNode(res.getDistanceForRoute(k)));
-	    		duration.appendChild(xmlDoc.createTextNode(res.getDurationForRoute(k)));
-	    		price.appendChild(xmlDoc.createTextNode(res.getPrice()));
-	    		arrivalTime.appendChild(xmlDoc.createTextNode(res.getArrivalTimeForRoute(k)));
-	    		departureTime.appendChild(xmlDoc.createTextNode(res.getDepartureTimeForRoute(k)));
-	    		date.appendChild(xmlDoc.createTextNode(res.getArrivalDateForRoute(k)));
-	    		departureOption.appendChild(xmlDoc.createTextNode(res.getDepartureOption()));
-	    		result.appendChild(distance);
-	    		result.appendChild(duration);
 	    		result.appendChild(transitMode);
+	    		Element distance = xmlDoc.createElement("distance");
+	    		distance.appendChild(xmlDoc.createTextNode(res.getDistanceForRoute(k)));
+	    		result.appendChild(distance);
+	    		Element duration = xmlDoc.createElement("duration");
+	    		duration.appendChild(xmlDoc.createTextNode(res.getDurationForRoute(k)));
+	    		result.appendChild(duration);
+	    		Element price = xmlDoc.createElement("price");
+	    		price.appendChild(xmlDoc.createTextNode(res.getPrice()));
 	    		result.appendChild(price);
-	    		result.appendChild(departureTime);
-	    		result.appendChild(arrivalTime);
-	    		result.appendChild(date);
+	    		if(res.getTransitMode().equals("TRANSIT"))	{
+		    		Element arrivalTime = xmlDoc.createElement("arrivalTime");
+		    		arrivalTime.appendChild(xmlDoc.createTextNode(res.getArrivalTimeForRoute(k)));
+		    		result.appendChild(arrivalTime);
+		    		Element departureTime = xmlDoc.createElement("departureTime");
+		    		departureTime.appendChild(xmlDoc.createTextNode(res.getDepartureTimeForRoute(k)));
+		    		result.appendChild(departureTime);
+		    		Element date = xmlDoc.createElement("date");
+		    		date.appendChild(xmlDoc.createTextNode(res.getArrivalDateForRoute(k)));
+		    		result.appendChild(date);
+	    		}
+	    		Element departureOption = xmlDoc.createElement(DirectionsRequest.DEPARTURE_OPTION);
+	    		departureOption.appendChild(xmlDoc.createTextNode(res.getDepartureOption()));
 	    		result.appendChild(departureOption);
 	    		results.appendChild(result);
 			}
