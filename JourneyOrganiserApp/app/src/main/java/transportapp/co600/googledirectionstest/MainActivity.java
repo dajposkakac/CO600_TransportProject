@@ -329,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void selectItem(int position)   {
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).addToBackStack("settings_frag").commit();
+        getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).addToBackStack(null).commit();
         mDrawerLayout.closeDrawer(mDrawerList);
         mDrawerList.setItemChecked(position, false);
     }
