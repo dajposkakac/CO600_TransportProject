@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">Journey Organiser</string>
-
+    <string name="default_server_ip">86.130.133.720</string>
     <string name="action_settings">Settings</string>
+
+    <string-array name="navigation_drawer_array">
+        <item>Settings</item>
+    </string-array>
+
+    <string name="pref_ip_server_title">Server IP</string>
 
     <string-array name="dateNames">
         <item>Depart at</item>

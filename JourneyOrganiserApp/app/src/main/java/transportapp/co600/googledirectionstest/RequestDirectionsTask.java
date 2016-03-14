@@ -3,6 +3,7 @@ package transportapp.co600.googledirectionstest;
 import android.app.Activity;
 import android.content.res.XmlResourceParser;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 
@@ -40,7 +41,7 @@ import javax.xml.transform.stream.StreamResult;
 public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
 
     private static final String TAG = "RequestDIR";
-    private static final String SERVER_IP = "86.130.133.72";
+    private static final String SERVER_IP_PREF_KEY = "pref_server_ip";
     private static final int SERVER_PORT = 4444;
     private final Activity activity;
     private final Request req;
@@ -53,8 +54,9 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
+        String ip = PreferenceManager.getDefaultSharedPreferences(activity).getString(SERVER_IP_PREF_KEY, activity.getResources().getString(R.string.default_server_ip));
         try {
-            socket = new Socket(SERVER_IP, SERVER_PORT);
+            socket = new Socket(ip, SERVER_PORT);
             PrintWriter printwriter = new PrintWriter(socket.getOutputStream(), true);
             String xmlReq = createXMLRequest(req);
             Log.d(TAG, xmlReq);

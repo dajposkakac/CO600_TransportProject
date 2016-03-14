@@ -1,6 +1,8 @@
 package transportapp.co600.googledirectionstest;
 
 import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -90,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private EditText datePicker;
 
     private Calendar calendar;
+    private ListView mDrawerList;
+    private DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,10 +174,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         toolbar.setNavigationIcon(R.drawable.ic_action_menu);
         toolbar.setTitle("Journey Organiser");
 
-        DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ListView mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item));
+                R.layout.drawer_list_item, getResources().getStringArray(R.array.navigation_drawer_array)));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 toolbar, R.string.drawer_open, R.string.drawer_close) {
@@ -320,8 +324,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
-        //    selectItem(position);
+            selectItem(position);
         }
+    }
+
+    private void selectItem(int position)   {
+        getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).addToBackStack("settings_frag").commit();
+        mDrawerLayout.closeDrawer(mDrawerList);
+        mDrawerList.setItemChecked(position, false);
     }
 
     @Override
@@ -453,6 +463,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() == 0) {
+            super.onBackPressed();
+        } else {
+            getFragmentManager().popBackStack();
+        }
     }
 
     public Request getRequest() {
