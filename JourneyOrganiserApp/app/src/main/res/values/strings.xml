@@ -21,4 +21,10 @@
 
     <string name="date">Departure Date</string>
     <string name="time">Time</string>
+
+    <string-array name="travel_choices">
+        <item>Distance</item>
+        <item>Time</item>
+        <item>Cost</item>
+    </string-array>
 </resources>

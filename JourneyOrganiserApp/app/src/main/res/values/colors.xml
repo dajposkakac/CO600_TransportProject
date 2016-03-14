@@ -5,4 +5,6 @@
     <color name="titleBar">#006fd4</color>
     <color name="statusBar">#0164bf</color>
     <color name="buttonColor">#006fd4</color>
+    <color name="choice_1">#004d99</color>
+    <color name="choice_2">#006fd4</color>
 </resources>

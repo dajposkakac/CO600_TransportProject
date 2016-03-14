@@ -40,7 +40,7 @@ import javax.xml.transform.stream.StreamResult;
 public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
 
     private static final String TAG = "RequestDIR";
-    private static final String SERVER_IP = "165.120.251.198";
+    private static final String SERVER_IP = "86.130.133.72";
     private static final int SERVER_PORT = 4444;
     private final Activity activity;
     private final Request req;
