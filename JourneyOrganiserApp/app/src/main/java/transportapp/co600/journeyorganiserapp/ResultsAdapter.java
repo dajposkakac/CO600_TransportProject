@@ -1,4 +1,4 @@
-package transportapp.co600.googledirectionstest;
+package transportapp.co600.journeyorganiserapp;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**

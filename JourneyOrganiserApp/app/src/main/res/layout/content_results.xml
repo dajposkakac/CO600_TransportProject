@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="5dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="transportapp.co600.googledirectionstest.ResultsActivity"
+    tools:context="transportapp.co600.journeyorganiserapp.ResultsActivity"
     tools:showIn="@layout/activity_results">
 
     <org.honorato.multistatetogglebutton.MultiStateToggleButton

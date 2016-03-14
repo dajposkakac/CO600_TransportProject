@@ -1,4 +1,4 @@
-package transportapp.co600.googledirectionstest;
+package transportapp.co600.journeyorganiserapp;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;

@@ -1,11 +1,9 @@
-package transportapp.co600.googledirectionstest;
+package transportapp.co600.journeyorganiserapp;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.widget.DatePicker;
 import android.widget.EditText;
 

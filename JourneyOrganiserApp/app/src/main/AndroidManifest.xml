@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="transportapp.co600.googledirectionstest"> <!-- Specify the correct minSDK and targetSDK versions. -->
+    package="transportapp.co600.journeyorganiserapp"> <!-- Specify the correct minSDK and targetSDK versions. -->
     <uses-sdk
         android:minSdkVersion="15"
         android:targetSdkVersion="23" />
 
     <!-- Google Maps related permissions -->
     <permission
-        android:name="transportapp.co600.googledirectionstest.permission.MAPS_RECEIVE"
+        android:name="transportapp.co600.journeyorganiserapp.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -38,7 +38,7 @@
             android:value="AIzaSyD_pZcQHhzIbFjmVkO88oQ8DDaMm-jF3q4" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="transportapp.co600.journeyorganiserapp.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -48,13 +48,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ResultsActivity"
+            android:name="transportapp.co600.journeyorganiserapp.ResultsActivity"
             android:label="@string/title_activity_results"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="transportapp.co600.journeyorganiserapp.MainActivity"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="transportapp.co600.googledirectionstest.MainActivity" />
+                android:value="transportapp.co600.journeyorganiserapp.MainActivity" />
         </activity>
     </application>
 

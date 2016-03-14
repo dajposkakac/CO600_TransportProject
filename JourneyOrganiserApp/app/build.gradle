@@ -4,7 +4,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
     defaultConfig {
-        applicationId "transportapp.co600.googledirectionstest"
+        applicationId "transportapp.co600.journeyorganiserapp"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1

@@ -1,4 +1,4 @@
-package transportapp.co600.googledirectionstest;
+package transportapp.co600.journeyorganiserapp;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

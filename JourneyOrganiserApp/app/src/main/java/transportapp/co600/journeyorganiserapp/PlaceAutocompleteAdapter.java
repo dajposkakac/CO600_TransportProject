@@ -1,4 +1,4 @@
-package transportapp.co600.googledirectionstest;
+package transportapp.co600.journeyorganiserapp;
 
 /*
  * Copyright (C) 2015 Google Inc. All Rights Reserved.
@@ -39,7 +39,6 @@ package transportapp.co600.googledirectionstest;
         import android.widget.Toast;
 
         import java.util.ArrayList;
-        import java.util.Iterator;
         import java.util.concurrent.TimeUnit;
 
 /**

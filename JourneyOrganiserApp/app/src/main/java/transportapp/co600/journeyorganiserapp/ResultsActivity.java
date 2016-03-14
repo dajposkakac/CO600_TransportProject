@@ -1,4 +1,4 @@
-package transportapp.co600.googledirectionstest;
+package transportapp.co600.journeyorganiserapp;
 
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 public class ResultsActivity extends AppCompatActivity {
 
