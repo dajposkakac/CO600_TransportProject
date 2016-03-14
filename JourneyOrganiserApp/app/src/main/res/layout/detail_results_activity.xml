@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="transportapp.co600.googledirectionstest.ResultsActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/transit_mode"
+        android:layout_width="50dp"
+        android:layout_height="75dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="5dp"
+        android:text="Logo"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:id="@+id/depart_at"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/transit_mode"
+        android:layout_marginTop="5dp"
+        android:text="Depart at:"
+        android:textColor="?android:textColorSecondary" />
+
+    <TextView
+        android:id="@+id/depart_at_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/depart_at"
+        android:layout_toRightOf="@+id/transit_mode"
+        android:text="00:00 - 2/02/2016"
+        android:textColor="?android:textColorSecondary" />
+
+    <TextView
+        android:id="@+id/arrive_at"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/depart_at_result"
+        android:layout_toRightOf="@+id/transit_mode"
+        android:layout_marginTop="15dp"
+        android:text="Arrive at:"
+        android:textColor="?android:textColorSecondary" />
+
+    <TextView
+        android:id="@+id/arrive_at_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/arrive_at"
+        android:layout_toRightOf="@+id/transit_mode"
+        android:text="00:00 - 2/02/2016"
+        android:textColor="?android:textColorSecondary" />
+
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/depart_at_result"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:text="Duration: 3h 15min"
+        android:textColor="?android:textColorSecondary" />
+
+    <TextView
+        android:id="@+id/distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/depart_at_result"
+        android:layout_below="@+id/duration"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15dp"
+        android:text="Distance: 87 miles"
+        android:textColor="?android:textColorSecondary" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/depart_at_result"
+        android:layout_below="@+id/distance"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15dp"
+        android:text="Price: £37"
+        android:textColor="?android:textColorSecondary" />
+
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

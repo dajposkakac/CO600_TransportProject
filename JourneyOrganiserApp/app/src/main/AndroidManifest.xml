@@ -56,6 +56,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="transportapp.co600.journeyorganiserapp.MainActivity" />
         </activity>
+        <activity
+            android:name=".DetailResultActivity"
+            android:label="@string/title_details_results_activity"
+            android:parentActivityName=".ResultsActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="transportapp.co600.googledirectionstest.ResultsActivity" />
+        </activity>
     </application>
 
 </manifest>

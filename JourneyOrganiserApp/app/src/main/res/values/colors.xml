@@ -7,4 +7,5 @@
     <color name="buttonColor">#006fd4</color>
     <color name="choice_1">#004d99</color>
     <color name="choice_2">#006fd4</color>
+    <color name="button_color">#ffffff</color>
 </resources>
