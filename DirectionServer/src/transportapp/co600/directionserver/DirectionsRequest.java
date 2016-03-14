@@ -34,8 +34,15 @@ import com.google.maps.model.TravelMode;
 public class DirectionsRequest {
 
 	//Data constants
+	public static final String ORIGIN = "origin";
+	public static final String DESTINATION = "destination";
 	public static final String TRANSIT_MODE = "transitMode";
 	public static final String DEPARTURE_OPTION = "departureOption";
+	public static final String TIME = "time";
+	public static final String DATE = "date";
+	
+	//Misc
+	private static final String LATLNG_REGEXP = "([+-]?\\d+\\.?\\d+)\\s*,\\s*([+-]?\\d+\\.?\\d+)";
 	
 	//R2R URL constants
 	private static final String R2RURL1 = "http://free.rome2rio.com/api/1.2/xml/Search?key=";
@@ -61,13 +68,13 @@ public class DirectionsRequest {
 	}
 	
 	private void makeRequests()	{
-		String origin = request.get("origin");
-		String destination = request.get("destination");
+		String origin = request.get(ORIGIN);
+		String destination = request.get(DESTINATION);
 		LatLng originLatLng = null;
 		LatLng destinationLatLng = null;
 		String departureOption = request.get(DEPARTURE_OPTION);
 		TravelMode travelMode = TravelMode.valueOf(additionalData.get(TRANSIT_MODE));
-		if(origin.matches("([+-]?\\d+\\.?\\d+)\\s*,\\s*([+-]?\\d+\\.?\\d+)"))	{
+		if(origin.matches(LATLNG_REGEXP))	{
 			String[] originTemp = origin.split(",");
 			originLatLng = new LatLng(Double.valueOf(originTemp[0]), Double.valueOf(originTemp[1]));
 		}	else	{
@@ -80,7 +87,7 @@ public class DirectionsRequest {
 				e.printStackTrace();
 			}
 		}
-		if(destination.matches("([+-]?\\d+\\.?\\d+)\\s*,\\s*([+-]?\\d+\\.?\\d+)"))	{
+		if(destination.matches(LATLNG_REGEXP))	{
 			String[] destinationTemp = destination.split(",");
 			destinationLatLng = new LatLng(Double.valueOf(destinationTemp[0]), Double.valueOf(destinationTemp[1]));
 		}	else	{
@@ -94,7 +101,7 @@ public class DirectionsRequest {
 			}
 		}
 		try {
-			DateTime time = extractDateTime(request.get("time"), request.get("date"));
+			DateTime time = extractDateTime(request.get(TIME), request.get(DATE));
 			if(departureOption.startsWith("Arrive"))	{
 				routes = DirectionsApi.newRequest(gaContext).origin(originLatLng).destination(destinationLatLng).arrivalTime(time).mode(travelMode).alternatives(true).await();
 			}	else	{
