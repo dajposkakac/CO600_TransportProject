@@ -3,6 +3,7 @@ package transportapp.co600.googledirectionstest;
 import android.app.Activity;
 import android.content.res.XmlResourceParser;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -23,7 +24,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -43,9 +46,11 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
     private static final String TAG = "RequestDIR";
     private static final String SERVER_IP_PREF_KEY = "pref_server_ip";
     private static final int SERVER_PORT = 4444;
+    private static final int SERVER_TIMEOUT_MS = 5000;
     private final Activity activity;
     private final Request req;
     private Socket socket;
+    private int status;
 
     public RequestDirectionsTask(Activity pActivity, Request pReq)   {
         activity = pActivity;
@@ -56,13 +61,17 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
         String ip = PreferenceManager.getDefaultSharedPreferences(activity).getString(SERVER_IP_PREF_KEY, activity.getResources().getString(R.string.default_server_ip));
         try {
-            socket = new Socket(ip, SERVER_PORT);
+            socket = new Socket();
+            socket.connect(new InetSocketAddress(ip, SERVER_PORT), SERVER_TIMEOUT_MS);
             PrintWriter printwriter = new PrintWriter(socket.getOutputStream(), true);
             String xmlReq = createXMLRequest(req);
             Log.d(TAG, xmlReq);
             printwriter.write(xmlReq); //write the message to output stream
             printwriter.flush();
-        } catch (Exception e) {
+        }   catch(SocketTimeoutException ste)   {
+            status = -1;
+            Log.e(TAG, "Server at " + ste.toString() + "is unavailable.");
+        }   catch (Exception e) {
             e.printStackTrace();
         }
         return "";
@@ -70,10 +79,18 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        activity.findViewById(R.id.loading).setVisibility(View.VISIBLE);
-        new ReceiveDirectionsTask(activity, socket).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
-//        printwriter.close();
-        Log.d("RequestRES", result);
+        if(status == 0) {
+            activity.findViewById(R.id.loading).setVisibility(View.VISIBLE);
+            new ReceiveDirectionsTask(activity, socket).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
+            //        printwriter.close();
+            Log.d("RequestRES", result);
+        }   else    {
+            Bundle bundle = new Bundle();
+            bundle.putInt("STATUS_KEY", status);
+            ErrorDialogFragment errorDialogFragment = new ErrorDialogFragment();
+            errorDialogFragment.setArguments(bundle);
+            activity.getFragmentManager().beginTransaction().add(errorDialogFragment, "errorDialog").commitAllowingStateLoss();
+        }
     }
 
     private String createXMLRequest(Request req) throws ParserConfigurationException, IOException, SAXException, TransformerException {
