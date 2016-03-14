@@ -1,6 +1,7 @@
 package transportapp.co600.directionserver;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -9,8 +10,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.xml.crypto.Data;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.joda.time.DateTime;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import com.google.maps.DirectionsApi;
 import com.google.maps.DistanceMatrixApi;
@@ -31,7 +38,6 @@ public class DirectionsRequest {
 	public static final String DEPARTURE_OPTION = "departureOption";
 	
 	//R2R URL constants
-	private static final String R2RKEY = "ZMjs2oRB";
 	private static final String R2RURL1 = "http://free.rome2rio.com/api/1.2/xml/Search?key=";
 	private static final String R2RURL2 = "&oPos=";
 	private static final String R2RURL3 = "&dPos=";
@@ -49,7 +55,7 @@ public class DirectionsRequest {
 		status = 0;
 		request = data;
 		additionalData = new HashMap<>();
-		gaContext = new GeoApiContext().setApiKey("AIzaSyD_pZcQHhzIbFjmVkO88oQ8DDaMm-jF3q4");
+		gaContext = new GeoApiContext().setApiKey(readKey("google_key_server"));
 		gatherAdditionalData();
 		makeRequests();
 	}
@@ -111,7 +117,7 @@ public class DirectionsRequest {
 	}
 	
 	private String r2rSearch(LatLng originLatLng, LatLng destinationLatLng, TravelMode travelMode) throws IOException {
-		String sUrl = R2RURL1 + R2RKEY + R2RURL2 + originLatLng.toString() + R2RURL3 + destinationLatLng.toString() + R2RURL4 + "GBP" + R2RURL5 + getTravelModeFlags(travelMode);
+		String sUrl = R2RURL1 + readKey("R2R_key") + R2RURL2 + originLatLng.toString() + R2RURL3 + destinationLatLng.toString() + R2RURL4 + "GBP" + R2RURL5 + getTravelModeFlags(travelMode);
 		System.out.println(sUrl);
 		URL url = new URL(sUrl);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -182,4 +188,20 @@ public class DirectionsRequest {
 		return additionalData;
 	}
 	
+	private String readKey(String keyName)  {
+        Document xmlDoc;
+		try {
+			xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File("./templates/supersecretsecret.xml"));
+			NodeList nodes = xmlDoc.getFirstChild().getChildNodes();
+	        for(int i = 0; i < nodes.getLength(); i++)  {
+	            Node node = nodes.item(i);
+	            if(node.getNodeName().equals(keyName))    {
+	                return node.getTextContent();
+	            }
+	        }
+		} catch (SAXException | IOException | ParserConfigurationException e) {
+			e.printStackTrace();
+		}
+        return null;
+    }
 }
