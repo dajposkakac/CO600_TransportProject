@@ -96,5 +96,39 @@
         android:text="Price: £37"
         android:textColor="?android:textColorSecondary" />
 
+    <TextView
+        android:id="@+id/from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/arrive_at_result"
+        android:layout_marginTop="15dp"
+        android:text="From:"
+        android:textColor="?android:textColorSecondary" />
+
+    <TextView
+        android:id="@+id/from_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/from"
+        android:text="47 Mandeville Road, Canterbury"
+        android:textColor="?android:textColorSecondary" />
+
+    <TextView
+        android:id="@+id/to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/from_result"
+        android:text="To:"
+        android:layout_marginTop="15dp"
+        android:textColor="?android:textColorSecondary" />
+
+    <TextView
+        android:id="@+id/to_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/to"
+        android:text="5 St Jasius Court, Canterbury"
+        android:textColor="?android:textColorSecondary" />
+
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

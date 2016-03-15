@@ -23,16 +23,30 @@
         app:mstbSecondaryColor="@color/choice_2"
         android:layout_marginBottom="5dp"/>
 
-    <TextView
+    <ViewFlipper
+        android:id="@+id/view_flipper"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/mstb_multi_id"
-        android:id="@+id/textView" />
-    <ListView
-        android:id="@+id/list"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/mstb_multi_id">
-    </ListView>
+
+        <ListView
+            android:id="@+id/list_distance"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+        </ListView>
+
+        <ListView
+            android:id="@+id/list_time"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+        </ListView>
+
+        <ListView
+            android:id="@+id/list_cost"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+        </ListView>
+
+    </ViewFlipper>
 
 </RelativeLayout>
