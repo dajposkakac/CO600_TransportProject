@@ -15,36 +15,84 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
     <!-- Location picker -->
     <script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false&libraries=places'></script>
-    <script src="../dist/locationpicker.jquery.min.js"></script>
+    <script src="locationpicker.jquery.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+<script type="text/javascript">
+function initialize() {
+  var d = new Date(),
+      h = (d.getHours()<10?'0':'') + d.getHours(),
+      m = (d.getMinutes()<10?'0':'') + d.getMinutes();
+      document.getElementById("time1").value = h + ':' + m;
+	  var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth()+1;
+      var yyyy = today.getFullYear();
+      if(dd<10){
+        dd='0'+dd;
+      } 
+      if(mm<10){
+          mm='0'+mm;
+      } 
+      var today = yyyy+'-'+mm+'-'+dd;
+      document.getElementById("date1").value = today;
+
+}
+function showmap1()
+{
+	$('#us2').toggle();
+	document.getElementById("us2").style.transition = "0.5s";
+}
+function showmap2()
+{
+	$('#us3').toggle();
+	document.getElementById("us3").style.transition = "0.5s";
+}
+</script>
 </head>
 <body onload="initialize()">
+
 <div id="header">
-<img src="images/logo.png" id="logo">
+<a href="Home.html"><img src="images/logo.png" id="logo"></a>
+<nav>
+<a class="menu" href="Home.html" style="text-decoration:underline; background:rgba(255,255,255,0.5);">Home</a>
+<a class="menu" href="About.html">About us</a>
+<a class="menu" href="Contact.html">Contact us</a>
+</nav>
 </div>
 
 <div id="container">
 <div id="map"></div>
+
 <form id="form" action="jpmap.php" method="post" align="middle">
-<h1 id="h1">PLAN A JOURNEY</h1>
+<h1 id="h1">PLAN YOUR JOURNEY</h1>
 <div id="basic">
 <h2>From</h2>
+
+
 <div class="textboxmod">
 <input onFocus="geolocate()" type="text" id="start" name="start" class="textbox" placeholder="Street, town or postcode"/>
+<img src="images/icon2.png" class="btnmap" id="map1" onclick="showmap1()">
 </div>
+
 <div id="us2" style="width: 300px; height: 250px;"></div>				
 <script>$('#us2').locationpicker({
-	location: {latitude: 51.15242437752303, longitude: 2.7470703125},	
+	location: {latitude: 51.27904437752303, longitude: 1.0799203125},	
 	radius: 10,
 	inputBinding: {
         locationNameInput: $('#start')
     }
 	});
 </script>
+
 <h2>To</h2>
+
 <div class="textboxmod">
 <input onFocus="geolocate()" type="text" id="end" name="end" class="textbox" placeholder="Street, town or postcode"/>
+<img src="images/icon2.png" class="btnmap" id="map2" onclick="showmap2()">
 </div>
+
 <div id="us3" style="width: 300px; height: 250px;"></div>				
 <script>$('#us3').locationpicker({
 	location: {latitude: 51.49662437752303, longitude: 0.1448703125},	
@@ -54,13 +102,20 @@
     }
 	});
 </script>
-<input type="button" class="button" id="advopt" value="Show travel options" onclick="displayopt()">
-<input type="submit" class="button" id="submit1" name="action" value="Search" onclick="">
+<fieldset>
+<legend><h3>Timing options</h3></legend>
+<select name="deparr">
+	<option value="Depart (at)">Departure</option>
+    <option value="Arrive (at)">Arrival</option>
+</select>
+<input type="time" id="time1" name="time" value="00:00">
+<input type="date" id="date1" name="date" value="2014-02-09">
+</fieldset>
 </div>
 
 <div id="advanced">
 <fieldset>
-<legend><h3>Sort route by</h3></legend>
+<legend><h3>Sorting options</h3></legend>
 <div class="routecheck">
 <label class="radbutton" id="left">Distance
 <input name="route" type="radio" value="distance"/>
@@ -75,7 +130,7 @@
 </fieldset>
 
 <fieldset>
-<legend><h3>Transport choices</h3></legend>
+<legend><h3>Transport options</h3></legend>
 <div class="transportcheck">
 <table>
 <tr>
@@ -88,18 +143,14 @@
 <label class="transportchoice train" for="train"></label>
 </td>
 <td>
-<input id="walk" type="checkbox" name="mode" value="WALKING"/>
-<label class="transportchoice walk" for="walk"></label>
+<input id="bus" type="checkbox" name="mode" value="TRANSIT"/>
+<label class="transportchoice bus" for="bus"></label>
 </td>
 </tr>
 <tr>
 <td>
-<input id="bus" type="checkbox" name="mode" value="TRANSIT"/>
-<label class="transportchoice bus" for="bus"></label>
-</td>
-<td>
-<input id="plane" type="checkbox" name="mode" value="TRANSIT"/>
-<label class="transportchoice plane" for="plane"></label>
+<input id="walk" type="checkbox" name="mode" value="WALKING"/>
+<label class="transportchoice walk" for="walk"></label>
 </td>
 <td>
 <input id="cycle" type="checkbox" name="mode" value="CYCLING"/>
@@ -110,8 +161,12 @@
 </div>
 </fieldset>
 
-<input type="submit" class="button" id="submit2" name="action" value="Search" onclick="">
+
 </div>
+
+
+<input type="submit" class="button" id="submit" name="action" value="Search" onclick="">
+
 
 </form>
 </div>
