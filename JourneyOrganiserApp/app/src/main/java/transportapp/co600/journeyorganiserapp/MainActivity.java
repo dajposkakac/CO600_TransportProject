@@ -233,13 +233,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 String time = timePicker.getText().toString();
                 if(time.isEmpty())  {
                     time = "now";
+                    req.setTime(time);
                 }
-                req.setTime(time);
                 String date = datePicker.getText().toString();
                 if(date.isEmpty())  {
                     date = "now";
+                    req.setDate(date);
                 }
-                req.setDate(date);
                 goHandler(v);
             }
         });

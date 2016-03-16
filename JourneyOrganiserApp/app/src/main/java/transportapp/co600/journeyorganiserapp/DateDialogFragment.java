@@ -35,6 +35,6 @@ public class DateDialogFragment extends DialogFragment implements DatePickerDial
         String dateDisplay = dayOfMonth + "-" + monthOfYear + "-" + year;
         dateText.setText(dateDisplay);
         dateText.setFocusable(false);
-        activity.getRequest().setTime(date);
+        activity.getRequest().setDate(date);
     }
 }
