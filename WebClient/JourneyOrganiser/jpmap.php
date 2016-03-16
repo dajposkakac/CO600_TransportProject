@@ -11,7 +11,7 @@ if (empty($_POST['start']) || empty($_POST['end']))
 <title>Journey Organizer</title>
 <link href="CSS/Cascade.css" rel="stylesheet" type="text/css">
 <?php
-		$host = '5.81.182.39';
+		$host = '165.120.251.198';
 		$port = 4444;
 	// create socket
 		$socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket\n");
@@ -26,7 +26,10 @@ if (empty($_POST['start']) || empty($_POST['end']))
 		else{
 			$mode = $_POST['mode'];
 		}
-		$message = "<?xml version = '1.0' encoding = 'UTF-8'?><request><origin>" . $start . "</origin><destination>" . $end . "</destination><transitMode>" . $mode . "</transitMode></request>" . PHP_EOL;
+		$date = $_POST['date'];
+		$time = $_POST['time'];
+		$ad = $_POST['deparr'];
+		$message = "<?xml version = '1.0' encoding = 'UTF-8'?><request><origin>" . $start . "</origin><destination>" . $end . "</destination><transitMode>" . $mode . "</transitMode><time>" .$time. "</time><date>" .$date. "</date><departureOption>" .$ad. "</departureOption></request>" . PHP_EOL;
 	// send string to server
 		if($result) { 
 		socket_write($socket, $message, strlen($message)) or die("Could not send data to server\n");
@@ -50,25 +53,28 @@ function btntest_onclick()
 </div>
 
 <div id="container">
-
+<form id="form">
 <?php 
 		echo "You can travel from " . $origin . " to" . PHP_EOL. "\n";
 		echo $destination . " by:". PHP_EOL ."\n";
         $id = 0;
 	foreach($xml->results->result as $rs) {
 			
-		echo "<button class=\"button\" value=\"{$rs->transitMode}\" id=\"{$id}\"> \n";
-		echo "Time of the Journey:". $rs->duration PHP_EOL"\n";
-		echo "Distance:". $rs->distance . PHP_EOL"\n";
-		echo "Price:". $rs->price . PHP_EOL"\n";
-		$id = $id+1;
+		echo "<textarea class=\"textarea\"> \n";
+		echo "Travel Mode:". $rs->transitMode . PHP_EOL . "\n";
+		echo "Time of the Journey:". $rs->duration .  PHP_EOL . "\n";
+		echo "Distance:". $rs->distance . PHP_EOL . "\n";
+		echo "Price:". $rs->price . PHP_EOL . "\n";
+		echo "</textarea>";
 		}
 ?>
+<input class="button" id="btntest"  type="button" value="Back" onclick="return btntest_onclick()" />
+</form>
 </div>
 
 <div id="footer">
 </div>
-<input class="button" id="btntest"  type="button" value="Back" onclick="return btntest_onclick()" />
+
 <div id="footer">
 </div>
 </body>
