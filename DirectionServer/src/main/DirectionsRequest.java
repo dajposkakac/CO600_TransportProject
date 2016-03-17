@@ -159,7 +159,8 @@ public class DirectionsRequest {
 		}
 		dt = dt.plusMillis(250);
 		if(!dt.isAfterNow())	{
-			throw new DateInPastException(dt.toString() + " is in the past");
+			//throw new DateInPastException(dt.toString() + " is in the past");
+			dt = dt.now().plusMillis(250);
 		}
 		return dt;
 	}
