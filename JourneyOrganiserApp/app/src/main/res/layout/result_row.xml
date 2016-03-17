@@ -8,46 +8,64 @@
 
     <TextView
         android:id="@+id/transit_mode"
-        android:layout_width="50dp"
+        android:layout_width="70dp"
         android:layout_height="75dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" />
 
     <TextView
-        android:id="@+id/origin"
-        android:layout_width="75dp"
+        android:id="@+id/depart_at"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
         android:layout_toRightOf="@+id/transit_mode"
-        android:layout_alignTop="@+id/transit_mode" />
+        android:layout_marginTop="5dp"
+        android:text="Departure:" />
 
     <TextView
-        android:id="@+id/destination"
-        android:layout_width="75dp"
+        android:id="@+id/depart_at_result"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/origin"
-        android:layout_alignLeft="@id/origin"/>
+        android:layout_below="@+id/depart_at"
+        android:layout_toRightOf="@+id/transit_mode"
+        android:text="00:00 - 2/02/2016"/>
+
+    <TextView
+        android:id="@+id/arrive_at"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/depart_at_result"
+        android:layout_toRightOf="@+id/transit_mode"
+        android:layout_marginTop="5dp"
+        android:text="Arrive at:" />
+
+    <TextView
+        android:id="@+id/arrive_at_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/arrive_at"
+        android:layout_toRightOf="@+id/transit_mode"
+        android:text="00:00 - 2/02/2016" />
 
     <TextView
         android:id="@+id/distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_toRightOf="@id/origin" />
+        android:layout_toRightOf="@+id/depart_at"
+        android:layout_marginLeft="30dp" />
 
     <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/distance"
-        android:layout_alignLeft="@id/distance"/>
+        android:layout_toRightOf="@+id/depart_at"/>
 
     <TextView
         android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/time"
-        android:layout_alignLeft="@id/time"/>
+        android:layout_toRightOf="@+id/depart_at"/>
 
 
 </RelativeLayout>

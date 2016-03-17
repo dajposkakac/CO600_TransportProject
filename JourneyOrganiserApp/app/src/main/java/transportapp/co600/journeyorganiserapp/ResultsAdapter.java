@@ -41,22 +41,30 @@ public class ResultsAdapter extends ArrayAdapter<String> {
             convertView = inflater.inflate(layout, parent, false);
             holder = new ViewHolder();
             holder.transitMode = (TextView) convertView.findViewById(R.id.transit_mode);
-            holder.origin = (TextView) convertView.findViewById(R.id.origin);
-            holder.destination = (TextView) convertView.findViewById(R.id.destination);
             holder.distance = (TextView) convertView.findViewById(R.id.distance);
             holder.duration = (TextView) convertView.findViewById(R.id.time);
             holder.price = (TextView) convertView.findViewById(R.id.price);
+            holder.departAt = (TextView) convertView.findViewById(R.id.depart_at_result);
+            holder.arriveAt = (TextView) convertView.findViewById(R.id.arrive_at_result);
             convertView.setTag(holder);
         }   else    {
             holder = (ViewHolder) convertView.getTag();
         }
 
         holder.transitMode.setText(results.get(position).get("transitMode"));
-        holder.origin.setText(info.get("origin"));
-        holder.destination.setText(info.get("destination"));
         holder.distance.setText(results.get(position).get("distance"));
         holder.duration.setText(results.get(position).get("duration"));
         holder.price.setText("£" + results.get(position).get("price"));
+
+        if(holder.transitMode.getText().equals("TRANSIT")) {
+            String departureTime = String.valueOf(results.get(position).get("departureTime"));
+            String arrivalTime = String.valueOf(results.get(position).get("arrivalTime"));
+            String date = String.valueOf(results.get(position).get("date"));
+            String departureTimeDate = departureTime + " - " + date;
+            String arrivalTimeDate = arrivalTime + " - "  + date;
+            holder.departAt.setText(departureTimeDate);
+            holder.arriveAt.setText(arrivalTimeDate);
+        }
 
         return convertView;
     }
@@ -69,10 +77,10 @@ public class ResultsAdapter extends ArrayAdapter<String> {
 
     static class ViewHolder	{
         TextView transitMode;
-        TextView origin;
-        TextView destination;
         TextView distance;
         TextView duration;
         TextView price;
+        TextView departAt;
+        TextView arriveAt;
     }
 }

@@ -52,8 +52,7 @@
         android:layout_below="@+id/depart_at_result"
         android:layout_toRightOf="@+id/transit_mode"
         android:layout_marginTop="15dp"
-        android:text="Arrive at:"
-        android:textColor="?android:textColorSecondary" />
+        android:text="Arrive at:" />
 
     <TextView
         android:id="@+id/arrive_at_result"
@@ -61,8 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/arrive_at"
         android:layout_toRightOf="@+id/transit_mode"
-        android:text="00:00 - 2/02/2016"
-        android:textColor="?android:textColorSecondary" />
+        android:text="00:00 - 2/02/2016" />
 
     <TextView
         android:id="@+id/duration"
