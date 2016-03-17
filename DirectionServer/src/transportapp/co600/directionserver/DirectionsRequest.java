@@ -154,8 +154,8 @@ public class DirectionsRequest {
 			dt = dt.withHourOfDay(timeData[0]).withMinuteOfHour(timeData[1]);
 		}
 		if(time != null && !date.equals("now"))	{
-			int[] dateData = Arrays.stream(date.split("/")).mapToInt(Integer::parseInt).toArray();
-			dt = dt.withYear(dateData[2]).withMonthOfYear(dateData[1]).withDayOfMonth(dateData[0]);
+			int[] dateData = Arrays.stream(date.split("-")).mapToInt(Integer::parseInt).toArray();
+			dt = dt.withYear(dateData[0]).withMonthOfYear(dateData[1]).withDayOfMonth(dateData[2]);
 		}
 		dt = dt.plusMillis(250);
 		if(!dt.isAfterNow())	{

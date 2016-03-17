@@ -10,6 +10,7 @@ import java.io.StringWriter;
 import java.net.Socket;
 import java.util.HashMap;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
@@ -17,6 +18,10 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -26,6 +31,9 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class RequestHandler extends Thread {
+	
+	public static final String XML_SCHEMA_PATH = "./templates/request_schema.xsd";
+	
 	private Socket socket;
 	private BufferedReader bufferedReader;
 	private PrintWriter printWriter;
@@ -39,17 +47,21 @@ public class RequestHandler extends Thread {
 		    bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream())); //get the client message
 		    String xmlString = bufferedReader.readLine();
 		    System.out.println(xmlString);
-		    Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(xmlString)));
-		    HashMap<String, String> data = parseToMap(xmlDoc);
-		    DirectionsRequest request = new DirectionsRequest(data);
 		    DirectionsResults result = null;
-		    if(request.getStatus() == 0)	{
-		    	Document r2rXmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(request.getR2RData())));
-		    	result = new DirectionsResults(request.getStatus(), request.getRoutes(), request.getAdditionalData(), parseR2RXml(r2rXmlDoc));
+		    if(validateRequest(new StreamSource(new StringReader(xmlString))))	{
+		    	Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(xmlString)));
+			    HashMap<String, String> data = parseToMap(xmlDoc);
+			    DirectionsRequest request = new DirectionsRequest(data);
+			    
+			    if(request.getStatus() == 0)	{
+			    	Document r2rXmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(request.getR2RData())));
+			    	result = new DirectionsResults(request.getStatus(), request.getRoutes(), request.getAdditionalData(), parseR2RXml(r2rXmlDoc));
+			    }	else	{
+			    	result = new DirectionsResults(request.getStatus());
+			    }
 		    }	else	{
-		    	result = new DirectionsResults(request.getStatus());
+		    	result = new DirectionsResults(-10);
 		    }
-		    
 		    String resultString = createXMLResponse(result);
 //		    String resultString = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><request><origin>London, UK</origin><destination>Oxford, Oxford, UK</destination><distance>85.3 km</distance><duration>1 hour 35 mins</duration><transitMode>transit</transitMode><price>33</price></request>";
 		    printWriter = new PrintWriter(socket.getOutputStream(), true);
@@ -90,6 +102,20 @@ public class RequestHandler extends Thread {
 			}
 		}
 		return "-1";
+	}
+	
+	private boolean validateRequest(StreamSource streamSource) {
+		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		Schema schema;
+		try {
+			schema = factory.newSchema(new File(XML_SCHEMA_PATH));
+			Validator validator = schema.newValidator();
+			validator.validate(streamSource);
+		} catch (SAXException | IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 	
 	private String createXMLResponse(DirectionsResults res) throws ParserConfigurationException, IOException, TransformerException, SAXException {
