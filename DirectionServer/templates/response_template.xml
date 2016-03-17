@@ -1,12 +1,12 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <response>
-	<status>
-	</status>
-	<info>
-		<origin></origin>
-		<destination></destination>
-	</info>
-	<results>
+  <status>
+  </status>
+  <info>
+    <origin></origin>
+    <destination></destination>
+  </info>
+  <results>
     <result>
       <distance></distance>
       <duration></duration>
@@ -19,5 +19,5 @@
     ...
     ...
     ...
-	</results>
+  </results>
 </response>
