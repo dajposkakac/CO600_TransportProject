@@ -96,7 +96,7 @@ public class DirectionsResults {
 	}
 	
 	private String getDateReadable(DateTime dt)	{
-		return dt.getDayOfMonth() + "/" + dt.getMonthOfYear() + "/" + dt.getYear();
+		return dt.getDayOfMonth() + "-" + dt.getMonthOfYear() + "-" + dt.getYear();
 	}
 	
 	
