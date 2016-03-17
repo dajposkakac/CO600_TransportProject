@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private EditText timePicker;
     private EditText datePicker;
 
-    private Calendar calendar;
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
 
@@ -189,7 +188,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void initTimePickers()  {
-        calendar = Calendar.getInstance();
         timePicker = (EditText) findViewById(R.id.time);
         timePicker.setInputType(InputType.TYPE_NULL);
         timePicker.setOnClickListener(new View.OnClickListener() {
@@ -228,18 +226,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                req.setOrigin(from.getText().toString());
-                req.setDestination(to.getText().toString());
-                String time = timePicker.getText().toString();
-                if(time.isEmpty())  {
-                    time = "now";
-                    req.setTime(time);
-                }
-                String date = datePicker.getText().toString();
-                if(date.isEmpty())  {
-                    date = "now";
-                    req.setDate(date);
-                }
+                getUserInput();
                 goHandler(v);
             }
         });
@@ -247,6 +234,22 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void initRequest()   {
         req = new Request();
+    }
+
+    private void getUserInput() {
+        req.setOrigin(from.getText().toString());
+        req.setDestination(to.getText().toString());
+        String time = timePicker.getText().toString();
+        Calendar calendar = Calendar.getInstance();
+        if(time.isEmpty())  {
+            time = addMissingZero(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + addMissingZero(calendar.get(Calendar.MINUTE))  + ":" + addMissingZero(calendar.get(Calendar.SECOND));
+            req.setTime(time);
+        }
+        String date = datePicker.getText().toString();
+        if(date.isEmpty())  {
+            date = calendar.get(Calendar.YEAR) + "-" + addMissingZero(calendar.get(Calendar.MONTH) + 1) + "-" + addMissingZero(calendar.get(Calendar.DAY_OF_MONTH));
+            req.setDate(date);
+        }
     }
 
     private AdapterView.OnItemClickListener mAutocompleteClickListener
