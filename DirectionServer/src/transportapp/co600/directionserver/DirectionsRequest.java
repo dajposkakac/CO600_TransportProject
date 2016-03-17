@@ -198,7 +198,7 @@ public class DirectionsRequest {
 	private String readKey(String keyName)  {
         Document xmlDoc;
 		try {
-			xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File("./templates/supersecretsecret.xml"));
+			xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File("./supersecretsecret.xml"));
 			NodeList nodes = xmlDoc.getFirstChild().getChildNodes();
 	        for(int i = 0; i < nodes.getLength(); i++)  {
 	            Node node = nodes.item(i);
