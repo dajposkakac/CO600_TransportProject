@@ -14,6 +14,7 @@ import java.util.Calendar;
  */
 public class DateDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
+    private static final String DASH = "-";
     private MainActivity activity;
 
     @Override
@@ -31,8 +32,10 @@ public class DateDialogFragment extends DialogFragment implements DatePickerDial
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         EditText dateText = (EditText) activity.findViewById(R.id.date);
-        String date = year + "-" + monthOfYear + "-" + dayOfMonth;
-        String dateDisplay = dayOfMonth + "-" + monthOfYear + "-" + year;
+        String monthAddedZeros = activity.addMissingZero(monthOfYear);
+        String dayAddedZeros = activity.addMissingZero(dayOfMonth);
+        String date = year + DASH + monthAddedZeros + DASH + dayAddedZeros;
+        String dateDisplay = dayAddedZeros + DASH + monthAddedZeros + DASH + year;
         dateText.setText(dateDisplay);
         dateText.setFocusable(false);
         activity.getRequest().setDate(date);
