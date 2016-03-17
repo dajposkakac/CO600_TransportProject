@@ -14,8 +14,8 @@
   </xs:simpleType>
   <xs:simpleType name="departureOptiontype">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Depart"/>
-      <xs:enumeration value="Arrive"/>
+      <xs:enumeration value="Depart at"/>
+      <xs:enumeration value="Arrive at"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="request">
