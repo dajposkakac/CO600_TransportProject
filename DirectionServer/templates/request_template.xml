@@ -1,1 +1,15 @@
-<?xml version = "1.0" encoding = "UTF-8"?><request><origin></origin><destination></destination><transitMode></transitMode></request>
+<?xml version = "1.0" encoding = "UTF-8"?>
+<request>
+  <origin>
+  </origin>
+  <destination>
+  </destination>
+  <transitMode>
+  </transitMode>
+  <time>
+  </time>
+  <date>
+  </date>
+  <departureOption>
+  </departureOption>
+</request>

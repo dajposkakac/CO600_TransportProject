@@ -7,5 +7,17 @@
 		<destination></destination>
 	</info>
 	<results>
+    <result>
+      <distance></distance>
+      <duration></duration>
+      <transitMode></transitMode>
+      <price></price>
+      <arrivalTime></arrivalTime> (if transitMode = public)
+      <departureTime></departureTime> (if transitMode = public)
+      <departureOption></departureOption>
+    </result>
+    ...
+    ...
+    ...
 	</results>
 </response>

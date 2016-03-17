@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:simpleType name="locationtype">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:simpleType name="transitModetype">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="unknown"/>
+      <xs:enumeration value="driving"/>
+      <xs:enumeration value="walking"/>
+      <xs:enumeration value="bicycling"/>
+      <xs:enumeration value="transit"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="departureOptiontype">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Depart"/>
+      <xs:enumeration value="Arrive"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="request">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="origin" type="locationtype"></xs:element>
+        <xs:element name="destination" type="locationtype"></xs:element>
+        <xs:element name="transitMode" type="transitModetype"></xs:element>
+        <xs:element name="time" type="xs:time"></xs:element>
+        <xs:element name="date" type="xs:date"></xs:element>
+        <xs:element name="departureOption" type="departureOptiontype"></xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
