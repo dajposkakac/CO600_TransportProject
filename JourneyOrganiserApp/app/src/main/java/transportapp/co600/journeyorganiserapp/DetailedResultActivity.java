@@ -16,7 +16,7 @@ public class DetailedResultActivity extends AppCompatActivity {
     public static final String RESULT_TAG = "result";
 
     private HashMap<String, String> info;
-    private HashMap<Integer, HashMap<String, String>> results;
+    private HashMap<String, String> results;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -25,7 +25,7 @@ public class DetailedResultActivity extends AppCompatActivity {
         setContentView(R.layout.detail_results_activity);
 
         info = (HashMap<String, String>) getIntent().getSerializableExtra(INFO_TAG);
-        results = (HashMap<Integer, HashMap<String, String>>) getIntent().getSerializableExtra(RESULT_TAG);
+        results = (HashMap<String, String>) getIntent().getSerializableExtra(RESULT_TAG);
 
         TextView transitMode = (TextView) findViewById(R.id.transit_mode);
         TextView origin = (TextView) findViewById(R.id.from_result);
@@ -33,14 +33,28 @@ public class DetailedResultActivity extends AppCompatActivity {
         TextView distance = (TextView) findViewById(R.id.distance);
         TextView duration = (TextView) findViewById(R.id.duration);
         TextView price = (TextView) findViewById(R.id.price);
+        TextView departAt = (TextView) findViewById(R.id.depart_at_result);
+        TextView arriveAt = (TextView) findViewById(R.id.arrive_at_result);
 
-        transitMode.setText((CharSequence) results.get("transitMode"));
+        String transitModeText = results.get("transitMode");
+
+        transitMode.setText(transitModeText);
         origin.setText(info.get("origin"));
         destination.setText(info.get("destination"));
-        distance.setText((CharSequence) results.get("distance"));
-        duration.setText((CharSequence) results.get("duration"));
+        distance.setText(results.get("distance"));
+        duration.setText(results.get("duration"));
         price.setText("£" + results.get("price"));
 
+
+        if(transitModeText.equals("TRANSIT")) {
+            String departureTime = String.valueOf(results.get("departureTime"));
+            String arrivalTime = String.valueOf(results.get("arrivalTime"));
+            String date = String.valueOf(results.get("date"));
+            String departureTimeDate = departureTime + " - " + date;
+            String arrivalTimeDate = arrivalTime + " - "  + date;
+            departAt.setText(departureTimeDate);
+            arriveAt.setText(arrivalTimeDate);
+        }
 
     }
 }
