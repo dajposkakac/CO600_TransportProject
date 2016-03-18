@@ -31,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/transit_mode"
+            android:layout_marginLeft="30dp"
             android:layout_marginTop="5dp"
             android:text="Departure:"
             android:textStyle="bold"
@@ -42,6 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/depart_at"
+            android:layout_marginLeft="30dp"
             android:layout_toRightOf="@+id/transit_mode"
             android:text="00:00 - 2/02/2016"
             android:textStyle="bold"
@@ -53,7 +55,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/depart_at_result"
-            android:layout_toRightOf="@+id/transit_mode"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@+id/transit_mode"
             android:layout_marginTop="15dp"
             android:text="Arrival:"
             android:textStyle="bold"
@@ -65,21 +68,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/arrive_at"
-            android:layout_toRightOf="@+id/transit_mode"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@+id/transit_mode"
             android:text="00:00 - 2/02/2016"
             android:textStyle="bold"
             android:textColor="@android:color/background_light"
             android:textSize="18sp"/>
 
         <TextView
-            android:id="@+id/duration"
+            android:id="@+id/distance_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/depart_at_result"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:text="Duration: 3h 15min"
+            android:layout_marginTop="20dp"
+            android:text="Distance:"
             android:textStyle="bold"
+            android:layout_below="@+id/arrive_at_result"
             android:textColor="@android:color/background_light"
             android:textSize="15sp"/>
 
@@ -87,12 +90,45 @@
             android:id="@+id/distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/depart_at_result"
-            android:layout_below="@+id/duration"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
-            android:text="Distance: 87 miles"
+            android:text="87 miles"
             android:textStyle="bold"
+            android:layout_below="@+id/duration_label"
+            android:textColor="@android:color/background_light"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/duration_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_centerInParent="true"
+            android:text="Duration:"
+            android:textStyle="bold"
+            android:layout_below="@+id/arrive_at_result"
+            android:textColor="@android:color/background_light"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/distance_label"
+            android:layout_centerInParent="true"
+            android:text="3 hours 15 minutes"
+            android:textStyle="bold"
+            android:textColor="@android:color/background_light"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/price_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Price:"
+            android:layout_marginRight="5dp"
+            android:layout_alignParentRight="true"
+            android:textStyle="bold"
+            android:layout_below="@+id/arrive_at_result"
             android:textColor="@android:color/background_light"
             android:textSize="15sp"/>
 
@@ -100,20 +136,20 @@
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/depart_at_result"
-            android:layout_below="@+id/distance"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
-            android:text="Price: £37"
+            android:layout_below="@+id/price_label"
+            android:layout_marginRight="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="0dp"
+            android:text="£37"
             android:textStyle="bold"
             android:textColor="@android:color/background_light"
-            android:textSize="15sp"/>
+            android:textSize="20sp"/>
 
         <TextView
             android:id="@+id/from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/arrive_at_result"
+            android:layout_below="@+id/duration"
             android:layout_marginTop="15dp"
             android:text="From:"
             android:textStyle="bold"
