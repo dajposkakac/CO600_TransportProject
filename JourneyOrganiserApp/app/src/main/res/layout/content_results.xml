@@ -21,7 +21,7 @@
         mstb:values="@array/travel_choices"
         app:mstbPrimaryColor="@color/choice_1"
         app:mstbSecondaryColor="@color/choice_2"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginBottom="5dp" />
 
     <ViewFlipper
         android:id="@+id/view_flipper"

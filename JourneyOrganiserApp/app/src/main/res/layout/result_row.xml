@@ -3,23 +3,26 @@
     android:id="@+id/container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="5dp"
-    >
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/transit_mode"
-        android:layout_width="70dp"
+        android:layout_width="80dp"
         android:layout_height="75dp"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:textColor="@android:color/background_light"/>
 
     <TextView
         android:id="@+id/depart_at"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/transit_mode"
-        android:layout_marginTop="5dp"
-        android:text="Departure:" />
+        android:text="Departure:"
+        android:textStyle="bold"
+        android:textColor="@android:color/background_light"/>
 
     <TextView
         android:id="@+id/depart_at_result"
@@ -27,7 +30,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/depart_at"
         android:layout_toRightOf="@+id/transit_mode"
-        android:text="00:00 - 2/02/2016"/>
+        android:text="00:00 - 2/02/2016"
+        android:textStyle="bold"
+        android:textColor="@android:color/background_light"/>
 
     <TextView
         android:id="@+id/arrive_at"
@@ -36,7 +41,9 @@
         android:layout_below="@+id/depart_at_result"
         android:layout_toRightOf="@+id/transit_mode"
         android:layout_marginTop="5dp"
-        android:text="Arrive at:" />
+        android:text="Arrive at:"
+        android:textStyle="bold"
+        android:textColor="@android:color/background_light"/>
 
     <TextView
         android:id="@+id/arrive_at_result"
@@ -44,28 +51,44 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/arrive_at"
         android:layout_toRightOf="@+id/transit_mode"
-        android:text="00:00 - 2/02/2016" />
+        android:text="00:00 - 2/02/2016"
+        android:textStyle="bold"
+        android:textColor="@android:color/background_light"/>
 
     <TextView
         android:id="@+id/distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/depart_at"
-        android:layout_marginLeft="30dp" />
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/depart_at"
+        android:text="distance"
+        android:layout_marginStart="70dp"
+        android:textStyle="bold"
+        android:textColor="@android:color/background_light"
+        />
 
     <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/distance"
-        android:layout_toRightOf="@+id/depart_at"/>
+        android:text="duration"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="70dp"
+        android:layout_toRightOf="@+id/depart_at"
+        android:textStyle="bold"
+        android:textColor="@android:color/background_light"/>
 
     <TextView
         android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/time"
-        android:layout_toRightOf="@+id/depart_at"/>
-
+        android:text="price"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="70dp"
+        android:layout_toRightOf="@+id/depart_at"
+        android:textStyle="bold"
+        android:textColor="@android:color/background_light"/>
 
 </RelativeLayout>
