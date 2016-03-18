@@ -2,6 +2,7 @@ package transportapp.co600.journeyorganiserapp;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
@@ -74,8 +75,11 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng canters = new LatLng(51.2750, 1.0870);
-        mMap.addMarker(new MarkerOptions().position(canters));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(canters));
+//        LatLng canters = new LatLng(51.2750, 1.0870);
+        String[] data = info.get("originLatLng").split(",");
+        LatLng position = new LatLng(Double.valueOf(data[0]), Double.valueOf(data[1]));
+        mMap.addMarker(new MarkerOptions().position(position));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
+        mMap.animateCamera(CameraUpdateFactory.zoomIn());
     }
 }
