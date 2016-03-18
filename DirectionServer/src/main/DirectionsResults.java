@@ -74,6 +74,14 @@ public class DirectionsResults {
 //	public void setTransitMode(String transitMode) {
 //		this.transitMode = transitMode;
 //	}
+	
+	public String getOriginLatLng() {
+		return additionalData.get(DirectionsRequest.ORIGIN_LATLNG);
+	}
+	
+	public String getDestinationLatLng() {
+		return additionalData.get(DirectionsRequest.DESTINATION_LATLNG);
+	}
 
 	public String getPrice() {
 		return price;

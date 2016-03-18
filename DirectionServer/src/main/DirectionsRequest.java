@@ -36,6 +36,8 @@ public class DirectionsRequest {
 	//Data constants
 	public static final String ORIGIN = "origin";
 	public static final String DESTINATION = "destination";
+	public static final String ORIGIN_LATLNG= "originLatLng";
+	public static final String DESTINATION_LATLNG = "destinationLatLng";
 	public static final String TRANSIT_MODE = "transitMode";
 	public static final String DEPARTURE_OPTION = "departureOption";
 	public static final String TIME = "time";
@@ -57,23 +59,24 @@ public class DirectionsRequest {
 	private HashMap<String, String> additionalData;
 	private int status;
 	private HashMap<String, String> request;
+	private LatLng originLatLng = null;
+	private LatLng destinationLatLng = null;
+	private TravelMode travelMode;
 	
 	public DirectionsRequest(HashMap<String, String> data)	{
 		status = 0;
 		request = data;
 		additionalData = new HashMap<>();
 		gaContext = new GeoApiContext().setApiKey(readKey("google_key_server"));
-		gatherAdditionalData();
 		makeRequests();
+		gatherAdditionalData();
 	}
 	
 	private void makeRequests()	{
 		String origin = request.get(ORIGIN);
 		String destination = request.get(DESTINATION);
-		LatLng originLatLng = null;
-		LatLng destinationLatLng = null;
 		String departureOption = request.get(DEPARTURE_OPTION);
-		TravelMode travelMode = TravelMode.valueOf(additionalData.get(TRANSIT_MODE));
+		travelMode = TravelMode.valueOf(request.get(TRANSIT_MODE).toUpperCase());
 		if(origin.matches(LATLNG_REGEXP))	{
 			String[] originTemp = origin.split(",");
 			originLatLng = new LatLng(Double.valueOf(originTemp[0]), Double.valueOf(originTemp[1]));
@@ -121,6 +124,8 @@ public class DirectionsRequest {
 	private void gatherAdditionalData()	{
 		additionalData.put(TRANSIT_MODE, request.get(TRANSIT_MODE).toUpperCase());
 		additionalData.put(DEPARTURE_OPTION, request.get(DEPARTURE_OPTION));
+		additionalData.put(ORIGIN_LATLNG, originLatLng.lat + "," + originLatLng.lng);
+		additionalData.put(DESTINATION_LATLNG, destinationLatLng.lat + "," + destinationLatLng.lng);
 	}
 	
 	private String r2rSearch(LatLng originLatLng, LatLng destinationLatLng, TravelMode travelMode) throws IOException {

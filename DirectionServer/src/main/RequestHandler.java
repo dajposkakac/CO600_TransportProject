@@ -136,10 +136,16 @@ public class RequestHandler extends Thread {
 			response.appendChild(info);
 			Element origin = xmlDoc.createElement("origin");
 			Element destination = xmlDoc.createElement("destination");
+			Element originLatLng = xmlDoc.createElement(DirectionsRequest.ORIGIN_LATLNG);
+			Element destinationLatLng = xmlDoc.createElement(DirectionsRequest.DESTINATION_LATLNG);
 			origin.appendChild(xmlDoc.createTextNode(res.getOriginForRoute(0)));
 			destination.appendChild(xmlDoc.createTextNode(res.getDestinationForRoute(0)));
+			originLatLng.appendChild(xmlDoc.createTextNode(res.getOriginLatLng()));
+			destinationLatLng.appendChild(xmlDoc.createTextNode(res.getDestinationLatLng()));
 			info.appendChild(origin);
 			info.appendChild(destination);
+			info.appendChild(originLatLng);
+			info.appendChild(destinationLatLng);
 			
 			//results
 			Element results = xmlDoc.createElement("results");
