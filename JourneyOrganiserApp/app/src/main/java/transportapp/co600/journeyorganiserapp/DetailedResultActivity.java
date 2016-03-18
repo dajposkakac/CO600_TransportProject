@@ -3,6 +3,7 @@ package transportapp.co600.journeyorganiserapp;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -27,7 +28,6 @@ public class DetailedResultActivity extends AppCompatActivity {
         info = (HashMap<String, String>) getIntent().getSerializableExtra(INFO_TAG);
         results = (HashMap<String, String>) getIntent().getSerializableExtra(RESULT_TAG);
 
-        TextView transitMode = (TextView) findViewById(R.id.transit_mode);
         TextView origin = (TextView) findViewById(R.id.from_result);
         TextView destination = (TextView) findViewById(R.id.to_result);
         TextView distance = (TextView) findViewById(R.id.distance);
@@ -36,9 +36,10 @@ public class DetailedResultActivity extends AppCompatActivity {
         TextView departAt = (TextView) findViewById(R.id.depart_at_result);
         TextView arriveAt = (TextView) findViewById(R.id.arrive_at_result);
 
+        ImageView transitMode = (ImageView) findViewById(R.id.transit_mode);
+
         String transitModeText = results.get("transitMode");
 
-        transitMode.setText(transitModeText);
         origin.setText(info.get("origin"));
         destination.setText(info.get("destination"));
         distance.setText(results.get("distance"));
@@ -55,6 +56,8 @@ public class DetailedResultActivity extends AppCompatActivity {
             departAt.setText(departureTimeDate);
             arriveAt.setText(arrivalTimeDate);
         }
-
+        if(transitModeText.equals("DRIVING"))   {
+            transitMode.setImageResource(R.drawable.car);
+        }
     }
 }

@@ -18,142 +18,138 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="5dp">
 
+        <ImageView
+            android:id="@+id/transit_mode"
+            android:layout_width="80dp"
+            android:layout_height="75dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentTop="true"/>
 
-    <TextView
-        android:id="@+id/transit_mode"
-        android:layout_width="80dp"
-        android:layout_height="75dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="5dp"
-        android:text="Logo"
-        android:layout_alignParentTop="true"
-        android:textStyle="bold"
-        android:textColor="@android:color/background_light"/>
+        <TextView
+            android:id="@+id/depart_at"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/transit_mode"
+            android:layout_marginTop="5dp"
+            android:text="Departure:"
+            android:textStyle="bold"
+            android:textColor="@android:color/background_light"
+            android:textSize="15sp"/>
 
-    <TextView
-        android:id="@+id/depart_at"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/transit_mode"
-        android:layout_marginTop="5dp"
-        android:text="Departure:"
-        android:textStyle="bold"
-        android:textColor="@android:color/background_light"
-        android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/depart_at_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/depart_at"
+            android:layout_toRightOf="@+id/transit_mode"
+            android:text="00:00 - 2/02/2016"
+            android:textStyle="bold"
+            android:textColor="@android:color/background_light"
+            android:textSize="18sp"/>
 
-    <TextView
-        android:id="@+id/depart_at_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/depart_at"
-        android:layout_toRightOf="@+id/transit_mode"
-        android:text="00:00 - 2/02/2016"
-        android:textStyle="bold"
-        android:textColor="@android:color/background_light"
-        android:textSize="18sp"/>
+        <TextView
+            android:id="@+id/arrive_at"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/depart_at_result"
+            android:layout_toRightOf="@+id/transit_mode"
+            android:layout_marginTop="15dp"
+            android:text="Arrival:"
+            android:textStyle="bold"
+            android:textColor="@android:color/background_light"
+            android:textSize="15sp"/>
 
-    <TextView
-        android:id="@+id/arrive_at"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/depart_at_result"
-        android:layout_toRightOf="@+id/transit_mode"
-        android:layout_marginTop="15dp"
-        android:text="Arrival:"
-        android:textStyle="bold"
-        android:textColor="@android:color/background_light"
-        android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/arrive_at_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/arrive_at"
+            android:layout_toRightOf="@+id/transit_mode"
+            android:text="00:00 - 2/02/2016"
+            android:textStyle="bold"
+            android:textColor="@android:color/background_light"
+            android:textSize="18sp"/>
 
-    <TextView
-        android:id="@+id/arrive_at_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/arrive_at"
-        android:layout_toRightOf="@+id/transit_mode"
-        android:text="00:00 - 2/02/2016"
-        android:textStyle="bold"
-        android:textColor="@android:color/background_light"
-        android:textSize="18sp"/>
+        <TextView
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/depart_at_result"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Duration: 3h 15min"
+            android:textStyle="bold"
+            android:textColor="@android:color/background_light"
+            android:textSize="15sp"/>
 
-    <TextView
-        android:id="@+id/duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/depart_at_result"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:text="Duration: 3h 15min"
-        android:textStyle="bold"
-        android:textColor="@android:color/background_light"
-        android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/depart_at_result"
+            android:layout_below="@+id/duration"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:text="Distance: 87 miles"
+            android:textStyle="bold"
+            android:textColor="@android:color/background_light"
+            android:textSize="15sp"/>
 
-    <TextView
-        android:id="@+id/distance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/depart_at_result"
-        android:layout_below="@+id/duration"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="15dp"
-        android:text="Distance: 87 miles"
-        android:textStyle="bold"
-        android:textColor="@android:color/background_light"
-        android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/depart_at_result"
+            android:layout_below="@+id/distance"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:text="Price: £37"
+            android:textStyle="bold"
+            android:textColor="@android:color/background_light"
+            android:textSize="15sp"/>
 
-    <TextView
-        android:id="@+id/price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/depart_at_result"
-        android:layout_below="@+id/distance"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="15dp"
-        android:text="Price: £37"
-        android:textStyle="bold"
-        android:textColor="@android:color/background_light"
-        android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/arrive_at_result"
+            android:layout_marginTop="15dp"
+            android:text="From:"
+            android:textStyle="bold"
+            android:textColor="@android:color/background_light"
+            android:textSize="15sp"/>
 
-    <TextView
-        android:id="@+id/from"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/arrive_at_result"
-        android:layout_marginTop="15dp"
-        android:text="From:"
-        android:textStyle="bold"
-        android:textColor="@android:color/background_light"
-        android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/from_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/from"
+            android:text="47 Mandeville Road, Canterbury"
+            android:textStyle="bold"
+            android:textColor="@android:color/background_light"
+            android:textSize="20sp"/>
 
-    <TextView
-        android:id="@+id/from_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/from"
-        android:text="47 Mandeville Road, Canterbury"
-        android:textStyle="bold"
-        android:textColor="@android:color/background_light"
-        android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/from_result"
+            android:text="To:"
+            android:layout_marginTop="15dp"
+            android:textStyle="bold"
+            android:textColor="@android:color/background_light"
+            android:textSize="15sp"/>
 
-    <TextView
-        android:id="@+id/to"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/from_result"
-        android:text="To:"
-        android:layout_marginTop="15dp"
-        android:textStyle="bold"
-        android:textColor="@android:color/background_light"
-        android:textSize="15sp"/>
-
-    <TextView
-        android:id="@+id/to_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/to"
-        android:text="5 St Jasius Court, Canterbury"
-        android:textStyle="bold"
-        android:textColor="@android:color/background_light"
-        android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/to_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/to"
+            android:text="5 St Jasius Court, Canterbury"
+            android:textStyle="bold"
+            android:textColor="@android:color/background_light"
+            android:textSize="20sp"/>
 
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
