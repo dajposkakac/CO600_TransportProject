@@ -32,7 +32,7 @@ import org.xml.sax.SAXException;
 
 public class RequestHandler extends Thread {
 	
-	public static final String XML_SCHEMA_PATH = "./templates/request_schema.xsd";
+	public static final String XML_SCHEMA_PATH = "./request_schema.xsd";
 	
 	private Socket socket;
 	private BufferedReader bufferedReader;
