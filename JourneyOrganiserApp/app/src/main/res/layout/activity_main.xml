@@ -106,7 +106,8 @@
                     android:gravity="center_horizontal"
                     android:layout_below="@id/to_layout"
                     android:textIsSelectable="true"
-                    android:layout_marginBottom="@dimen/default_margin"/>
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:hint="Time"/>
 
                 <EditText
                     android:id="@+id/date"
@@ -117,7 +118,8 @@
                     android:layout_toRightOf="@id/time"
                     android:layout_below="@id/to_layout"
                     android:textIsSelectable="true"
-                    android:layout_marginBottom="@dimen/default_margin"/>
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:hint="Date"/>
 
                 <Spinner
                     android:id="@+id/dateSpinner"
