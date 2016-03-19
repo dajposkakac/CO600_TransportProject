@@ -1,9 +1,11 @@
 package transportapp.co600.journeyorganiserapp;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -11,9 +13,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by daj on 15/03/2016.
@@ -75,11 +82,26 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-//        LatLng canters = new LatLng(51.2750, 1.0870);
-        String[] data = info.get("originLatLng").split(",");
-        LatLng position = new LatLng(Double.valueOf(data[0]), Double.valueOf(data[1]));
-        mMap.addMarker(new MarkerOptions().position(position));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
-        mMap.animateCamera(CameraUpdateFactory.zoomIn());
+        String oll = info.get("originLatLng");
+        String[] originData = oll.split(",");
+        LatLng originPosition = new LatLng(Double.valueOf(originData[0]), Double.valueOf(originData[1]));
+        Log.d("LatLng", originPosition.toString());
+        String[] destinationData = info.get("destinationLatLng").split(",");
+        LatLng destinationPosition = new LatLng(Double.valueOf(destinationData[0]), Double.valueOf(destinationData[1]));
+//        LatLngBounds bounds = new LatLngBounds(originPosition, destinationPosition);
+        mMap.addMarker(new MarkerOptions().position(originPosition));
+        mMap.addMarker(new MarkerOptions().position(destinationPosition));
+        String[] polylineString = results.get("polyline").split("\\|");
+        List<LatLng> polyline = new ArrayList<>();
+        for(int i = 0; i < polylineString.length; i++)  {
+            String[] coord = polylineString[i].split(",");
+            polyline.add(new LatLng(Double.valueOf(coord[0]), Double.valueOf(coord[1])));
+        }
+//        List<LatLng> polyline = PolyUtil.decode(results.get("polyline"));
+        Log.d("polyline", results.get("polyline"));
+        mMap.addPolyline(new PolylineOptions().addAll(polyline).width(10).color(Color.RED));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(originPosition, 15));
+        //mMap.animateCamera(CameraUpdateFactory.zoomIn());
     }
 }

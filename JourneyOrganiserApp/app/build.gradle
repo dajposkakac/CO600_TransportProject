@@ -32,5 +32,6 @@ dependencies {
     compile 'com.google.maps:google-maps-services:0.1.10'
     compile 'com.android.support:design:23.1.1'
     compile 'org.honorato.multistatetogglebutton:multistatetogglebutton:0.2.1'
-    compile 'com.android.support:design:22.2.0'
+    compile 'com.android.support:design:23.2.0'
+    compile 'com.google.maps.android:android-maps-utils:0.4+'
 }
