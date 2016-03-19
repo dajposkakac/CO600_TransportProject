@@ -1,10 +1,14 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.joda.time.DateTime;
 
 import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.DirectionsStep;
+import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 
 public class DirectionsResults {
@@ -58,6 +62,34 @@ public class DirectionsResults {
 	public String getDepartureDateForRoute(int route)	{
 		return getDateReadable(result.routes[route].legs[0].departureTime);
 	}
+	
+	public String getPolylineForRoute(int route)	{
+		List<LatLng> polyline = new ArrayList<>();
+		DirectionsStep[] stepsList = result.routes[route].legs[0].steps;
+		StringBuilder polylineBuilder = new StringBuilder();
+		for(int i = 0; i < stepsList.length; i++)	{
+			List<LatLng> path = stepsList[i].polyline.decodePath();
+			for(LatLng pos : path)	{
+				polylineBuilder.append(pos.lat);
+				polylineBuilder.append(",");
+				polylineBuilder.append(pos.lng);
+				polylineBuilder.append("|");
+			}
+		}
+		polylineBuilder.deleteCharAt(polylineBuilder.length() - 1);
+		return polylineBuilder.toString().trim();
+	}
+	
+//	public String getPolylineForRoute(int route)	{
+//		DirectionsStep[] stepsList = result.routes[route].legs[0].steps;
+//		StringBuilder polylineBuilder = new StringBuilder();
+//		for(int i = 0; i < stepsList.length; i++)	{
+//			List<LatLng> path = stepsList[i].polyline.decodePath();
+//			polylineBuilder.append(stepsList[i].polyline.getEncodedPath());
+//			
+//		}
+//		return polylineBuilder.toString();
+//	}
 	
 	public int getNumberOfRoutes()	{
 		return result.routes.length;

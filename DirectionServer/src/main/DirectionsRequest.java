@@ -42,6 +42,7 @@ public class DirectionsRequest {
 	public static final String DEPARTURE_OPTION = "departureOption";
 	public static final String TIME = "time";
 	public static final String DATE = "date";
+	public static final String POLYLINE = "polyline";
 	
 	//Misc
 	private static final String LATLNG_REGEXP = "([+-]?\\d+\\.?\\d+)\\s*,\\s*([+-]?\\d+\\.?\\d+)";

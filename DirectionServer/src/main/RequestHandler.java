@@ -178,6 +178,10 @@ public class RequestHandler extends Thread {
 	    		Element departureOption = xmlDoc.createElement(DirectionsRequest.DEPARTURE_OPTION);
 	    		departureOption.appendChild(xmlDoc.createTextNode(res.getDepartureOption()));
 	    		result.appendChild(departureOption);
+	    		Element polyline = xmlDoc.createElement(DirectionsRequest.POLYLINE);
+	    		polyline.appendChild(xmlDoc.createTextNode(res.getPolylineForRoute(k)));
+	    		result.appendChild(polyline);
+	    		
 	    		results.appendChild(result);
 			}
 		}
