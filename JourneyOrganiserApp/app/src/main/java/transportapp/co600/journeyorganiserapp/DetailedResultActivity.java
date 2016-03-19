@@ -37,6 +37,7 @@ public class DetailedResultActivity extends AppCompatActivity {
         TextView arriveAt = (TextView) findViewById(R.id.arrive_at_result);
 
         ImageView transitMode = (ImageView) findViewById(R.id.transit_mode);
+        TextView test = (TextView) findViewById(R.id.test);
 
         String transitModeText = results.get("transitMode");
 
@@ -47,17 +48,28 @@ public class DetailedResultActivity extends AppCompatActivity {
         price.setText("£" + results.get("price"));
 
 
-        if(transitModeText.equals("TRANSIT")) {
-            String departureTime = String.valueOf(results.get("departureTime"));
-            String arrivalTime = String.valueOf(results.get("arrivalTime"));
-            String date = String.valueOf(results.get("date"));
-            String departureTimeDate = departureTime + " - " + date;
-            String arrivalTimeDate = arrivalTime + " - "  + date;
-            departAt.setText(departureTimeDate);
-            arriveAt.setText(arrivalTimeDate);
-        }
-        if(transitModeText.equals("DRIVING"))   {
-            transitMode.setImageResource(R.drawable.car);
+        switch (transitModeText) {
+            case "TRANSIT":
+                String departureTime = String.valueOf(results.get("departureTime"));
+                String arrivalTime = String.valueOf(results.get("arrivalTime"));
+                String date = String.valueOf(results.get("date"));
+                String departureTimeDate = departureTime + " - " + date;
+                String arrivalTimeDate = arrivalTime + " - " + date;
+                departAt.setText(departureTimeDate);
+                arriveAt.setText(arrivalTimeDate);
+                break;
+            case "WALKING":
+                test.setText("walk");
+                transitMode.setImageResource(R.drawable.walk);
+                break;
+            case "DRIVING":
+                test.setText("driving");
+                transitMode.setImageResource(R.drawable.car);
+                break;
+            case "CYCLING":
+                test.setText("cycling");
+                transitMode.setImageResource(R.drawable.cycle);
+                break;
         }
     }
 }

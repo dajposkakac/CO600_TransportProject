@@ -187,5 +187,15 @@
             android:textColor="@android:color/background_light"
             android:textSize="20sp"/>
 
+        <TextView
+            android:id="@+id/test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/to_result"
+            android:hint="test"
+            android:textStyle="bold"
+            android:textColor="@android:color/background_light"
+            android:textSize="20sp"/>
+
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

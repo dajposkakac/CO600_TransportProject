@@ -5,15 +5,14 @@
     android:layout_height="wrap_content"
     android:padding="5dp">
 
-    <TextView
+    <ImageView
         android:id="@+id/transit_mode"
         android:layout_width="80dp"
         android:layout_height="75dp"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:textStyle="bold"
         android:layout_marginTop="5dp"
-        android:textColor="@android:color/background_light"/>
+        android:contentDescription="Image" />
 
     <TextView
         android:id="@+id/depart_at"
@@ -31,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/depart_at"
         android:layout_toRightOf="@+id/transit_mode"
-        android:text="00:00 - 2/02/2016"
+        android:text=""
         android:textStyle="bold"
         android:textColor="@android:color/background_light"/>
 
@@ -52,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/arrive_at"
         android:layout_toRightOf="@+id/transit_mode"
-        android:text="00:00 - 2/02/2016"
+        android:text=""
         android:textStyle="bold"
         android:textColor="@android:color/background_light"/>
 
