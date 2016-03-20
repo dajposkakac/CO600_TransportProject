@@ -74,7 +74,8 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
 
 
         switch (transitModeText) {
-            case "TRANSIT":
+            case "TRAIN":
+            case "BUS":
                 String departureTime = String.valueOf(results.get("departureTime"));
                 String arrivalTime = String.valueOf(results.get("arrivalTime"));
                 String date = String.valueOf(results.get("date"));
@@ -89,9 +90,15 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
             case "DRIVING":
                 transitMode.setImageResource(R.drawable.car);
                 break;
-            case "CYCLING":
+            case "BICYCLING":
                 transitMode.setImageResource(R.drawable.cycle);
                 break;
+        }
+        if(transitModeText.equals("TRAIN")) {
+            transitMode.setImageResource(R.drawable.train);
+        }
+        else if(transitModeText.equals("BUS"))  {
+            transitMode.setImageResource(R.drawable.bus);
         }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

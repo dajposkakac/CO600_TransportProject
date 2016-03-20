@@ -58,25 +58,33 @@ public class ResultsAdapter extends ArrayAdapter<String> {
         holder.duration.setText(results.get(position).get("duration"));
         holder.price.setText("£" + results.get(position).get("price"));
 
-        if (transitMode.equals("TRANSIT")) {
-            String departureTime = String.valueOf(results.get(position).get("departureTime"));
-            String arrivalTime = String.valueOf(results.get(position).get("arrivalTime"));
-            String date = String.valueOf(results.get(position).get("date"));
-            String departureTimeDate = departureTime + " - " + date;
-            String arrivalTimeDate = arrivalTime + " - "  + date;
-            holder.departAt.setText(departureTimeDate);
-            holder.arriveAt.setText(arrivalTimeDate);
+        switch (transitMode) {
+            case "TRAIN":
+            case "BUS":
+                String departureTime = String.valueOf(results.get(position).get("departureTime"));
+                String arrivalTime = String.valueOf(results.get(position).get("arrivalTime"));
+                String date = String.valueOf(results.get(position).get("date"));
+                String departureTimeDate = departureTime + " - " + date;
+                String arrivalTimeDate = arrivalTime + " - " + date;
+                holder.departAt.setText(departureTimeDate);
+                holder.arriveAt.setText(arrivalTimeDate);
+                break;
+            case "DRIVING":
+                holder.transitModeImage.setImageResource(R.drawable.car);
+                break;
+            case "WALKING":
+                holder.transitModeImage.setImageResource(R.drawable.walk);
+                break;
+            case "BICYCLING":
+                holder.transitModeImage.setImageResource(R.drawable.cycle);
+                break;
         }
-        if(transitMode.equals("DRIVING"))   {
-            holder.transitModeImage.setImageResource(R.drawable.car);
+        if(transitMode.equals("TRAIN")) {
+            holder.transitModeImage.setImageResource(R.drawable.train);
         }
-        if(transitMode.equals("WALKING"))   {
-            holder.transitModeImage.setImageResource(R.drawable.walk);
+        else if(transitMode.equals("BUS"))  {
+            holder.transitModeImage.setImageResource(R.drawable.bus);
         }
-        if(transitMode.equals("CYCLING"))   {
-            holder.transitModeImage.setImageResource(R.drawable.cycle);
-        }
-
         return convertView;
     }
 
