@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/transit_mode"
+        android:layout_width="80dp"
+        android:layout_height="75dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:contentDescription="Image" />
+
+    <TextView
+        android:id="@+id/time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/transit_mode"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="30dp"
+        android:text="Duration:"
+        android:textStyle="bold"
+        android:textColor="@android:color/background_light"/>
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/time_label"
+        android:layout_toEndOf="@+id/transit_mode"
+        android:layout_marginStart="30dp"
+        android:text="9 hours 57 minutes"
+        android:textStyle="bold"
+        android:textColor="@android:color/background_light"/>
+
+    <TextView
+        android:id="@+id/distance_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/time"
+        android:layout_toEndOf="@+id/transit_mode"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="30dp"
+        android:text="Distance:"
+        android:textStyle="bold"
+        android:textColor="@android:color/background_light"/>
+
+    <TextView
+        android:id="@+id/distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/distance_label"
+        android:layout_toEndOf="@+id/transit_mode"
+        android:layout_marginStart="30dp"
+        android:text="81 miles"
+        android:textStyle="bold"
+        android:textColor="@android:color/background_light"/>
+
+    <TextView
+        android:id="@+id/price_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/time_label"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
+        android:text="Price:"
+        android:textStyle="bold"
+        android:textColor="@android:color/background_light"/>
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/price_label"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
+        android:text="£37"
+        android:textStyle="bold"
+        android:textColor="@android:color/background_light"/>
+
+</RelativeLayout>

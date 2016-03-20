@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="transportapp.co600.googledirectionstest.ResultsActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        android:id="@+id/ScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp">
+
+            <ImageView
+                android:id="@+id/transit_mode"
+                android:layout_width="80dp"
+                android:layout_height="75dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentTop="true"/>
+
+            <TextView
+                android:id="@+id/distance_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/transit_mode"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="5dp"
+                android:text="Distance:"
+                android:textStyle="bold"
+                android:textColor="@android:color/background_light"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/distance_label"
+                android:layout_marginStart="50dp"
+                android:layout_toEndOf="@+id/transit_mode"
+                android:textStyle="bold"
+                android:textColor="@android:color/background_light"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/duration_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/distance"
+                android:layout_marginStart="50dp"
+                android:layout_toEndOf="@+id/transit_mode"
+                android:text="Duration:"
+                android:textStyle="bold"
+                android:textColor="@android:color/background_light"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/duration_label"
+                android:layout_marginStart="50dp"
+                android:layout_toEndOf="@+id/transit_mode"
+                android:textStyle="bold"
+                android:textColor="@android:color/background_light"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/price_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price:"
+                android:textStyle="bold"
+                android:layout_below="@+id/duration"
+                android:layout_toEndOf="@+id/transit_mode"
+                android:layout_marginStart="50dp"
+                android:textColor="@android:color/background_light"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_below="@+id/price_label"
+                android:layout_toEndOf="@+id/transit_mode"
+                android:layout_marginStart="50dp"
+                android:textColor="@android:color/background_light"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/price"
+                android:layout_marginTop="15dp"
+                android:text="From:"
+                android:textStyle="bold"
+                android:textColor="@android:color/background_light"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/from_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/from"
+                android:textStyle="bold"
+                android:textColor="@android:color/background_light"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/from_result"
+                android:text="To:"
+                android:layout_marginTop="15dp"
+                android:textStyle="bold"
+                android:textColor="@android:color/background_light"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/to_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/to"
+                android:textStyle="bold"
+                android:textColor="@android:color/background_light"
+                android:textSize="20sp"/>
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:id="@+id/map"
+            tools:context=".DetailedResultActivity"
+            android:layout_below="@id/to_result"
+            android:layout_margin="10dp"
+            android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+        </RelativeLayout>
+    </ScrollView>
+</android.support.design.widget.CoordinatorLayout>

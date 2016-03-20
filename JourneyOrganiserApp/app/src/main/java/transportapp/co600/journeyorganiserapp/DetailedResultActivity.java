@@ -40,22 +40,31 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.detail_results_activity);
 
         info = (HashMap<String, String>) getIntent().getSerializableExtra(INFO_TAG);
         results = (HashMap<String, String>) getIntent().getSerializableExtra(RESULT_TAG);
+
+        String transitModeText = results.get("transitMode");
+
+        TextView departAt = null;
+        TextView arriveAt = null;
+
+        if(transitModeText.equals("TRANSIT"))   {
+            setContentView(R.layout.detail_results_activity);
+            departAt = (TextView) findViewById(R.id.depart_at_result);
+            arriveAt = (TextView) findViewById(R.id.arrive_at_result);
+        }
+        else{
+            setContentView(R.layout.detail_results_activity_no_date);
+        }
 
         TextView origin = (TextView) findViewById(R.id.from_result);
         TextView destination = (TextView) findViewById(R.id.to_result);
         TextView distance = (TextView) findViewById(R.id.distance);
         TextView duration = (TextView) findViewById(R.id.duration);
         TextView price = (TextView) findViewById(R.id.price);
-        TextView departAt = (TextView) findViewById(R.id.depart_at_result);
-        TextView arriveAt = (TextView) findViewById(R.id.arrive_at_result);
 
         ImageView transitMode = (ImageView) findViewById(R.id.transit_mode);
-
-        String transitModeText = results.get("transitMode");
 
         origin.setText(info.get("origin"));
         destination.setText(info.get("destination"));
