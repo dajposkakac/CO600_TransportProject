@@ -129,15 +129,21 @@ public class ResultsActivity extends AppCompatActivity {
             context.startActivity(intent);
         }
     }
-    @SuppressWarnings("unchecked")
+
     @Override
     protected void onResume() {
+        super.onResume();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void onStop() {
+        super.onStop();
         Bundle state = ResultsActivity.getInstance().getSavedData();
         if(state != null)   {
             info = (HashMap<String, String>) state.getSerializable(INFO_TAG);
             results = (HashMap<Integer, HashMap<String, String>>) state.getSerializable(RESULTS_TAG);
         }
-        super.onResume();
     }
 
     @Override
