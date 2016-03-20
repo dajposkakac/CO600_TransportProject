@@ -54,7 +54,6 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
         TextView arriveAt = (TextView) findViewById(R.id.arrive_at_result);
 
         ImageView transitMode = (ImageView) findViewById(R.id.transit_mode);
-        TextView test = (TextView) findViewById(R.id.test);
 
         String transitModeText = results.get("transitMode");
 
@@ -76,15 +75,12 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
                 arriveAt.setText(arrivalTimeDate);
                 break;
             case "WALKING":
-                test.setText("walk");
                 transitMode.setImageResource(R.drawable.walk);
                 break;
             case "DRIVING":
-                test.setText("driving");
                 transitMode.setImageResource(R.drawable.car);
                 break;
             case "CYCLING":
-                test.setText("cycling");
                 transitMode.setImageResource(R.drawable.cycle);
                 break;
         }
