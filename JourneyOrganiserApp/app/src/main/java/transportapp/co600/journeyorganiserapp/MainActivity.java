@@ -127,8 +127,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         from.setOnItemClickListener(mAutocompleteClickListener);
         to.setOnItemClickListener(mAutocompleteClickListener);
-        from.setText("otham close, canterbury");
-        to.setText("ulcombe gardens,canterbury");
+        from.setText("canterbury");
+        to.setText("faversham");
 
         mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, boundsCurrentLocation,
                 null);

@@ -49,7 +49,7 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
         TextView departAt = null;
         TextView arriveAt = null;
 
-        if(transitModeText.equals("TRANSIT"))   {
+        if(transitModeText.equals("TRAIN") || transitModeText.equals("BUS"))   {
             setContentView(R.layout.detail_results_activity);
             departAt = (TextView) findViewById(R.id.depart_at_result);
             arriveAt = (TextView) findViewById(R.id.arrive_at_result);
