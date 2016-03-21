@@ -69,23 +69,36 @@ public class DirectionsResults {
 		return getDateReadable(result.routes[route].legs[0].departureTime);
 	}
 	
+	/*
+	 * @return decoded and detailed polyline of route
+	 */
+//	public String getPolylineForRoute(int route)	{
+//		List<LatLng> polyline = new ArrayList<>();
+//		DirectionsStep[] stepsList = result.routes[route].legs[0].steps;
+//		StringBuilder polylineBuilder = new StringBuilder();
+//		for(int i = 0; i < stepsList.length; i++)	{
+//			List<LatLng> path = stepsList[i].polyline.decodePath();
+//			for(LatLng pos : path)	{
+//				polylineBuilder.append(pos.lat);
+//				polylineBuilder.append(",");
+//				polylineBuilder.append(pos.lng);
+//				polylineBuilder.append("|");
+//			}
+//		}
+//		polylineBuilder.deleteCharAt(polylineBuilder.length() - 1);
+//		return polylineBuilder.toString().trim();
+//	}
+	
+	/*
+	 * @return encoded and smoothed polyline of route
+	 */
 	public String getPolylineForRoute(int route)	{
-		List<LatLng> polyline = new ArrayList<>();
-		DirectionsStep[] stepsList = result.routes[route].legs[0].steps;
-		StringBuilder polylineBuilder = new StringBuilder();
-		for(int i = 0; i < stepsList.length; i++)	{
-			List<LatLng> path = stepsList[i].polyline.decodePath();
-			for(LatLng pos : path)	{
-				polylineBuilder.append(pos.lat);
-				polylineBuilder.append(",");
-				polylineBuilder.append(pos.lng);
-				polylineBuilder.append("|");
-			}
-		}
-		polylineBuilder.deleteCharAt(polylineBuilder.length() - 1);
-		return polylineBuilder.toString().trim();
+		return result.routes[route].overviewPolyline.getEncodedPath();
 	}
 	
+	/*
+	 * @return encoded and detailed polyline of route
+	 */
 //	public String getPolylineForRoute(int route)	{
 //		DirectionsStep[] stepsList = result.routes[route].legs[0].steps;
 //		StringBuilder polylineBuilder = new StringBuilder();
