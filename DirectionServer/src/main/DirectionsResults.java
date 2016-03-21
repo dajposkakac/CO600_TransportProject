@@ -154,12 +154,20 @@ public class DirectionsResults {
 	}
 	
 	private String getTimeReadable(DateTime dt)	{
-		return dt.getHourOfDay() + ":" + dt.getMinuteOfHour();
+		return addMissingZero(dt.getHourOfDay()) + ":" + addMissingZero(dt.getMinuteOfHour());
 	}
 	
 	private String getDateReadable(DateTime dt)	{
-		return dt.getDayOfMonth() + "-" + dt.getMonthOfYear() + "-" + dt.getYear();
+		return addMissingZero(dt.getDayOfMonth()) + "-" + addMissingZero(dt.getMonthOfYear()) + "-" + dt.getYear();
 	}
+	
+	private String addMissingZero(int time)    {
+        String timeString = String.valueOf(time);
+        if(time < 10 && time > -1)  {
+            timeString = "0" + timeString;
+        }
+        return timeString;
+    }
 	
 	
 }
