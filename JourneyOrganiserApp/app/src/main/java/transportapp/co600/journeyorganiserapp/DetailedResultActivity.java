@@ -119,13 +119,13 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
 //        LatLngBounds bounds = new LatLngBounds(originPosition, destinationPosition);
         mMap.addMarker(new MarkerOptions().position(originPosition));
         mMap.addMarker(new MarkerOptions().position(destinationPosition));
-        String[] polylineString = results.get("polyline").split("\\|");
-        List<LatLng> polyline = new ArrayList<>();
-        for(int i = 0; i < polylineString.length; i++)  {
-            String[] coord = polylineString[i].split(",");
-            polyline.add(new LatLng(Double.valueOf(coord[0]), Double.valueOf(coord[1])));
-        }
-//        List<LatLng> polyline = PolyUtil.decode(results.get("polyline"));
+//        String[] polylineString = results.get("polyline").split("\\|");
+//        List<LatLng> polyline = new ArrayList<>();
+//        for(int i = 0; i < polylineString.length; i++)  {
+//            String[] coord = polylineString[i].split(",");
+//            polyline.add(new LatLng(Double.valueOf(coord[0]), Double.valueOf(coord[1])));
+//        }
+        List<LatLng> polyline = PolyUtil.decode(results.get("polyline"));
         Log.d("polyline", results.get("polyline"));
         mMap.addPolyline(new PolylineOptions().addAll(polyline).width(10).color(Color.RED));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
