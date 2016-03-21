@@ -93,6 +93,43 @@ public class ResultsAdapter extends ArrayAdapter<String> {
 //        return 1;
 //    }
 
+    public int[] sort(int[] a, double[] b, int min, int max)  {
+        int i = min;
+        int j = max;
+        double pivot = b[min + (max - min) / 2];
+
+        while(i <= j)   {
+            while(b[i] < pivot)    {
+                i++;
+            }
+
+            while(b[j] < pivot)    {
+                j--;
+            }
+
+            if(i <= j)  {
+                int ai = a[i];
+                double bi = b[i];
+                int aj = a[j];
+                double bj = b[j];
+                a[i] = aj;
+                b[i] = bj;
+                a[j] = ai;
+                b[j] = bi;
+                i++;
+                j--;
+            }
+        }
+
+        if(min < j) {
+            sort(a, b, min, j);
+        }
+
+        if(i < max) {
+            sort(a, b, i, max);
+        }
+        return a;
+    }
 
     static class ViewHolder	{
         TextView distance;
