@@ -98,7 +98,13 @@ public class DirectionsResults {
 //	}
 	
 	public String getPriceForRoute(int route)	{
-		Integer price = priceData.get(getTransitModeForRoute(route));
+		String transitMode = getTransitModeForRoute(route);
+		int price = -1;
+		if(transitMode.equals(TRAIN) || transitMode.equals(BUS))	{
+			price = priceData.get(transitMode);
+		}	else if(transitMode.equals(TravelMode.DRIVING.toString().toUpperCase()))	{
+			price = priceData.get(DRIVE);
+		}
 		return String.valueOf(price);
 	}
 	
