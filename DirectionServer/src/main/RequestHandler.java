@@ -90,18 +90,24 @@ public class RequestHandler extends Thread {
 		return map;
 	}
 	
-	private String parseR2RXml(Document doc)	{
+	private HashMap<String, Integer> parseR2RXml(Document doc)	{
+		HashMap<String, Integer> priceMap = new HashMap<>();
 		NodeList nodes = doc.getFirstChild().getChildNodes();
 		for(int i = 0; i < nodes.getLength(); i++)	{
 			Node n = nodes.item(i);
 			String nn = n.getNodeName();
 			if(nn.equals("Route"))	{
-				if(n.getAttributes().getNamedItem("name").getTextContent().equals("Train") || n.getAttributes().getNamedItem("name").getTextContent().equals("Drive"))	{
-					return n.getFirstChild().getAttributes().getNamedItem("price").getTextContent();
+				String travelModeName = n.getAttributes().getNamedItem("name").getTextContent();
+				if(travelModeName.contains(DirectionsResults.TRAIN)) {
+					priceMap.put(DirectionsResults.TRAIN, Integer.valueOf(n.getFirstChild().getAttributes().getNamedItem("price").getTextContent()));
+				}	else if(travelModeName.contains(DirectionsResults.BUS))	{ 
+					priceMap.put(DirectionsResults.BUS, Integer.valueOf(n.getFirstChild().getAttributes().getNamedItem("price").getTextContent()));
+				}	else if(travelModeName.contains(DirectionsResults.DRIVE))	{
+					priceMap.put(DirectionsResults.DRIVE, Integer.valueOf(n.getFirstChild().getAttributes().getNamedItem("price").getTextContent()));
 				}
 			}
 		}
-		return "-1";
+		return priceMap;
 	}
 	
 	private boolean validateRequest(StreamSource streamSource) {
@@ -151,9 +157,11 @@ public class RequestHandler extends Thread {
 			Element results = xmlDoc.createElement("results");
 			response.appendChild(results);
 			for(int k = 0; k < res.getNumberOfRoutes(); k++)	{
+				String travelMode = res.getTransitModeForRoute(k).toUpperCase();
+				
 	    		Element result = xmlDoc.createElement("result");
 	    		Element transitMode = xmlDoc.createElement(DirectionsRequest.TRANSIT_MODE);
-	    		transitMode.appendChild(xmlDoc.createTextNode(res.getTransitMode()));
+	    		transitMode.appendChild(xmlDoc.createTextNode(travelMode));
 	    		result.appendChild(transitMode);
 	    		Element distance = xmlDoc.createElement("distance");
 	    		distance.appendChild(xmlDoc.createTextNode(res.getDistanceForRoute(k)));
@@ -162,9 +170,9 @@ public class RequestHandler extends Thread {
 	    		duration.appendChild(xmlDoc.createTextNode(res.getDurationForRoute(k)));
 	    		result.appendChild(duration);
 	    		Element price = xmlDoc.createElement("price");
-	    		price.appendChild(xmlDoc.createTextNode(res.getPrice()));
+	    		price.appendChild(xmlDoc.createTextNode(res.getPriceForRoute(k)));
 	    		result.appendChild(price);
-	    		if(res.getTransitMode().equals("TRANSIT"))	{
+	    		if(travelMode.equals("TRAIN") || travelMode.equals("BUS"))	{
 		    		Element arrivalTime = xmlDoc.createElement("arrivalTime");
 		    		arrivalTime.appendChild(xmlDoc.createTextNode(res.getArrivalTimeForRoute(k)));
 		    		result.appendChild(arrivalTime);

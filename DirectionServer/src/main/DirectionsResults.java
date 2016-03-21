@@ -13,17 +13,23 @@ import com.google.maps.model.TravelMode;
 
 public class DirectionsResults {
 	
+	public static final String TRAIN = "Train";
+	public static final String BUS = "Bus";
+	public static final String DRIVE = "Drive";
+	
+	public static final String CURRENCY_POUND = "£";
+	
 	private final DirectionsResult result;
 	private HashMap<String, String> additionalData;
+	private HashMap<String, Integer> priceData;
 	private int status;
-	private String price;
 	
 	
-	public DirectionsResults(int status, DirectionsResult directionsResult, HashMap<String, String> pAdditionalData, String pPrice)	{
+	public DirectionsResults(int status, DirectionsResult directionsResult, HashMap<String, String> pAdditionalData, HashMap<String, Integer> pPriceData)	{
 		setStatus(status);
 		result = directionsResult;
 		additionalData = pAdditionalData;
-		setPrice(pPrice);
+		priceData = pPriceData;
 	}
 	
 	public DirectionsResults(int status)	{
@@ -91,12 +97,36 @@ public class DirectionsResults {
 //		return polylineBuilder.toString();
 //	}
 	
+	public String getPriceForRoute(int route)	{
+		Integer price = priceData.get(getTransitModeForRoute(route));
+		return String.valueOf(price);
+	}
+	
 	public int getNumberOfRoutes()	{
 		return result.routes.length;
 	}
 
-	public String getTransitMode() {
-		return additionalData.get(DirectionsRequest.TRANSIT_MODE);
+	public String getTransitModeForRoute(int route) {
+		String travelMode = "unknown";
+		String requestTravelMode = additionalData.get(DirectionsRequest.TRANSIT_MODE);
+		DirectionsStep[] steps = result.routes[route].legs[0].steps;
+		int i = 0;
+		boolean found = false;
+		while(i < steps.length && !found)	{
+			TravelMode stepTravelMode = steps[i].travelMode;
+			if((stepTravelMode == TravelMode.DRIVING || stepTravelMode == TravelMode.WALKING || stepTravelMode == (TravelMode.BICYCLING)) && stepTravelMode == TravelMode.valueOf(requestTravelMode))	{
+				travelMode = requestTravelMode;
+				found = true;
+			}	else if(stepTravelMode == TravelMode.TRANSIT && stepTravelMode == TravelMode.valueOf(requestTravelMode))	{
+				String vehicleName = steps[i].transitDetails.line.vehicle.name;
+				if(vehicleName.equals(TRAIN) || vehicleName.equals(BUS))	{
+					travelMode = vehicleName;
+					found = true;
+				}
+			}
+			i++;
+		}
+		return travelMode;
 	}
 	
 	public String getDepartureOption()	{
@@ -113,14 +143,6 @@ public class DirectionsResults {
 	
 	public String getDestinationLatLng() {
 		return additionalData.get(DirectionsRequest.DESTINATION_LATLNG);
-	}
-
-	public String getPrice() {
-		return price;
-	}
-
-	public void setPrice(String price) {
-		this.price = price;
 	}
 
 	public int getStatus() {
