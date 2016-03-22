@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -21,16 +22,16 @@ public class ResultsAdapter extends ArrayAdapter<String> {
     private final Context context;
     private static int layout;
     private final HashMap<String, String> info;
-    private final HashMap<Integer, HashMap<String, String>> results;
+    private final LinkedHashMap<Integer, HashMap<String, String>> results;
     private final double[] valuesArray;
     private Integer[] list;
 
-    public ResultsAdapter(Context pContext, HashMap<String, String> pInfo, HashMap<Integer, HashMap<String, String>> pResults, String sort) {
+    public ResultsAdapter(Context pContext, HashMap<String, String> pInfo, LinkedHashMap<Integer, HashMap<String, String>> pResults, String sort) {
         super(pContext, layout = R.layout.result_row);
         context = pContext;
         info = pInfo;
-        results = pResults;
-        HashMap<Integer, HashMap<String, String>> resultsCopy = new HashMap<>();
+        results = new LinkedHashMap<>(pResults);
+        LinkedHashMap<Integer, HashMap<String, String>> resultsCopy = new LinkedHashMap<>();
         resultsCopy.putAll(results);
 
         list = results.keySet().toArray(new Integer[results.size()]);

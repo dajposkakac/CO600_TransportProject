@@ -31,7 +31,7 @@ public class Request {
 
     public String getTransitMode() {
         if(transitMode.equalsIgnoreCase("unknown")) {
-            transitMode = "driving,transit";
+            transitMode = "driving,transit,bicycling,walking";
         }
         return transitMode;
     }

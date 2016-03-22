@@ -17,7 +17,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -32,7 +37,7 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
     private BufferedReader bufferedReader;
     private int status;
     private HashMap<String, String> info;
-    private HashMap<Integer, HashMap<String, String>> results;
+    private LinkedHashMap<Integer, HashMap<String, String>> results;
 
     public ReceiveDirectionsTask(Activity pActivity, Socket pSocket)   {
         activity = pActivity;
@@ -69,9 +74,18 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
         Log.d("ReceiveRES", result);
         if(status == 0) {
+            ArrayList<Integer> keys = new ArrayList<>();
+            ArrayList<HashMap<String, String>> values = new ArrayList<>();
+            Iterator<Integer> iterator = results.keySet().iterator();
+            while(iterator.hasNext())   {
+                Integer x = iterator.next();
+                keys.add(x);
+                values.add(results.get(x));
+            }
             Intent intent = new Intent(activity, ResultsActivity.class);
             intent.putExtra("info", info);
-            intent.putExtra("results", results);
+            intent.putExtra("results_keys", keys);
+            intent.putExtra("results_values", values);
             activity.startActivity(intent);
         }   else    {
             activity.findViewById(R.id.loading).setVisibility(View.INVISIBLE);
@@ -112,8 +126,8 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
     }
 
     private void parseResults(Document doc) {
-        results = new HashMap<>();
         NodeList nl = doc.getFirstChild().getChildNodes();
+        results = new LinkedHashMap<>(nl.getLength());
         boolean found = false;
         int i = 0;
         while(!found && i < nl.getLength()) {
@@ -141,9 +155,9 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
         return map;
     }
 
-    private HashMap<String,String> parseToMap(Document doc)	{
+    private LinkedHashMap<String,String> parseToMap(Document doc)	{
         NodeList nodes = doc.getFirstChild().getChildNodes();
-        HashMap<String, String> map = new HashMap<>();
+        LinkedHashMap<String, String> map = new LinkedHashMap<>();
         for(int i = 0; i < nodes.getLength(); i++)  {
             Node n = nodes.item(i);
             String nodeName = n.getNodeName();
