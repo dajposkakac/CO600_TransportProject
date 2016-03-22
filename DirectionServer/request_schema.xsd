@@ -23,7 +23,7 @@
       <xs:sequence>
         <xs:element name="origin" type="locationtype"></xs:element>
         <xs:element name="destination" type="locationtype"></xs:element>
-        <xs:element name="transitMode" type="transitModetype"></xs:element>
+        <xs:element name="transitMode"></xs:element>
         <xs:element name="time" type="xs:time"></xs:element>
         <xs:element name="date" type="xs:date"></xs:element>
         <xs:element name="departureOption" type="departureOptiontype"></xs:element>

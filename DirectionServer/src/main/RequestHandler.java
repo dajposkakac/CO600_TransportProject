@@ -51,13 +51,20 @@ public class RequestHandler extends Thread {
 		    if(validateRequest(new StreamSource(new StringReader(xmlString))))	{
 		    	Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(xmlString)));
 			    HashMap<String, String> data = parseToMap(xmlDoc);
-			    DirectionsRequest request = new DirectionsRequest(data);
-			    
-			    if(request.getStatus() == 0)	{
-			    	Document r2rXmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(request.getR2RData())));
-			    	result = new DirectionsResults(request.getStatus(), request.getRoutes(), request.getAdditionalData(), parseR2RXml(r2rXmlDoc));
-			    }	else	{
-			    	result = new DirectionsResults(request.getStatus());
+			    String[] transitModes = data.get(DirectionsRequest.TRANSIT_MODE).split(",");
+			    for(int i = 0; i < transitModes.length; i++)	{
+			    	data.put(DirectionsRequest.TRANSIT_MODE, transitModes[i]);
+			    	DirectionsRequest request = new DirectionsRequest(data);
+				    
+				    if(request.getStatus() == 0)	{
+				    	if(result == null)	{
+				    		result = new DirectionsResults(request.getStatus(), request.getAdditionalData());
+				    	}
+				    	Document r2rXmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(request.getR2RData())));
+			    		result.addResults(request.getRoutes(), parseR2RXml(r2rXmlDoc));
+				    }	else	{
+				    	result = new DirectionsResults(request.getStatus());
+				    }
 			    }
 		    }	else	{
 		    	result = new DirectionsResults(-10);

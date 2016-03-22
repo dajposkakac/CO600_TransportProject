@@ -7,6 +7,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
@@ -19,54 +20,65 @@ public class DirectionsResults {
 	
 	public static final String CURRENCY_POUND = "£";
 	
-	private final DirectionsResult result;
+	private DirectionsResult result;
+	private List<DirectionsRoute> results;
 	private HashMap<String, String> additionalData;
 	private HashMap<String, Integer> priceData;
 	private int status;
 	
 	
-	public DirectionsResults(int status, DirectionsResult directionsResult, HashMap<String, String> pAdditionalData, HashMap<String, Integer> pPriceData)	{
+	public DirectionsResults(int status, HashMap<String, String> pAdditionalData)	{
 		setStatus(status);
-		result = directionsResult;
 		additionalData = pAdditionalData;
-		priceData = pPriceData;
 	}
 	
 	public DirectionsResults(int status)	{
-		result = null;
 		setStatus(status);
 	}
 	
+	public void addResults(DirectionsResult directionsResult, HashMap<String, Integer> pPriceData)	{
+		if(results == null)	{
+			results = new ArrayList<>(20);
+		}
+		if(priceData == null)	{
+			priceData = new HashMap<>();
+		}
+		for(int i = 0; i < directionsResult.routes.length; i++)	{
+			results.add(directionsResult.routes[i]);
+		}
+		priceData.putAll(pPriceData);
+	}
+	
 	public String getDestinationForRoute(int route)	{
-		return result.routes[route].legs[0].endAddress;
+		return results.get(route).legs[0].endAddress;
 	}
 	
 	public String getOriginForRoute(int route)	{
-		return result.routes[route].legs[0].startAddress;
+		return results.get(route).legs[0].startAddress;
 	}
 	
 	public String getDistanceForRoute(int route)	{
-		return result.routes[route].legs[0].distance.humanReadable;
+		return results.get(route).legs[0].distance.humanReadable;
 	}
 	
 	public String getDurationForRoute(int route)	{
-		return result.routes[route].legs[0].duration.humanReadable;
+		return results.get(route).legs[0].duration.humanReadable;
 	}
 	
 	public String getArrivalTimeForRoute(int route)	{
-		return getTimeReadable(result.routes[route].legs[0].arrivalTime);
+		return getTimeReadable(results.get(route).legs[0].arrivalTime);
 	}
 	
 	public String getDepartureTimeForRoute(int route)	{
-		return getTimeReadable(result.routes[route].legs[0].departureTime);
+		return getTimeReadable(results.get(route).legs[0].departureTime);
 	}
 	
 	public String getArrivalDateForRoute(int route)	{
-		return getDateReadable(result.routes[route].legs[0].arrivalTime);
+		return getDateReadable(results.get(route).legs[0].arrivalTime);
 	}
 	
 	public String getDepartureDateForRoute(int route)	{
-		return getDateReadable(result.routes[route].legs[0].departureTime);
+		return getDateReadable(results.get(route).legs[0].departureTime);
 	}
 	
 	/*
@@ -74,7 +86,7 @@ public class DirectionsResults {
 	 */
 //	public String getPolylineForRoute(int route)	{
 //		List<LatLng> polyline = new ArrayList<>();
-//		DirectionsStep[] stepsList = result.routes[route].legs[0].steps;
+//		DirectionsStep[] stepsList = results.get(route).legs[0].steps;
 //		StringBuilder polylineBuilder = new StringBuilder();
 //		for(int i = 0; i < stepsList.length; i++)	{
 //			List<LatLng> path = stepsList[i].polyline.decodePath();
@@ -93,14 +105,14 @@ public class DirectionsResults {
 	 * @return encoded and smoothed polyline of route
 	 */
 	public String getPolylineForRoute(int route)	{
-		return result.routes[route].overviewPolyline.getEncodedPath();
+		return results.get(route).overviewPolyline.getEncodedPath();
 	}
 	
 	/*
 	 * @return encoded and detailed polyline of route
 	 */
 //	public String getPolylineForRoute(int route)	{
-//		DirectionsStep[] stepsList = result.routes[route].legs[0].steps;
+//		DirectionsStep[] stepsList = results.get(route).legs[0].steps;
 //		StringBuilder polylineBuilder = new StringBuilder();
 //		for(int i = 0; i < stepsList.length; i++)	{
 //			List<LatLng> path = stepsList[i].polyline.decodePath();
@@ -117,33 +129,34 @@ public class DirectionsResults {
 			if(priceData.containsKey(transitMode))	{
 				price = priceData.get(transitMode);
 			}
-		}	else if(transitMode.equals(TravelMode.DRIVING.toString().toUpperCase()))	{
+		}	else if(transitMode.equalsIgnoreCase(TravelMode.DRIVING.toString()))	{
 			price = priceData.get(DRIVE);
 		}
 		return String.valueOf(price);
 	}
 	
 	public int getNumberOfRoutes()	{
-		return result.routes.length;
+		return results.size();
 	}
 
 	public String getTransitModeForRoute(int route) {
 		String travelMode = "unknown";
-		String requestTravelMode = additionalData.get(DirectionsRequest.TRANSIT_MODE);
-		DirectionsStep[] steps = result.routes[route].legs[0].steps;
+		DirectionsStep[] steps = results.get(route).legs[0].steps;
 		int i = 0;
 		boolean found = false;
 		while(i < steps.length && !found)	{
 			TravelMode stepTravelMode = steps[i].travelMode;
-			if((stepTravelMode == TravelMode.DRIVING || stepTravelMode == TravelMode.WALKING || stepTravelMode == (TravelMode.BICYCLING)) && stepTravelMode == TravelMode.valueOf(requestTravelMode))	{
-				travelMode = requestTravelMode;
+			if(stepTravelMode == TravelMode.DRIVING  || stepTravelMode == (TravelMode.BICYCLING))	{
+				travelMode = stepTravelMode.toString();
 				found = true;
-			}	else if(stepTravelMode == TravelMode.TRANSIT && stepTravelMode == TravelMode.valueOf(requestTravelMode))	{
+			}	else if(stepTravelMode == TravelMode.TRANSIT)	{
 				String vehicleName = steps[i].transitDetails.line.vehicle.name;
 				if(vehicleName.equals(TRAIN) || vehicleName.equals(BUS))	{
 					travelMode = vehicleName;
 					found = true;
 				}
+			}	else if(stepTravelMode == TravelMode.WALKING)	{
+				travelMode = stepTravelMode.toString();
 			}
 			i++;
 		}
