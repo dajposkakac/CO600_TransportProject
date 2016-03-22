@@ -8,7 +8,7 @@ import com.google.maps.model.TravelMode;
 public class Request {
     private String destination;
     private String origin;
-    private TravelMode transitMode;
+    private String transitMode;
     private String time;
     private String date;
     private String departureOption;
@@ -29,11 +29,14 @@ public class Request {
         this.destination = destination;
     }
 
-    public TravelMode getTransitMode() {
+    public String getTransitMode() {
+        if(transitMode.equalsIgnoreCase("unknown")) {
+            transitMode = "driving,transit";
+        }
         return transitMode;
     }
 
-    public void setTransitMode(TravelMode transitMode) {
+    public void setTransitMode(String transitMode) {
         this.transitMode = transitMode;
     }
 

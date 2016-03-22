@@ -96,7 +96,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
 
         origin.appendChild(xmlDoc.createTextNode(req.getOrigin()));
         destination.appendChild(xmlDoc.createTextNode(req.getDestination()));
-        transitMode.appendChild(xmlDoc.createTextNode(req.getTransitMode().toString()));
+        transitMode.appendChild(xmlDoc.createTextNode(req.getTransitMode()));
         time.appendChild(xmlDoc.createTextNode(req.getTime()));
         date.appendChild(xmlDoc.createTextNode(req.getDate()));
         departureOption.appendChild(xmlDoc.createTextNode(req.getDepartureOption()));

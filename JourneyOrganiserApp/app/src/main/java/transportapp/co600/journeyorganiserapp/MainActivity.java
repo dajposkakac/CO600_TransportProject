@@ -441,7 +441,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     tm = TravelMode.BICYCLING;
                     break;
             }
-            req.setTransitMode(tm);
+            req.setTransitMode(tm.toString());
         }
     }
 
