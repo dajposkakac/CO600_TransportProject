@@ -22,13 +22,47 @@ public class ResultsAdapter extends ArrayAdapter<String> {
     private static int layout;
     private final HashMap<String, String> info;
     private final HashMap<Integer, HashMap<String, String>> results;
+    private final double[] valuesArray;
+    private Integer[] list;
 
-    public ResultsAdapter(Context pContext, HashMap<String, String> pInfo, HashMap<Integer, HashMap<String, String>> pResults) {
+    public ResultsAdapter(Context pContext, HashMap<String, String> pInfo, HashMap<Integer, HashMap<String, String>> pResults, String sort) {
         super(pContext, layout = R.layout.result_row);
         context = pContext;
         info = pInfo;
         results = pResults;
-        List<Integer> list = new ArrayList<>(results.keySet());
+        HashMap<Integer, HashMap<String, String>> resultsCopy = new HashMap<>();
+        resultsCopy.putAll(results);
+
+        list = results.keySet().toArray(new Integer[results.size()]);
+
+        valuesArray = new double[list.length];
+
+        for (int j = 0; j < list.length; j++)   {
+            String values = results.get(j).get(sort);
+            switch (sort) {
+                case "distance":
+                    String value = values.replaceAll("[\\D+]+$", "");
+                    if(isDouble(value)) {
+                        valuesArray[j] = Double.valueOf(value);
+                    }
+                    else    {
+                        valuesArray[j] = Integer.valueOf(value);
+                    }
+                    break;
+                case "duration":
+
+                    break;
+                case "price":
+
+                    break;
+            }
+        }
+        sort(0, list.length - 1);
+
+        for(int i = 0; i < list.length; i++) {
+            results.put(i, resultsCopy.get(list[i]));
+        }
+
         for(int i : list)   {
             add(String.valueOf(i));
         }
@@ -93,42 +127,50 @@ public class ResultsAdapter extends ArrayAdapter<String> {
 //        return 1;
 //    }
 
-    public int[] sort(int[] a, double[] b, int min, int max)  {
+    public void sort(int min, int max)  {
         int i = min;
         int j = max;
-        double pivot = b[min + (max - min) / 2];
+        double pivot = valuesArray[min + (max - min) / 2];
 
         while(i <= j)   {
-            while(b[i] < pivot)    {
+            while(valuesArray[i] < pivot)    {
                 i++;
             }
 
-            while(b[j] < pivot)    {
+            while(valuesArray[j] > pivot)    {
                 j--;
             }
 
             if(i <= j)  {
-                int ai = a[i];
-                double bi = b[i];
-                int aj = a[j];
-                double bj = b[j];
-                a[i] = aj;
-                b[i] = bj;
-                a[j] = ai;
-                b[j] = bi;
+                int ai = list[i];
+                double bi = valuesArray[i];
+                int aj = list[j];
+                double bj = valuesArray[j];
+                list[i] = aj;
+                valuesArray[i] = bj;
+                list[j] = ai;
+                valuesArray[j] = bi;
                 i++;
                 j--;
             }
         }
 
         if(min < j) {
-            sort(a, b, min, j);
+            sort(min, j);
         }
 
         if(i < max) {
-            sort(a, b, i, max);
+            sort(i, max);
         }
-        return a;
+    }
+
+    boolean isDouble(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     static class ViewHolder	{

@@ -67,17 +67,17 @@ public class ResultsActivity extends AppCompatActivity {
         }
 
         ListView distanceList = (ListView) findViewById(R.id.list_distance);
-        ResultsAdapter resultsAdapter = new ResultsAdapter(this, info, results);
+        ResultsAdapter resultsAdapter = new ResultsAdapter(this, info, results, "distance");
         distanceList.setAdapter(resultsAdapter);
         distanceList.setOnItemClickListener(resultClickListener);
 
         ListView timeList = (ListView) findViewById(R.id.list_time);
-        ResultsAdapter timeListAdapter = new ResultsAdapter(this, info, results);
+        ResultsAdapter timeListAdapter = new ResultsAdapter(this, info, results, "duration");
         timeList.setAdapter(timeListAdapter);
         timeList.setOnItemClickListener(resultClickListener);
 
         ListView costList = (ListView) findViewById(R.id.list_cost);
-        ResultsAdapter costListAdapter = new ResultsAdapter(this, info, results);
+        ResultsAdapter costListAdapter = new ResultsAdapter(this, info, results, "price");
         costList.setAdapter(costListAdapter);
         costList.setOnItemClickListener(resultClickListener);
 
