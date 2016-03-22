@@ -114,7 +114,9 @@ public class DirectionsResults {
 		String transitMode = getTransitModeForRoute(route);
 		int price = -1;
 		if(transitMode.equals(TRAIN) || transitMode.equals(BUS))	{
-			price = priceData.get(transitMode);
+			if(priceData.containsKey(transitMode))	{
+				price = priceData.get(transitMode);
+			}
 		}	else if(transitMode.equals(TravelMode.DRIVING.toString().toUpperCase()))	{
 			price = priceData.get(DRIVE);
 		}
