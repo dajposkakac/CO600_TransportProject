@@ -250,8 +250,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             date = calendar.get(Calendar.YEAR) + "-" + addMissingZero(calendar.get(Calendar.MONTH) + 1) + "-" + addMissingZero(calendar.get(Calendar.DAY_OF_MONTH));
             req.setDate(date);
         }
-        req.setDate("2016-03-22");
-        req.setTime("11:00:00");
+//        req.setDate("2016-03-22");
+//        req.setTime("11:00:00");
     }
 
     private AdapterView.OnItemClickListener mAutocompleteClickListener
