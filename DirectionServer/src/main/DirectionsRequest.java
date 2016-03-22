@@ -111,10 +111,16 @@ public class DirectionsRequest {
 			}	else	{
 				routes = DirectionsApi.newRequest(gaContext).origin(originLatLng).destination(destinationLatLng).departureTime(time).mode(travelMode).alternatives(true).await();
 			}
+			routeExists(routes);
 			r2rData = r2rSearch(originLatLng, destinationLatLng, travelMode);
 		}	catch (DateInPastException dipe)	{
 			status = 2;
 			dipe.printStackTrace();
+			Thread.currentThread().interrupt();
+			return;
+		}	catch (RouteNotFoundException rnfe)	{
+			status = 3;
+			rnfe.printStackTrace();
 			Thread.currentThread().interrupt();
 			return;
 		}	catch (Exception e) {
@@ -151,6 +157,12 @@ public class DirectionsRequest {
 
 	public DirectionsResult getRoutes() {
 		return routes;
+	}
+	
+	private void routeExists(DirectionsResult routes) throws RouteNotFoundException {
+		if(routes.routes.length == 0)	{
+			throw new RouteNotFoundException("No route found");
+		}
 	}
 	
 	private DateTime extractDateTime(String time, String date) throws DateInPastException	{
