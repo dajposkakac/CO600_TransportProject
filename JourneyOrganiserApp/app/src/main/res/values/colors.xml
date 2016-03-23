@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="backgroundColor">#435256</color>
-    <color name="titleBar">#006fd4</color>
-    <color name="statusBar">#0164bf</color>
-    <color name="buttonColor">#006fd4</color>
+    <color name="backgroundColor">#033579</color>
+    <color name="titleBar">#478ece</color>
+    <color name="statusBar">#2e79bf</color>
+    <color name="buttonColor">#478ece</color>
     <color name="choice_1">#6fe2b4</color>
-    <color name="choice_2">#006fd4</color>
+    <color name="choice_2">#478ece</color>
     <color name="button_color">#ffffff</color>
 </resources>
