@@ -179,17 +179,15 @@ public class RequestHandler extends Thread {
 	    		Element price = xmlDoc.createElement("price");
 	    		price.appendChild(xmlDoc.createTextNode(res.getPriceForRoute(k)));
 	    		result.appendChild(price);
-	    		if(travelMode.equals("TRAIN") || travelMode.equals("BUS"))	{
-		    		Element arrivalTime = xmlDoc.createElement("arrivalTime");
-		    		arrivalTime.appendChild(xmlDoc.createTextNode(res.getArrivalTimeForRoute(k)));
-		    		result.appendChild(arrivalTime);
-		    		Element departureTime = xmlDoc.createElement("departureTime");
-		    		departureTime.appendChild(xmlDoc.createTextNode(res.getDepartureTimeForRoute(k)));
-		    		result.appendChild(departureTime);
-		    		Element date = xmlDoc.createElement("date");
-		    		date.appendChild(xmlDoc.createTextNode(res.getArrivalDateForRoute(k)));
-		    		result.appendChild(date);
-	    		}
+	    		Element arrivalTime = xmlDoc.createElement("arrivalTime");
+	    		arrivalTime.appendChild(xmlDoc.createTextNode(res.getArrivalTimeForRoute(k)));
+	    		result.appendChild(arrivalTime);
+	    		Element departureTime = xmlDoc.createElement("departureTime");
+	    		departureTime.appendChild(xmlDoc.createTextNode(res.getDepartureTimeForRoute(k)));
+	    		result.appendChild(departureTime);
+	    		Element date = xmlDoc.createElement("date");
+	    		date.appendChild(xmlDoc.createTextNode(res.getArrivalDateForRoute(k)));
+	    		result.appendChild(date);
 	    		Element departureOption = xmlDoc.createElement(DirectionsRequest.DEPARTURE_OPTION);
 	    		departureOption.appendChild(xmlDoc.createTextNode(res.getDepartureOption()));
 	    		result.appendChild(departureOption);

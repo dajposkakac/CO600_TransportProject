@@ -20,7 +20,6 @@ public class DirectionsResults {
 	
 	public static final String CURRENCY_POUND = "£";
 	
-	private DirectionsResult result;
 	private List<DirectionsRoute> results;
 	private HashMap<String, String> additionalData;
 	private HashMap<String, Integer> priceData;
@@ -66,19 +65,57 @@ public class DirectionsResults {
 	}
 	
 	public String getArrivalTimeForRoute(int route)	{
-		return getTimeReadable(results.get(route).legs[0].arrivalTime);
+		String time = null;
+		String tm = getTransitModeForRoute(route);
+		if(!tm.equalsIgnoreCase(TRAIN)
+				&& !tm.equalsIgnoreCase(TRAIN))	{
+			long timeSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
+			long durationSeconds = results.get(route).legs[0].duration.inSeconds;
+			time = getTimeReadable(new DateTime((timeSeconds + durationSeconds)* 1000));
+		}	else 	{
+			time = getTimeReadable(results.get(route).legs[0].arrivalTime);
+		}
+		return time;
 	}
 	
 	public String getDepartureTimeForRoute(int route)	{
-		return getTimeReadable(results.get(route).legs[0].departureTime);
+		String time = null;
+		String tm = getTransitModeForRoute(route);
+		if(!tm.equalsIgnoreCase(TRAIN)
+				&& !tm.equalsIgnoreCase(TRAIN))	{
+			long timeSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
+			time = getTimeReadable(new DateTime(timeSeconds * 1000));
+		}	else	{
+			time = getTimeReadable(results.get(route).legs[0].departureTime);
+		}
+		return time;
 	}
 	
 	public String getArrivalDateForRoute(int route)	{
-		return getDateReadable(results.get(route).legs[0].arrivalTime);
+		String date = null;
+		String tm = getTransitModeForRoute(route);
+		if(!tm.equalsIgnoreCase(TRAIN)
+				&& !tm.equalsIgnoreCase(TRAIN))	{
+			long dateSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
+			long durationSeconds = results.get(route).legs[0].duration.inSeconds;
+			date = getDateReadable(new DateTime((dateSeconds + durationSeconds)* 1000));
+		}	else 	{
+			date = getDateReadable(results.get(route).legs[0].arrivalTime);
+		}
+		return date;
 	}
 	
 	public String getDepartureDateForRoute(int route)	{
-		return getDateReadable(results.get(route).legs[0].departureTime);
+		String date = null;
+		String tm = getTransitModeForRoute(route);
+		if(!tm.equalsIgnoreCase(TRAIN)
+				&& !tm.equalsIgnoreCase(TRAIN))	{
+			long dateSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
+			date = getDateReadable(new DateTime((dateSeconds)* 1000));
+		}	else 	{
+			date = getDateReadable(results.get(route).legs[0].departureTime);
+		}
+		return date;
 	}
 	
 	/*
@@ -202,6 +239,5 @@ public class DirectionsResults {
         }
         return timeString;
     }
-	
 	
 }

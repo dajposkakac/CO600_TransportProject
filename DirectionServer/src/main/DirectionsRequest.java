@@ -14,6 +14,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -63,6 +64,7 @@ public class DirectionsRequest {
 	private LatLng originLatLng = null;
 	private LatLng destinationLatLng = null;
 	private TravelMode travelMode;
+	private DateTime time;
 	
 	public DirectionsRequest(HashMap<String, String> data)	{
 		status = 0;
@@ -105,7 +107,7 @@ public class DirectionsRequest {
 			}
 		}
 		try {
-			DateTime time = extractDateTime(request.get(TIME), request.get(DATE));
+			time = extractDateTime(request.get(TIME), request.get(DATE));
 			if(departureOption.startsWith("Arrive"))	{
 				routes = DirectionsApi.newRequest(gaContext).origin(originLatLng).destination(destinationLatLng).arrivalTime(time).mode(travelMode).alternatives(true).await();
 			}	else	{
@@ -133,6 +135,7 @@ public class DirectionsRequest {
 		additionalData.put(DEPARTURE_OPTION, request.get(DEPARTURE_OPTION));
 		additionalData.put(ORIGIN_LATLNG, originLatLng.lat + "," + originLatLng.lng);
 		additionalData.put(DESTINATION_LATLNG, destinationLatLng.lat + "," + destinationLatLng.lng);
+		additionalData.put(TIME, String.valueOf(time.getMillis() / 1000));
 	}
 	
 	private String r2rSearch(LatLng originLatLng, LatLng destinationLatLng, TravelMode travelMode) throws IOException {
@@ -165,7 +168,7 @@ public class DirectionsRequest {
 		}
 	}
 	
-	private DateTime extractDateTime(String time, String date) throws DateInPastException	{
+	public DateTime extractDateTime(String time, String date) throws DateInPastException	{
 		DateTime dt = new DateTime();
 		if(time != null && !time.equals("now"))	{
 			int[] timeData = Arrays.stream(time.split(":")).mapToInt(Integer::parseInt).toArray();
