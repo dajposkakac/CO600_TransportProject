@@ -51,8 +51,25 @@ public class ResultsAdapter extends ArrayAdapter<String> {
                         valuesArray[j] = Integer.valueOf(value);
                     }
                     break;
-                case "duration":
-
+                case "arrivalTimeInSeconds":
+                    value = values;
+                        if(results.get(0).get("departureOption").startsWith("Arrive"))  {
+                            valuesArray[j] = Double.valueOf(value);
+                        }
+                        else {
+                            sort = "departureTimeInSeconds";
+                            j--;
+                        }
+                    break;
+                case "departureTimeInSeconds":
+                    value = values;
+                    if(results.get(0).get("departureOption").startsWith("Depart"))  {
+                        valuesArray[j] = Double.valueOf(value);
+                    }
+                    else {
+                        sort = "arrivalTimeInSeconds";
+                        j--;
+                    }
                     break;
                 case "price":
                     value = values;

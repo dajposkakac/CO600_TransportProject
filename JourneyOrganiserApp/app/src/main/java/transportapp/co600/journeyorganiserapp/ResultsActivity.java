@@ -79,7 +79,7 @@ public class ResultsActivity extends AppCompatActivity {
         distanceList.setOnItemClickListener(resultClickListener);
 
         ListView timeList = (ListView) findViewById(R.id.list_time);
-        ResultsAdapter timeListAdapter = new ResultsAdapter(this, info, results, "duration");
+        ResultsAdapter timeListAdapter = new ResultsAdapter(this, info, results, "arrivalTimeInSeconds");
         timeList.setAdapter(timeListAdapter);
         timeList.setOnItemClickListener(resultClickListener);
 
