@@ -71,9 +71,13 @@ public class DirectionsResults {
 				&& !tm.equalsIgnoreCase(TRAIN))	{
 			long timeSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
 			long durationSeconds = results.get(route).legs[0].duration.inSeconds;
-			time = getTimeReadable(new DateTime((timeSeconds + durationSeconds)* 1000));
+			timeSeconds = (timeSeconds + durationSeconds);
+			additionalData.put(DirectionsRequest.ARRIVAL_TIME_IN_SECONDS, String.valueOf(timeSeconds));
+			time = getTimeReadable(new DateTime(timeSeconds  * 1000));
 		}	else 	{
-			time = getTimeReadable(results.get(route).legs[0].arrivalTime);
+			DateTime dt = results.get(route).legs[0].arrivalTime;
+			additionalData.put(DirectionsRequest.ARRIVAL_TIME_IN_SECONDS, String.valueOf(dt.getMillis() / 1000));
+			time = getTimeReadable(dt);
 		}
 		return time;
 	}
@@ -84,8 +88,11 @@ public class DirectionsResults {
 		if(!tm.equalsIgnoreCase(TRAIN)
 				&& !tm.equalsIgnoreCase(TRAIN))	{
 			long timeSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
+			additionalData.put(DirectionsRequest.DEPARTURE_TIME_IN_SECONDS, String.valueOf(timeSeconds));
 			time = getTimeReadable(new DateTime(timeSeconds * 1000));
 		}	else	{
+			DateTime dt = results.get(route).legs[0].arrivalTime;
+			additionalData.put(DirectionsRequest.DEPARTURE_TIME_IN_SECONDS, String.valueOf(dt.getMillis() / 1000));
 			time = getTimeReadable(results.get(route).legs[0].departureTime);
 		}
 		return time;
@@ -116,6 +123,14 @@ public class DirectionsResults {
 			date = getDateReadable(results.get(route).legs[0].departureTime);
 		}
 		return date;
+	}
+	
+	public String getArrivalTimeInSecondsForRoute(int route)	{
+		return additionalData.get(DirectionsRequest.ARRIVAL_TIME_IN_SECONDS);
+	}
+	
+	public String getDepartureTimeInSecondsForRoute(int route)	{
+		return additionalData.get(DirectionsRequest.DEPARTURE_TIME_IN_SECONDS);
 	}
 	
 	/*
