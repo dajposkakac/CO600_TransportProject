@@ -39,6 +39,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
     private final Request req;
     private Socket socket;
     private int status;
+    private String errorMessage;
 
     public RequestDirectionsTask(Activity pActivity, Request pReq)   {
         activity = pActivity;
@@ -58,7 +59,8 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
             printwriter.flush();
         }   catch(SocketTimeoutException ste)   {
             status = -1;
-            Log.e(TAG, "Server at " + ste.toString() + "is unavailable.");
+            errorMessage = "Server at " + ip + ":" + SERVER_PORT + " is unavailable.";
+            Log.e(TAG, errorMessage);
         }   catch (Exception e) {
             e.printStackTrace();
         }
@@ -73,11 +75,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
             //        printwriter.close();
             Log.d("RequestRES", result);
         }   else    {
-            Bundle bundle = new Bundle();
-            bundle.putInt("STATUS_KEY", status);
-            ErrorDialogFragment errorDialogFragment = new ErrorDialogFragment();
-            errorDialogFragment.setArguments(bundle);
-            activity.getFragmentManager().beginTransaction().add(errorDialogFragment, "errorDialog").commitAllowingStateLoss();
+            ErrorDialogFragment.errorDialog(activity, "Error", status, errorMessage);
         }
     }
 

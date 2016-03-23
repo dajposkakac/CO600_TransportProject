@@ -36,6 +36,7 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
     private Socket socket;
     private BufferedReader bufferedReader;
     private int status;
+    private String errorMessage;
     private HashMap<String, String> info;
     private LinkedHashMap<Integer, HashMap<String, String>> results;
 
@@ -53,6 +54,8 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
             if(status == 0) {
                 parseInfo(xmlDoc);
                 parseResults(xmlDoc);
+            }   else    {
+                parseErrorMesage(xmlDoc);
             }
             Log.d("result", "results parsed");
         } catch (Exception e) {
@@ -89,11 +92,7 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
             activity.startActivity(intent);
         }   else    {
             activity.findViewById(R.id.loading).setVisibility(View.INVISIBLE);
-            Bundle bundle = new Bundle();
-            bundle.putInt("STATUS_KEY", status);
-            ErrorDialogFragment errorDialogFragment = new ErrorDialogFragment();
-            errorDialogFragment.setArguments(bundle);
-            activity.getFragmentManager().beginTransaction().add(errorDialogFragment, "errorDialog").commitAllowingStateLoss();
+            ErrorDialogFragment.errorDialog(activity, "Error", status, errorMessage);
         }
     }
 
@@ -107,8 +106,22 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
                 status = Integer.valueOf(n.getTextContent());
                 found = true;
             }
+            i++;
         }
-        i++;
+    }
+
+    private void parseErrorMesage(Document doc) {
+        NodeList nl = doc.getFirstChild().getChildNodes();
+        boolean found = false;
+        int i = 0;
+        while(!found && i < nl.getLength()) {
+            Node n = nl.item(i);
+            if (n.getNodeName().equals("errorMessage")) {
+                errorMessage = n.getTextContent();
+                found = true;
+            }
+            i++;
+        }
     }
 
     private void parseInfo(Document doc)    {
