@@ -40,9 +40,10 @@ public class ResultsAdapter extends ArrayAdapter<String> {
 
         for (int j = 0; j < list.length; j++)   {
             String values = results.get(j).get(sort);
+            String value = null;
             switch (sort) {
                 case "distance":
-                    String value = values.replaceAll("[\\D+]+$", "");
+                    value = values.replaceAll("[\\D+]+$", "");
                     if(isDouble(value)) {
                         valuesArray[j] = Double.valueOf(value);
                     }
@@ -54,7 +55,13 @@ public class ResultsAdapter extends ArrayAdapter<String> {
 
                     break;
                 case "price":
-
+                    value = values;
+                    if(isDouble(value)) {
+                        valuesArray[j] = Double.valueOf(value);
+                    }
+                    else    {
+                        valuesArray[j] = Integer.valueOf(value);
+                    }
                     break;
             }
         }
