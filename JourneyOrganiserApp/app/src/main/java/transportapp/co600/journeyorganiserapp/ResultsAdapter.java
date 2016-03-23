@@ -100,16 +100,20 @@ public class ResultsAdapter extends ArrayAdapter<String> {
         holder.duration.setText(results.get(position).get("duration"));
         holder.price.setText("£" + results.get(position).get("price"));
 
+        String departureTime = String.valueOf(results.get(position).get("departureTime"));
+        String arrivalTime = String.valueOf(results.get(position).get("arrivalTime"));
+        String date = String.valueOf(results.get(position).get("date"));
+        String departureTimeDate = departureTime + " - " + date;
+        String arrivalTimeDate = arrivalTime + " - " + date;
+        holder.departAt.setText(departureTimeDate);
+        holder.arriveAt.setText(arrivalTimeDate);
+
         switch (transitMode) {
             case "TRAIN":
+                holder.transitModeImage.setImageResource(R.drawable.train);
+                break;
             case "BUS":
-                String departureTime = String.valueOf(results.get(position).get("departureTime"));
-                String arrivalTime = String.valueOf(results.get(position).get("arrivalTime"));
-                String date = String.valueOf(results.get(position).get("date"));
-                String departureTimeDate = departureTime + " - " + date;
-                String arrivalTimeDate = arrivalTime + " - " + date;
-                holder.departAt.setText(departureTimeDate);
-                holder.arriveAt.setText(arrivalTimeDate);
+                holder.transitModeImage.setImageResource(R.drawable.bus);
                 break;
             case "DRIVING":
                 holder.transitModeImage.setImageResource(R.drawable.car);
@@ -120,12 +124,6 @@ public class ResultsAdapter extends ArrayAdapter<String> {
             case "BICYCLING":
                 holder.transitModeImage.setImageResource(R.drawable.cycle);
                 break;
-        }
-        if(transitMode.equals("TRAIN")) {
-            holder.transitModeImage.setImageResource(R.drawable.train);
-        }
-        else if(transitMode.equals("BUS"))  {
-            holder.transitModeImage.setImageResource(R.drawable.bus);
         }
         return convertView;
     }
