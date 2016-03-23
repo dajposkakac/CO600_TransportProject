@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private GoogleApiClient mGoogleApiClient;
     private PlaceAutocompleteAdapter mAdapter;
     private Intent ppIntent;
+    private Resources resources;
 
     private AutoCompleteTextView from;
     private AutoCompleteTextView to;
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private String mDrawerTitle;
 
     private Spinner transitModeSpinner;
+    private Spinner sortingPreferenceSpinner;
     private Spinner dateSpinner;
     private EditText timePicker;
     private EditText datePicker;
@@ -89,13 +92,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         geoApicontext = new GeoApiContext().setApiKey(readKey("google_key_android"));
         buildGoogleApiClient();
-
+        resources = getResources();
         context = this;
 
         initNavigationDrawer();
         initLocationPickers();
         initTimePickers();
         initModesSpinner();
+        initSortingSpinner();
         initGoButton();
         initRequest();
 
@@ -219,6 +223,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.transit_mode_names));
         transitModeSpinner.setAdapter(adapter);
         transitModeSpinner.setOnItemSelectedListener(this);
+    }
+
+    private void initSortingSpinner() {
+        sortingPreferenceSpinner = (Spinner) findViewById(R.id.sorting_preference_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.sorting_preference_names));
+        sortingPreferenceSpinner.setAdapter(adapter);
+        sortingPreferenceSpinner.setOnItemSelectedListener(this);
     }
 
     private void initGoButton() {
@@ -442,6 +453,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     break;
             }
             req.setTransitMode(tm.toString());
+        }   else if(parentId == sortingPreferenceSpinner.getId())  {
+            String[] names = resources.getStringArray(R.array.sorting_preference_names);
+            req.setSortingPreference(names[position]);
         }
     }
 

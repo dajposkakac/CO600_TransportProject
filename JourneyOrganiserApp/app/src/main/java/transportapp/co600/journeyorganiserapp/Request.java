@@ -1,7 +1,5 @@
 package transportapp.co600.journeyorganiserapp;
 
-import com.google.maps.model.TravelMode;
-
 /**
  * Created by daj on 02/12/2015.
  */
@@ -12,6 +10,7 @@ public class Request {
     private String time;
     private String date;
     private String departureOption;
+    private String sortingPreference;
 
     public String getOrigin() {
         return origin;
@@ -51,4 +50,8 @@ public class Request {
     public String getDepartureOption() {return departureOption;}
 
     public void setDepartureOption(String departureOption) {this.departureOption = departureOption;}
+
+    public String getSortingPreference() {return sortingPreference;}
+
+    public void setSortingPreference(String sortingPreference) {this.sortingPreference = sortingPreference;}
 }
