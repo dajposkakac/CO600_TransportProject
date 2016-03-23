@@ -185,9 +185,12 @@ public class RequestHandler extends Thread {
 	    		Element departureTime = xmlDoc.createElement("departureTime");
 	    		departureTime.appendChild(xmlDoc.createTextNode(res.getDepartureTimeForRoute(k)));
 	    		result.appendChild(departureTime);
-	    		Element date = xmlDoc.createElement("date");
-	    		date.appendChild(xmlDoc.createTextNode(res.getArrivalDateForRoute(k)));
-	    		result.appendChild(date);
+	    		Element arrivalDate = xmlDoc.createElement("arrivalDate");
+	    		arrivalDate.appendChild(xmlDoc.createTextNode(res.getArrivalDateForRoute(k)));
+	    		result.appendChild(arrivalDate);
+	    		Element departureDate = xmlDoc.createElement("departureDate");
+	    		departureDate.appendChild(xmlDoc.createTextNode(res.getDepartureDateForRoute(k)));
+	    		result.appendChild(departureDate);
 	    		Element arrivalTimeInSeconds = xmlDoc.createElement(DirectionsRequest.ARRIVAL_TIME_IN_SECONDS);
 	    		arrivalTimeInSeconds.appendChild(xmlDoc.createTextNode(res.getArrivalTimeInSecondsForRoute(k)));
 	    		result.appendChild(arrivalTimeInSeconds);
