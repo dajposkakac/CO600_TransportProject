@@ -1,14 +1,17 @@
 package main;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.joda.time.DateTime;
 
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.DirectionsStep;
+import com.google.maps.model.Duration;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 
@@ -17,6 +20,11 @@ public class DirectionsResults {
 	public static final String TRAIN = "Train";
 	public static final String BUS = "Bus";
 	public static final String DRIVE = "Drive";
+	
+	public static final String DAYS_SHORT = "d";
+	public static final String HOURS_SHORT = "h";
+	public static final String MINUTES_SHORT = "m";
+	public static final String SECONDS_SHORT = "s";
 	
 	public static final String CURRENCY_POUND = "£";
 	public static final String COLON = ":";
@@ -65,7 +73,24 @@ public class DirectionsResults {
 	}
 	
 	public String getDurationForRoute(int route)	{
-		return results.get(route).legs[0].duration.humanReadable;
+		long seconds = results.get(route).legs[0].duration.inSeconds;
+		long days = TimeUnit.SECONDS.toDays(seconds);
+		seconds -= TimeUnit.DAYS.toSeconds(days);
+		long hours = TimeUnit.SECONDS.toHours(seconds);
+		seconds -= TimeUnit.HOURS.toSeconds(hours);
+		long minutes = TimeUnit.SECONDS.toMinutes(seconds);
+		seconds -= TimeUnit.MINUTES.toSeconds(minutes);
+		StringBuilder builder = new StringBuilder();
+		if(days > 0)	{
+			builder.append(days + DAYS_SHORT + DirectionsRequest.SPACE);
+		}
+		if(hours > 0)	{
+			builder.append(hours + HOURS_SHORT + DirectionsRequest.SPACE);
+		}
+		if(minutes > 0)	{
+			builder.append(minutes + MINUTES_SHORT);
+		}
+		return builder.toString().trim();
 	}
 	
 	public String getArrivalTimeForRoute(int route)	{

@@ -55,8 +55,10 @@ public class DirectionsRequest {
 	public static final String DEPARTURE_TIME_IN_SECONDS = "departureTimeInSeconds";
 	
 	//Misc
+	public static final String COMMA = ",";
+	public static final String SPACE = " ";
+	public static final String COMMASPACE = COMMA + SPACE; 
 	private static final String LATLNG_REGEXP = "([+-]?\\d+\\.?\\d+)\\s*,\\s*([+-]?\\d+\\.?\\d+)";
-	private static final String COMMA = ",";
 	
 	//R2R constants
 	private static final String R2RURL1 = "http://free.rome2rio.com/api/1.2/xml/Search?key=";
