@@ -92,7 +92,7 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
                 transitMode.setImageResource(R.drawable.cycle);
                 break;
         }
-        
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
