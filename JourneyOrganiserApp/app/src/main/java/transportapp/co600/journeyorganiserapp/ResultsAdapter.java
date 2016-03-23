@@ -119,9 +119,10 @@ public class ResultsAdapter extends ArrayAdapter<String> {
 
         String departureTime = String.valueOf(results.get(position).get("departureTime"));
         String arrivalTime = String.valueOf(results.get(position).get("arrivalTime"));
-        String date = String.valueOf(results.get(position).get("date"));
-        String departureTimeDate = departureTime + " - " + date;
-        String arrivalTimeDate = arrivalTime + " - " + date;
+        String departureDate = String.valueOf(results.get(position).get("departureDate"));
+        String arrivalDate = String.valueOf(results.get(position).get("arrivalDate"));
+        String departureTimeDate = departureTime + " - " + departureDate;
+        String arrivalTimeDate = arrivalTime + " - " + arrivalDate;
         holder.departAt.setText(departureTimeDate);
         holder.arriveAt.setText(arrivalTimeDate);
 
