@@ -197,6 +197,10 @@ public class ResultsAdapter extends ArrayAdapter<String> {
         }
     }
 
+    public LinkedHashMap<Integer, HashMap<String, String>> getSortedResults()   {
+        return results;
+    }
+
     static class ViewHolder	{
         TextView distance;
         TextView duration;

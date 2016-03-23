@@ -37,6 +37,9 @@ public class ResultsActivity extends AppCompatActivity {
     private ViewFlipper viewFlipper;
     private MultiStateToggleButton listSwitcher;
     private Context context;
+    private ResultsAdapter distanceAdapter;
+    private ResultsAdapter timeAdapter;
+    private ResultsAdapter costAdapter;
 
 
     @SuppressWarnings("unchecked")
@@ -74,23 +77,23 @@ public class ResultsActivity extends AppCompatActivity {
         }
 
         ListView distanceList = (ListView) findViewById(R.id.list_distance);
-        ResultsAdapter resultsAdapter = new ResultsAdapter(this, info, results, "distance");
-        distanceList.setAdapter(resultsAdapter);
+        distanceAdapter = new ResultsAdapter(this, info, results, "distance");
+        distanceList.setAdapter(distanceAdapter);
         distanceList.setOnItemClickListener(resultClickListener);
 
         ListView timeList = (ListView) findViewById(R.id.list_time);
-        ResultsAdapter timeListAdapter = new ResultsAdapter(this, info, results, "arrivalTimeInSeconds");
-        timeList.setAdapter(timeListAdapter);
+        timeAdapter = new ResultsAdapter(this, info, results, "arrivalTimeInSeconds");
+        timeList.setAdapter(timeAdapter);
         timeList.setOnItemClickListener(resultClickListener);
 
         ListView costList = (ListView) findViewById(R.id.list_cost);
-        ResultsAdapter costListAdapter = new ResultsAdapter(this, info, results, "price");
-        costList.setAdapter(costListAdapter);
+        costAdapter = new ResultsAdapter(this, info, results, "price");
+        costList.setAdapter(costAdapter);
         costList.setOnItemClickListener(resultClickListener);
 
         flipToList(info.get("sortingPreference"));
 
-        Log.d("adapter", "" + resultsAdapter.getCount());
+        Log.d("adapter", "" + distanceAdapter.getCount());
     }
 
     public static ResultsActivity getInstance() {
@@ -131,7 +134,16 @@ public class ResultsActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(context, DetailedResultActivity.class);
             intent.putExtra(INFO_TAG, info);
-            intent.putExtra("result", results.get(position));
+            LinkedHashMap<Integer, HashMap<String, String>> sortedResults = null;
+            int selectedList = getSelectedList();
+            if(selectedList == 0)  {
+                sortedResults = distanceAdapter.getSortedResults();
+            }   else if(selectedList == 1)  {
+                sortedResults = timeAdapter.getSortedResults();
+            }   else if(selectedList == 2)  {
+                sortedResults = costAdapter.getSortedResults();
+            }
+            intent.putExtra("result", sortedResults.get(position));
             context.startActivity(intent);
         }
     }
@@ -210,5 +222,9 @@ public class ResultsActivity extends AppCompatActivity {
         }
         viewFlipper.setDisplayedChild(pos);
         listSwitcher.setValue(pos);
+    }
+
+    private int getSelectedList()   {
+        return viewFlipper.getDisplayedChild();
     }
 }
