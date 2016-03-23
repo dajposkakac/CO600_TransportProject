@@ -104,8 +104,10 @@ public class DirectionsRequest {
 			} catch (LocationNotFoundException e) {
 				status = e.getStatus();
 				errorMessage = e.getMessage();
+				return;
 			} catch (Exception e) {
 				e.printStackTrace();
+				return;
 			}
 		}
 		if(destination.matches(LATLNG_REGEXP))	{
@@ -117,8 +119,10 @@ public class DirectionsRequest {
 			} catch (LocationNotFoundException e) {
 				status = e.getStatus();
 				errorMessage = e.getMessage();
+				return;
 			} catch (Exception e) {
 				e.printStackTrace();
+				return;
 			}
 		}
 		try {
@@ -134,16 +138,15 @@ public class DirectionsRequest {
 			status = dipe.getStatus();
 			errorMessage = dipe.getMessage();
 //			dipe.printStackTrace();
-//			Thread.currentThread().interrupt();
-//			return;
+			return;
 		}	catch (RouteNotFoundException rnfe)	{
 			status = rnfe.getStatus();
 			errorMessage = rnfe.getMessage();
-			rnfe.printStackTrace();
-			Thread.currentThread().interrupt();
+//			rnfe.printStackTrace();
 			return;
 		}	catch (Exception e) {
 			e.printStackTrace();
+			return;
 		}
 	}
 	
