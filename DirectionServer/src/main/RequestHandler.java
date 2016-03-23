@@ -159,14 +159,17 @@ public class RequestHandler extends Thread {
 			Element destination = xmlDoc.createElement(DirectionsRequest.DESTINATION);
 			Element originLatLng = xmlDoc.createElement(DirectionsRequest.ORIGIN_LATLNG);
 			Element destinationLatLng = xmlDoc.createElement(DirectionsRequest.DESTINATION_LATLNG);
+			Element sortingPreference = xmlDoc.createElement(DirectionsRequest.SORTING_PREFERENCE);
 			origin.appendChild(xmlDoc.createTextNode(res.getOriginForRoute(0)));
 			destination.appendChild(xmlDoc.createTextNode(res.getDestinationForRoute(0)));
 			originLatLng.appendChild(xmlDoc.createTextNode(res.getOriginLatLng()));
 			destinationLatLng.appendChild(xmlDoc.createTextNode(res.getDestinationLatLng()));
+			sortingPreference.appendChild(xmlDoc.createTextNode(res.getSortingPreference()));
 			info.appendChild(origin);
 			info.appendChild(destination);
 			info.appendChild(originLatLng);
 			info.appendChild(destinationLatLng);
+			info.appendChild(sortingPreference);
 			
 			//results
 			Element results = xmlDoc.createElement(RESULTS);
