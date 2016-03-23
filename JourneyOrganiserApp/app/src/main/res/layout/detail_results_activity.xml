@@ -24,8 +24,8 @@
 
             <ImageView
                 android:id="@+id/transit_mode"
-                android:layout_width="80dp"
-                android:layout_height="75dp"
+                android:layout_width="120dp"
+                android:layout_height="100dp"
                 android:layout_alignParentLeft="true"
                 android:layout_marginTop="5dp"
                 android:layout_alignParentTop="true"/>
@@ -38,7 +38,6 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="5dp"
                 android:text="Departure:"
-                android:textStyle="bold"
                 android:textColor="@android:color/background_light"
                 android:textSize="15sp"/>
 
@@ -62,7 +61,6 @@
                 android:layout_toEndOf="@+id/transit_mode"
                 android:layout_marginTop="15dp"
                 android:text="Arrival:"
-                android:textStyle="bold"
                 android:textColor="@android:color/background_light"
                 android:textSize="15sp"/>
 
@@ -83,7 +81,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="Distance:"
-                android:textStyle="bold"
                 android:layout_below="@+id/arrive_at_result"
                 android:textColor="@android:color/background_light"
                 android:textSize="15sp"/>
@@ -92,7 +89,6 @@
                 android:id="@+id/distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="87 miles"
                 android:textStyle="bold"
                 android:layout_below="@+id/duration_label"
                 android:textColor="@android:color/background_light"
@@ -105,7 +101,6 @@
                 android:layout_marginTop="20dp"
                 android:layout_centerInParent="true"
                 android:text="Duration:"
-                android:textStyle="bold"
                 android:layout_below="@+id/arrive_at_result"
                 android:textColor="@android:color/background_light"
                 android:textSize="15sp"/>
@@ -116,7 +111,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/distance_label"
                 android:layout_centerInParent="true"
-                android:text="3 hours 15 minutes"
                 android:textStyle="bold"
                 android:textColor="@android:color/background_light"
                 android:textSize="20sp"/>
@@ -129,7 +123,6 @@
                 android:text="Price:"
                 android:layout_marginEnd="5dp"
                 android:layout_alignParentEnd="true"
-                android:textStyle="bold"
                 android:layout_below="@+id/arrive_at_result"
                 android:textColor="@android:color/background_light"
                 android:textSize="15sp"/>
@@ -142,7 +135,6 @@
                 android:layout_marginEnd="5dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="0dp"
-                android:text="£37"
                 android:textStyle="bold"
                 android:textColor="@android:color/background_light"
                 android:textSize="20sp"/>
@@ -154,7 +146,6 @@
                 android:layout_below="@+id/duration"
                 android:layout_marginTop="15dp"
                 android:text="From:"
-                android:textStyle="bold"
                 android:textColor="@android:color/background_light"
                 android:textSize="15sp"/>
 
@@ -174,7 +165,6 @@
                 android:layout_below="@+id/from_result"
                 android:text="To:"
                 android:layout_marginTop="15dp"
-                android:textStyle="bold"
                 android:textColor="@android:color/background_light"
                 android:textSize="15sp"/>
 
