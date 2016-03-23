@@ -88,8 +88,7 @@ public class ResultsActivity extends AppCompatActivity {
         costList.setAdapter(costListAdapter);
         costList.setOnItemClickListener(resultClickListener);
 
-        viewFlipper.setDisplayedChild(0);
-        listSwitcher.setValue(0);
+        flipToList(info.get("sortingPreference"));
 
         Log.d("adapter", "" + resultsAdapter.getCount());
     }
@@ -195,5 +194,21 @@ public class ResultsActivity extends AppCompatActivity {
             map.put(keys.get(i), values.get(i));
         }
         return map;
+    }
+
+    private void flipToList(String preference)    {
+        int pos = 0;
+        String[] names = getResources().getStringArray(R.array.sorting_preference_names);
+        boolean found = false;
+        int i = 0;
+        while(!found && i < names.length) {
+            if (preference.equals(names[i])) {
+                found = true;
+                pos = i;
+            }
+            i++;
+        }
+        viewFlipper.setDisplayedChild(pos);
+        listSwitcher.setValue(pos);
     }
 }

@@ -18,6 +18,13 @@
       <xs:enumeration value="Arrive at"/>
     </xs:restriction>
   </xs:simpleType>
+  <xs:simpleType name="sortingPreferencetype">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Distance"/>
+      <xs:enumeration value="Time"/>
+      <xs:enumeration value="Cost"/>
+    </xs:restriction>
+  </xs:simpleType>
   <xs:element name="request">
     <xs:complexType>
       <xs:sequence>
@@ -27,6 +34,7 @@
         <xs:element name="time" type="xs:time"></xs:element>
         <xs:element name="date" type="xs:date"></xs:element>
         <xs:element name="departureOption" type="departureOptiontype"></xs:element>
+        <xs:element name="sortingPreference" type="sortingPreferencetype"></xs:element>
       </xs:sequence>
     </xs:complexType>
   </xs:element>

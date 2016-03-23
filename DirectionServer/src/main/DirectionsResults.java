@@ -259,6 +259,10 @@ public class DirectionsResults {
 	public String getDestinationLatLng() {
 		return additionalData.get(DirectionsRequest.DESTINATION_LATLNG);
 	}
+	
+	public String getSortingPreference()	{
+		return additionalData.get(DirectionsRequest.SORTING_PREFERENCE);
+	}
 
 	public int getStatus() {
 		return status;

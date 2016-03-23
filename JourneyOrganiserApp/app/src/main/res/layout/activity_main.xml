@@ -130,19 +130,61 @@
                     android:spinnerMode="dropdown"
                     android:layout_marginBottom="@dimen/default_margin"/>
 
-                <Spinner
-                    android:id="@+id/transit_modes_spinner"
+                <LinearLayout
+                    android:id="@+id/preferences"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/dateSpinner"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginBottom="@dimen/default_margin"/>
+                    android:weightSum="1"
+                    android:layout_marginBottom="@dimen/default_margin">
+
+                    <LinearLayout
+                        android:id="@+id/transit_mode_preferences"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/transit_modes_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Transit Mode:"
+                            android:textColor="?android:textColorSecondary" />
+
+                        <Spinner
+                            android:id="@+id/transit_modes_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:spinnerMode="dropdown" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/sorting_preferences"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/sorting_preference_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sort by:"
+                            android:textColor="?android:textColorSecondary"/>
+
+                        <Spinner
+                            android:id="@+id/sorting_preference_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:spinnerMode="dropdown" />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/go"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/transit_modes_spinner"
+                    android:layout_below="@id/preferences"
                     android:layout_gravity="fill_horizontal"
                     android:text="Show Travel Options" />
 

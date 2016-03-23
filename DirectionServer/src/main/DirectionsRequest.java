@@ -53,6 +53,7 @@ public class DirectionsRequest {
 	public static final String POLYLINE = "polyline";
 	public static final String ARRIVAL_TIME_IN_SECONDS = "arrivalTimeInSeconds";
 	public static final String DEPARTURE_TIME_IN_SECONDS = "departureTimeInSeconds";
+	public static final String SORTING_PREFERENCE = "sortingPreference";
 	
 	//Misc
 	public static final String COMMA = ",";
@@ -159,6 +160,7 @@ public class DirectionsRequest {
 			additionalData.put(ORIGIN_LATLNG, originLatLng.lat + COMMA + originLatLng.lng);
 			additionalData.put(DESTINATION_LATLNG, destinationLatLng.lat + COMMA + destinationLatLng.lng);
 			additionalData.put(TIME, String.valueOf(time.getMillis() / 1000));
+			additionalData.put(SORTING_PREFERENCE, request.get(SORTING_PREFERENCE));
 		}
 	}
 	

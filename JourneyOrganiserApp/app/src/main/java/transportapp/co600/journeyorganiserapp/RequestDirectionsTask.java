@@ -2,7 +2,6 @@ package transportapp.co600.journeyorganiserapp;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -91,6 +90,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
         Element time = xmlDoc.createElement("time");
         Element date = xmlDoc.createElement("date");
         Element departureOption = xmlDoc.createElement("departureOption");
+        Element sortingPreferences = xmlDoc.createElement("sortingPreference");
 
         origin.appendChild(xmlDoc.createTextNode(req.getOrigin()));
         destination.appendChild(xmlDoc.createTextNode(req.getDestination()));
@@ -98,6 +98,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
         time.appendChild(xmlDoc.createTextNode(req.getTime()));
         date.appendChild(xmlDoc.createTextNode(req.getDate()));
         departureOption.appendChild(xmlDoc.createTextNode(req.getDepartureOption()));
+        sortingPreferences.appendChild(xmlDoc.createTextNode(req.getSortingPreference()));
 
         request.appendChild(origin);
         request.appendChild(destination);
@@ -105,6 +106,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
         request.appendChild(time);
         request.appendChild(date);
         request.appendChild(departureOption);
+        request.appendChild(sortingPreferences);
 
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         StreamResult sr = new StreamResult(new StringWriter());
