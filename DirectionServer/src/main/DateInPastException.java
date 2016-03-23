@@ -1,8 +1,8 @@
 package main;
 
-public class DateInPastException extends Exception{
+public class DateInPastException extends StatusException{
 	
-	public DateInPastException(String errorMessage) {
-		super(errorMessage);
+	public DateInPastException(int pStatus, String pErrorMessage) {
+		super(pStatus, pErrorMessage);
 	}
 }

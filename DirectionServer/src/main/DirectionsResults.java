@@ -26,6 +26,7 @@ public class DirectionsResults {
 	private HashMap<String, String> additionalData;
 	private HashMap<String, Integer> priceData;
 	private int status;
+	private String errorMessage;
 	
 	
 	public DirectionsResults(int status, HashMap<String, String> pAdditionalData)	{
@@ -33,8 +34,9 @@ public class DirectionsResults {
 		additionalData = pAdditionalData;
 	}
 	
-	public DirectionsResults(int status)	{
+	public DirectionsResults(int status, String pErrorMessage)	{
 		setStatus(status);
+		errorMessage = pErrorMessage;
 	}
 	
 	public void addResults(DirectionsResult directionsResult, HashMap<String, Integer> pPriceData)	{
@@ -241,6 +243,14 @@ public class DirectionsResults {
 		this.status = status;
 	}
 	
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
+
 	private String getTimeReadable(DateTime dt)	{
 		return addMissingZero(dt.getHourOfDay()) + COLON + addMissingZero(dt.getMinuteOfHour());
 	}

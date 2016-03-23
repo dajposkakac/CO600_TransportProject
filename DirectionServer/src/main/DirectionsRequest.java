@@ -74,6 +74,7 @@ public class DirectionsRequest {
 	private String r2rData;
 	private HashMap<String, String> additionalData;
 	private int status;
+	private String errorMessage;
 	private HashMap<String, String> request;
 	private LatLng originLatLng = null;
 	private LatLng destinationLatLng = null;
@@ -100,9 +101,9 @@ public class DirectionsRequest {
 		}	else	{
 			try {
 				originLatLng = geocodeAddress(origin);
-			} catch (NotFoundException e) {
-				status = 1;
-				e.printStackTrace();
+			} catch (LocationNotFoundException e) {
+				status = e.getStatus();
+				errorMessage = e.getMessage();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -113,9 +114,9 @@ public class DirectionsRequest {
 		}	else	{
 			try {
 				destinationLatLng = geocodeAddress(destination);
-			} catch (NotFoundException e) {
-				status = 1;
-				e.printStackTrace();
+			} catch (LocationNotFoundException e) {
+				status = e.getStatus();
+				errorMessage = e.getMessage();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -130,12 +131,14 @@ public class DirectionsRequest {
 			routeExists(routes);
 			r2rData = r2rSearch(originLatLng, destinationLatLng, travelMode);
 		}	catch (DateInPastException dipe)	{
-			status = 2;
-			dipe.printStackTrace();
-			Thread.currentThread().interrupt();
-			return;
+			status = dipe.getStatus();
+			errorMessage = dipe.getMessage();
+//			dipe.printStackTrace();
+//			Thread.currentThread().interrupt();
+//			return;
 		}	catch (RouteNotFoundException rnfe)	{
-			status = 3;
+			status = rnfe.getStatus();
+			errorMessage = rnfe.getMessage();
 			rnfe.printStackTrace();
 			Thread.currentThread().interrupt();
 			return;
@@ -145,11 +148,13 @@ public class DirectionsRequest {
 	}
 	
 	private void gatherAdditionalData()	{
-		additionalData.put(TRANSIT_MODE, request.get(TRANSIT_MODE).toUpperCase());
-		additionalData.put(DEPARTURE_OPTION, request.get(DEPARTURE_OPTION));
-		additionalData.put(ORIGIN_LATLNG, originLatLng.lat + COMMA + originLatLng.lng);
-		additionalData.put(DESTINATION_LATLNG, destinationLatLng.lat + COMMA + destinationLatLng.lng);
-		additionalData.put(TIME, String.valueOf(time.getMillis() / 1000));
+		if(status == 0)	{
+			additionalData.put(TRANSIT_MODE, request.get(TRANSIT_MODE).toUpperCase());
+			additionalData.put(DEPARTURE_OPTION, request.get(DEPARTURE_OPTION));
+			additionalData.put(ORIGIN_LATLNG, originLatLng.lat + COMMA + originLatLng.lng);
+			additionalData.put(DESTINATION_LATLNG, destinationLatLng.lat + COMMA + destinationLatLng.lng);
+			additionalData.put(TIME, String.valueOf(time.getMillis() / 1000));
+		}
 	}
 	
 	private String r2rSearch(LatLng originLatLng, LatLng destinationLatLng, TravelMode travelMode) throws IOException {
@@ -178,7 +183,7 @@ public class DirectionsRequest {
 	
 	private void routeExists(DirectionsResult routes) throws RouteNotFoundException {
 		if(routes.routes.length == 0)	{
-			throw new RouteNotFoundException("No route found");
+			throw new RouteNotFoundException(3, "No route found");
 		}
 	}
 	
@@ -194,8 +199,8 @@ public class DirectionsRequest {
 		}
 		dt = dt.plusMillis(250);
 		if(!dt.isAfterNow())	{
-			//throw new DateInPastException(dt.toString() + " is in the past");
-			dt = DateTime.now().plusMillis(250);
+			throw new DateInPastException(2, dt.toString() + " is in the past");
+//			dt = DateTime.now().plusMillis(250);
 		}
 		return dt;
 	}
@@ -203,8 +208,7 @@ public class DirectionsRequest {
 	private LatLng geocodeAddress(String address) throws NotFoundException, Exception	{
 		GeocodingResult[] results =  GeocodingApi.newRequest(gaContext).address(address).await();
 		if(results.length < 1)	{
-			status = 1;
-			throw new NotFoundException(address);
+			throw new LocationNotFoundException(1, "Location not found:" + address);
 		}
 		return results[0].geometry.location;
 	}
@@ -225,6 +229,10 @@ public class DirectionsRequest {
 
 	public int getStatus() {
 		return status;
+	}
+	
+	public String getErrorMessage()	{
+		return errorMessage;
 	}
 	
 	public HashMap<String, String> getAdditionalData()	{

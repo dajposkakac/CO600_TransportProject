@@ -36,6 +36,7 @@ public class RequestHandler extends Thread {
 	
 	public static final String RESPONSE = "response";
 	public static final String STATUS = "status";
+	public static final String ERROR_MESSAGE = "errorMessage";
 	public static final String INFO = "info";
 	public static final String RESULTS = "results";
 	public static final String RESULT = "result";
@@ -69,11 +70,12 @@ public class RequestHandler extends Thread {
 				    	Document r2rXmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(request.getR2RData())));
 			    		result.addResults(request.getRoutes(), parseR2RXml(r2rXmlDoc));
 				    }	else	{
-				    	result = new DirectionsResults(request.getStatus());
+				    	result = new DirectionsResults(request.getStatus(), request.getErrorMessage());
+				    	break;
 				    }
 			    }
 		    }	else	{
-		    	result = new DirectionsResults(-10);
+		    	result = new DirectionsResults(-10, "Invalid request");
 		    }
 		    String resultString = createXMLResponse(result);
 //		    String resultString = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><request><origin>London, UK</origin><destination>Oxford, Oxford, UK</destination><distance>85.3 km</distance><duration>1 hour 35 mins</duration><transitMode>transit</transitMode><price>33</price></request>";
@@ -212,6 +214,10 @@ public class RequestHandler extends Thread {
 	    		
 	    		results.appendChild(result);
 			}
+		}	else	{
+			Element errorMessage = xmlDoc.createElement(ERROR_MESSAGE);
+			errorMessage.appendChild(xmlDoc.createTextNode(res.getErrorMessage()));
+			response.appendChild(errorMessage);
 		}
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
         StreamResult sr = new StreamResult(new StringWriter());

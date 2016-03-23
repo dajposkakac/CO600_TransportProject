@@ -2,10 +2,10 @@ package main;
 
 import com.google.maps.errors.NotFoundException;
 
-public class RouteNotFoundException extends NotFoundException{
+public class RouteNotFoundException extends StatusException{
 
-	public RouteNotFoundException(String errorMessage) {
-		super(errorMessage);
+	public RouteNotFoundException(int pStatus, String errorMessage) {
+		super(pStatus, errorMessage);
 	}
 
 }
