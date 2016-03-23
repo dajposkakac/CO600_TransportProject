@@ -18,10 +18,9 @@
         android:id="@+id/depart_at"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/transit_mode"
-        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/transit_mode"
+        android:layout_marginStart="10dp"
         android:text="Departure:"
-        android:textStyle="bold"
         android:textColor="@android:color/background_light"/>
 
     <TextView
@@ -29,9 +28,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/depart_at"
-        android:layout_toRightOf="@+id/transit_mode"
-        android:text=""
+        android:layout_toEndOf="@+id/transit_mode"
+        android:layout_marginStart="10dp"
         android:textStyle="bold"
+        android:textSize="16sp"
         android:textColor="@android:color/background_light"/>
 
     <TextView
@@ -39,10 +39,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/depart_at_result"
-        android:layout_toRightOf="@+id/transit_mode"
+        android:layout_toEndOf="@+id/transit_mode"
         android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
         android:text="Arrive at:"
-        android:textStyle="bold"
         android:textColor="@android:color/background_light"/>
 
     <TextView
@@ -50,9 +50,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/arrive_at"
-        android:layout_toRightOf="@+id/transit_mode"
-        android:text=""
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/transit_mode"
         android:textStyle="bold"
+        android:textSize="16sp"
         android:textColor="@android:color/background_light"/>
 
     <TextView
@@ -61,8 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/depart_at"
         android:text="Duration:"
-        android:layout_marginStart="70dp"
-        android:textStyle="bold"
+        android:layout_marginStart="90dp"
         android:textColor="@android:color/background_light" />
 
     <TextView
@@ -71,9 +71,9 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/depart_at"
         android:layout_below="@+id/time_label"
-        android:text="1 Hour 23 Minutes"
-        android:layout_marginStart="70dp"
+        android:layout_marginStart="90dp"
         android:textStyle="bold"
+        android:textSize="16sp"
         android:textColor="@android:color/background_light"/>
 
     <TextView
@@ -83,8 +83,7 @@
         android:layout_toEndOf="@+id/depart_at"
         android:layout_below="@+id/time"
         android:text="Distance:"
-        android:layout_marginStart="70dp"
-        android:textStyle="bold"
+        android:layout_marginStart="90dp"
         android:textColor="@android:color/background_light" />
 
     <TextView
@@ -93,9 +92,9 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/depart_at"
         android:layout_below="@+id/distance_label"
-        android:text="87 miles"
-        android:layout_marginStart="70dp"
+        android:layout_marginStart="90dp"
         android:textStyle="bold"
+        android:textSize="16sp"
         android:textColor="@android:color/background_light" />
 
     <TextView
@@ -104,9 +103,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/distance"
         android:text="Price:"
-        android:layout_marginStart="70dp"
-        android:layout_toRightOf="@+id/depart_at"
-        android:textStyle="bold"
+        android:layout_marginStart="90dp"
+        android:layout_toEndOf="@+id/depart_at"
         android:textColor="@android:color/background_light"/>
 
     <TextView
@@ -114,10 +112,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/price_label"
-        android:text="£37"
-        android:layout_marginStart="70dp"
-        android:layout_toRightOf="@+id/depart_at"
+        android:layout_marginStart="90dp"
+        android:layout_toEndOf="@+id/depart_at"
         android:textStyle="bold"
+        android:textSize="16sp"
         android:textColor="@android:color/background_light"/>
 
 </RelativeLayout>
