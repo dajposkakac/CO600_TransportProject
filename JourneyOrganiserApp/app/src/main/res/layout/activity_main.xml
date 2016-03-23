@@ -78,7 +78,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/to_label"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="@dimen/default_margin"
                     android:layout_marginTop="@dimen/label_margin">
 
                     <AutoCompleteTextView
@@ -98,43 +97,47 @@
                         />
                 </LinearLayout>
 
-                <EditText
-                    android:id="@+id/time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:width="55dp"
-                    android:gravity="center_horizontal"
-                    android:layout_below="@id/to_layout"
-                    android:textIsSelectable="true"
-                    android:layout_marginBottom="@dimen/default_margin"
-                    android:hint="Time"/>
-
-                <EditText
-                    android:id="@+id/date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:width="110dp"
-                    android:gravity="center_horizontal"
-                    android:layout_toRightOf="@id/time"
-                    android:layout_below="@id/to_layout"
-                    android:textIsSelectable="true"
-                    android:layout_marginBottom="@dimen/default_margin"
-                    android:hint="Date"/>
-
-                <Spinner
-                    android:id="@+id/dateSpinner"
+                <LinearLayout
+                    android:id="@+id/date_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/date"
-                    android:layout_below="@id/to_layout"
-                    android:spinnerMode="dropdown"
-                    android:layout_marginBottom="@dimen/default_margin"/>
+                    android:layout_below="@+id/to_layout"
+                    android:weightSum="1"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/default_margin">
 
+                    <Spinner
+                        android:id="@+id/dateSpinner"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown"
+                        android:layout_marginBottom="@dimen/default_margin"
+                        android:layout_width="150dp" />
+
+                    <EditText
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:gravity="center_horizontal"
+                        android:textIsSelectable="true"
+
+                        android:hint="Time"/>
+
+                    <EditText
+                        android:id="@+id/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center_horizontal"
+                        android:textIsSelectable="true"
+                        android:hint="Date"/>
+
+                </LinearLayout>
                 <LinearLayout
                     android:id="@+id/preferences"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/dateSpinner"
+                    android:layout_below="@id/date_layout"
                     android:weightSum="1"
                     android:layout_marginBottom="@dimen/default_margin">
 
