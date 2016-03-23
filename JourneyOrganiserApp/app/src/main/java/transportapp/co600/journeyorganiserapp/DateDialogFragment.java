@@ -16,6 +16,7 @@ public class DateDialogFragment extends DialogFragment implements DatePickerDial
 
     private static final String DASH = "-";
     private MainActivity activity;
+    private EditText dateText;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -24,21 +25,19 @@ public class DateDialogFragment extends DialogFragment implements DatePickerDial
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
-
+        dateText = (EditText) activity.findViewById(R.id.date);
         return new DatePickerDialog(activity, this, year, month, day);
 
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        EditText dateText = (EditText) activity.findViewById(R.id.date);
         monthOfYear++;
         String monthAddedZeros = activity.addMissingZero(monthOfYear);
         String dayAddedZeros = activity.addMissingZero(dayOfMonth);
         String date = year + DASH + monthAddedZeros + DASH + dayAddedZeros;
         String dateDisplay = dayAddedZeros + DASH + monthAddedZeros + DASH + year;
         dateText.setText(dateDisplay);
-        dateText.setFocusable(false);
         activity.getRequest().setDate(date);
     }
 }

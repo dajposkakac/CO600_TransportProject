@@ -120,7 +120,7 @@
                         android:layout_weight="0.3"
                         android:gravity="center_horizontal"
                         android:textIsSelectable="true"
-
+                        android:focusableInTouchMode="false"
                         android:hint="Time"/>
 
                     <EditText
@@ -130,6 +130,7 @@
                         android:layout_weight="0.6"
                         android:gravity="center_horizontal"
                         android:textIsSelectable="true"
+                        android:focusableInTouchMode="false"
                         android:hint="Date"/>
 
                 </LinearLayout>
