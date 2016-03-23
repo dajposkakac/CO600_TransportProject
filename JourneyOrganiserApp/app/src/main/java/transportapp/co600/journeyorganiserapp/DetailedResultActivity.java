@@ -67,17 +67,20 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
         duration.setText(results.get("duration"));
         price.setText("£" + results.get("price"));
 
+        String departureTime = String.valueOf(results.get("departureTime"));
+        String arrivalTime = String.valueOf(results.get("arrivalTime"));
+        String departureDate = String.valueOf(results.get("departureDate"));
+        String arrivalDate = String.valueOf(results.get("arrivalDate"));
+        String departureTimeDate = departureTime + " - " + departureDate;
+        String arrivalTimeDate = arrivalTime + " - " + arrivalDate;
+        departAt.setText(departureTimeDate);
+        arriveAt.setText(arrivalTimeDate);
 
         switch (transitModeText) {
             case "TRAIN":
+                transitMode.setImageResource(R.drawable.train);
             case "BUS":
-                String departureTime = String.valueOf(results.get("departureTime"));
-                String arrivalTime = String.valueOf(results.get("arrivalTime"));
-                String date = String.valueOf(results.get("date"));
-                String departureTimeDate = departureTime + " - " + date;
-                String arrivalTimeDate = arrivalTime + " - " + date;
-                departAt.setText(departureTimeDate);
-                arriveAt.setText(arrivalTimeDate);
+                transitMode.setImageResource(R.drawable.bus);
                 break;
             case "WALKING":
                 transitMode.setImageResource(R.drawable.walk);
@@ -89,13 +92,7 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
                 transitMode.setImageResource(R.drawable.cycle);
                 break;
         }
-        if(transitModeText.equals("TRAIN")) {
-            transitMode.setImageResource(R.drawable.train);
-        }
-        else if(transitModeText.equals("BUS"))  {
-            transitMode.setImageResource(R.drawable.bus);
-        }
-
+        
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
