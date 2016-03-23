@@ -5,16 +5,23 @@
   <info>
     <origin></origin>
     <destination></destination>
+    <originLatLng></originLatLng>
+    <destinationLatLng></destinationLatLng>
   </info>
   <results>
     <result>
+      <transitMode></transitMode>
       <distance></distance>
       <duration></duration>
-      <transitMode></transitMode>
       <price></price>
-      <arrivalTime></arrivalTime> (if transitMode = public)
-      <departureTime></departureTime> (if transitMode = public)
+      <arrivalTime></arrivalTime>
+      <departureTime></departureTime>
+      <arrivalDate></arrivalTime>
+      <departureDate></departureDate>
+      <arrivalTimeInSeconds></arrivalTimeInSeconds>
+      <departureTimeInSeconds></departureTimeInSeconds>
       <departureOption></departureOption>
+      <polyline></polyline>
     </result>
     ...
     ...
