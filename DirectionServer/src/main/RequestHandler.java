@@ -34,6 +34,12 @@ public class RequestHandler extends Thread {
 	
 	public static final String XML_SCHEMA_PATH = "./request_schema.xsd";
 	
+	public static final String RESPONSE = "response";
+	public static final String STATUS = "status";
+	public static final String INFO = "info";
+	public static final String RESULTS = "results";
+	public static final String RESULT = "result";
+	
 	private Socket socket;
 	private BufferedReader bufferedReader;
 	private PrintWriter printWriter;
@@ -135,20 +141,20 @@ public class RequestHandler extends Thread {
 		Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 		
 		//root
-		Element response = xmlDoc.createElement("response");
+		Element response = xmlDoc.createElement(RESPONSE);
 		xmlDoc.appendChild(response);
 	
 		//status
-		Element status = xmlDoc.createElement("status");
+		Element status = xmlDoc.createElement(STATUS);
 		status.appendChild(xmlDoc.createTextNode(String.valueOf(res.getStatus())));
 		response.appendChild(status);
 		
 		if(res.getStatus() == 0)	{
 			//info
-			Element info = xmlDoc.createElement("info");
+			Element info = xmlDoc.createElement(INFO);
 			response.appendChild(info);
-			Element origin = xmlDoc.createElement("origin");
-			Element destination = xmlDoc.createElement("destination");
+			Element origin = xmlDoc.createElement(DirectionsRequest.ORIGIN);
+			Element destination = xmlDoc.createElement(DirectionsRequest.DESTINATION);
 			Element originLatLng = xmlDoc.createElement(DirectionsRequest.ORIGIN_LATLNG);
 			Element destinationLatLng = xmlDoc.createElement(DirectionsRequest.DESTINATION_LATLNG);
 			origin.appendChild(xmlDoc.createTextNode(res.getOriginForRoute(0)));
@@ -161,34 +167,34 @@ public class RequestHandler extends Thread {
 			info.appendChild(destinationLatLng);
 			
 			//results
-			Element results = xmlDoc.createElement("results");
+			Element results = xmlDoc.createElement(RESULTS);
 			response.appendChild(results);
 			for(int k = 0; k < res.getNumberOfRoutes(); k++)	{
 				String travelMode = res.getTransitModeForRoute(k).toUpperCase();
 				
-	    		Element result = xmlDoc.createElement("result");
+	    		Element result = xmlDoc.createElement(RESULT);
 	    		Element transitMode = xmlDoc.createElement(DirectionsRequest.TRANSIT_MODE);
 	    		transitMode.appendChild(xmlDoc.createTextNode(travelMode));
 	    		result.appendChild(transitMode);
-	    		Element distance = xmlDoc.createElement("distance");
+	    		Element distance = xmlDoc.createElement(DirectionsRequest.DISTANCE);
 	    		distance.appendChild(xmlDoc.createTextNode(res.getDistanceForRoute(k)));
 	    		result.appendChild(distance);
-	    		Element duration = xmlDoc.createElement("duration");
+	    		Element duration = xmlDoc.createElement(DirectionsRequest.DURATION);
 	    		duration.appendChild(xmlDoc.createTextNode(res.getDurationForRoute(k)));
 	    		result.appendChild(duration);
-	    		Element price = xmlDoc.createElement("price");
+	    		Element price = xmlDoc.createElement(DirectionsRequest.PRICE);
 	    		price.appendChild(xmlDoc.createTextNode(res.getPriceForRoute(k)));
 	    		result.appendChild(price);
-	    		Element arrivalTime = xmlDoc.createElement("arrivalTime");
+	    		Element arrivalTime = xmlDoc.createElement(DirectionsRequest.ARRIVAL_TIME);
 	    		arrivalTime.appendChild(xmlDoc.createTextNode(res.getArrivalTimeForRoute(k)));
 	    		result.appendChild(arrivalTime);
-	    		Element departureTime = xmlDoc.createElement("departureTime");
+	    		Element departureTime = xmlDoc.createElement(DirectionsRequest.DEPARTURE_TIME);
 	    		departureTime.appendChild(xmlDoc.createTextNode(res.getDepartureTimeForRoute(k)));
 	    		result.appendChild(departureTime);
-	    		Element arrivalDate = xmlDoc.createElement("arrivalDate");
+	    		Element arrivalDate = xmlDoc.createElement(DirectionsRequest.ARRIVAL_DATE);
 	    		arrivalDate.appendChild(xmlDoc.createTextNode(res.getArrivalDateForRoute(k)));
 	    		result.appendChild(arrivalDate);
-	    		Element departureDate = xmlDoc.createElement("departureDate");
+	    		Element departureDate = xmlDoc.createElement(DirectionsRequest.DEPARTURE_DATE);
 	    		departureDate.appendChild(xmlDoc.createTextNode(res.getDepartureDateForRoute(k)));
 	    		result.appendChild(departureDate);
 	    		Element arrivalTimeInSeconds = xmlDoc.createElement(DirectionsRequest.ARRIVAL_TIME_IN_SECONDS);

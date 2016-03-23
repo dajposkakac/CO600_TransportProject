@@ -19,6 +19,8 @@ public class DirectionsResults {
 	public static final String DRIVE = "Drive";
 	
 	public static final String CURRENCY_POUND = "£";
+	public static final String COLON = ":";
+	public static final String DASH = "-";
 	
 	private List<DirectionsRoute> results;
 	private HashMap<String, String> additionalData;
@@ -240,11 +242,11 @@ public class DirectionsResults {
 	}
 	
 	private String getTimeReadable(DateTime dt)	{
-		return addMissingZero(dt.getHourOfDay()) + ":" + addMissingZero(dt.getMinuteOfHour());
+		return addMissingZero(dt.getHourOfDay()) + COLON + addMissingZero(dt.getMinuteOfHour());
 	}
 	
 	private String getDateReadable(DateTime dt)	{
-		return addMissingZero(dt.getDayOfMonth()) + "-" + addMissingZero(dt.getMonthOfYear()) + "-" + dt.getYear();
+		return addMissingZero(dt.getDayOfMonth()) + DASH + addMissingZero(dt.getMonthOfYear()) + DASH + dt.getYear();
 	}
 	
 	private String addMissingZero(int time)    {

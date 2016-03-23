@@ -39,6 +39,13 @@ public class DirectionsRequest {
 	public static final String DESTINATION = "destination";
 	public static final String ORIGIN_LATLNG= "originLatLng";
 	public static final String DESTINATION_LATLNG = "destinationLatLng";
+	public static final String DISTANCE = "distance";
+	public static final String DURATION = "duration";
+	public static final String PRICE = "price";
+	public static final String ARRIVAL_TIME = "arrivalTime";
+	public static final String DEPARTURE_TIME = "departureTime";
+	public static final String ARRIVAL_DATE = "arrivalDate";
+	public static final String DEPARTURE_DATE = "departureDate";
 	public static final String TRANSIT_MODE = "transitMode";
 	public static final String DEPARTURE_OPTION = "departureOption";
 	public static final String TIME = "time";
@@ -49,13 +56,18 @@ public class DirectionsRequest {
 	
 	//Misc
 	private static final String LATLNG_REGEXP = "([+-]?\\d+\\.?\\d+)\\s*,\\s*([+-]?\\d+\\.?\\d+)";
+	private static final String COMMA = ",";
 	
-	//R2R URL constants
+	//R2R constants
 	private static final String R2RURL1 = "http://free.rome2rio.com/api/1.2/xml/Search?key=";
 	private static final String R2RURL2 = "&oPos=";
 	private static final String R2RURL3 = "&dPos=";
 	private static final String R2RURL4 = "&currencyCode=";
 	private static final String R2RURL5 = "&flags=";
+	private static final String R2R_TRAVEL_MODE_FLAGS_DEFAULT = "0x018FFFFF";
+	private static final String R2R_TRAVEL_MODE_FLAGS_DRIVING = "0x0180FFFF";
+	private static final String R2R_TRAVEL_MODE_FLAGS_TRANSIT = "0x018FF22F";
+	private static final String CONN_TYPE = "GET";
 	
 	private final GeoApiContext gaContext;
 	private DirectionsResult routes;
@@ -83,7 +95,7 @@ public class DirectionsRequest {
 		String departureOption = request.get(DEPARTURE_OPTION);
 		travelMode = TravelMode.valueOf(request.get(TRANSIT_MODE).toUpperCase());
 		if(origin.matches(LATLNG_REGEXP))	{
-			String[] originTemp = origin.split(",");
+			String[] originTemp = origin.split(COMMA);
 			originLatLng = new LatLng(Double.valueOf(originTemp[0]), Double.valueOf(originTemp[1]));
 		}	else	{
 			try {
@@ -96,7 +108,7 @@ public class DirectionsRequest {
 			}
 		}
 		if(destination.matches(LATLNG_REGEXP))	{
-			String[] destinationTemp = destination.split(",");
+			String[] destinationTemp = destination.split(COMMA);
 			destinationLatLng = new LatLng(Double.valueOf(destinationTemp[0]), Double.valueOf(destinationTemp[1]));
 		}	else	{
 			try {
@@ -135,8 +147,8 @@ public class DirectionsRequest {
 	private void gatherAdditionalData()	{
 		additionalData.put(TRANSIT_MODE, request.get(TRANSIT_MODE).toUpperCase());
 		additionalData.put(DEPARTURE_OPTION, request.get(DEPARTURE_OPTION));
-		additionalData.put(ORIGIN_LATLNG, originLatLng.lat + "," + originLatLng.lng);
-		additionalData.put(DESTINATION_LATLNG, destinationLatLng.lat + "," + destinationLatLng.lng);
+		additionalData.put(ORIGIN_LATLNG, originLatLng.lat + COMMA + originLatLng.lng);
+		additionalData.put(DESTINATION_LATLNG, destinationLatLng.lat + COMMA + destinationLatLng.lng);
 		additionalData.put(TIME, String.valueOf(time.getMillis() / 1000));
 	}
 	
@@ -145,7 +157,7 @@ public class DirectionsRequest {
 		System.out.println(sUrl);
 		URL url = new URL(sUrl);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
-		con.setRequestMethod("GET"); 
+		con.setRequestMethod(CONN_TYPE); 
 //		int respCode = con.getResponseCode();
 		BufferedReader in = new BufferedReader(
 		        new InputStreamReader(con.getInputStream()));
@@ -172,18 +184,18 @@ public class DirectionsRequest {
 	
 	public DateTime extractDateTime(String time, String date) throws DateInPastException	{
 		DateTime dt = new DateTime();
-		if(time != null && !time.equals("now"))	{
+		if(time != null)	{
 			int[] timeData = Arrays.stream(time.split(":")).mapToInt(Integer::parseInt).toArray();
 			dt = dt.withHourOfDay(timeData[0]).withMinuteOfHour(timeData[1]);
 		}
-		if(time != null && !date.equals("now"))	{
+		if(date != null)	{
 			int[] dateData = Arrays.stream(date.split("-")).mapToInt(Integer::parseInt).toArray();
 			dt = dt.withYear(dateData[0]).withMonthOfYear(dateData[1]).withDayOfMonth(dateData[2]);
 		}
 		dt = dt.plusMillis(250);
 		if(!dt.isAfterNow())	{
 			//throw new DateInPastException(dt.toString() + " is in the past");
-			dt = dt.now().plusMillis(250);
+			dt = DateTime.now().plusMillis(250);
 		}
 		return dt;
 	}
@@ -198,11 +210,11 @@ public class DirectionsRequest {
 	}
 	
 	private String getTravelModeFlags(TravelMode tm)	{
-		String flags = "0x018FFFFF";
+		String flags = R2R_TRAVEL_MODE_FLAGS_DEFAULT;
 		if(tm == TravelMode.DRIVING)	{
-			flags = "0x0180FFFF";
+			flags = R2R_TRAVEL_MODE_FLAGS_DRIVING;
 		}	else if(tm == TravelMode.TRANSIT)	{
-			flags = "0x018FF22F";
+			flags = R2R_TRAVEL_MODE_FLAGS_TRANSIT;
 		}
 		return flags;
 	}
