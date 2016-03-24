@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -84,6 +85,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
+    private ImageButton fromClearButton;
+    private ImageButton toClearButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +142,27 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         from.setAdapter(mAdapter);
         to.setAdapter(mAdapter);
 
+        initCloseButtons();
+
         initMapButtons();
+    }
+
+    private void initCloseButtons() {
+        fromClearButton = (ImageButton) findViewById(R.id.from_clear);
+        fromClearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                from.setText("");
+            }
+        });
+
+        toClearButton = (ImageButton) findViewById(R.id.to_clear);
+        toClearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                to.setText("");
+            }
+        });
     }
 
     private void initMapButtons()   {

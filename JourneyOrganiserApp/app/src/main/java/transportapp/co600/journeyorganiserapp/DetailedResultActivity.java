@@ -15,6 +15,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -104,7 +105,6 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.getUiSettings().setZoomControlsEnabled(true);
         final ScrollView sv = (ScrollView) findViewById(R.id.scroll_view);
         ((InterceptTouchMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                 .setListener(new InterceptTouchMapFragment.OnTouchListener() {
@@ -113,13 +113,19 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
                         sv.requestDisallowInterceptTouchEvent(true);
                     }
                 });
+
+
         String oll = info.get("originLatLng");
         String[] originData = oll.split(",");
         LatLng originPosition = new LatLng(Double.valueOf(originData[0]), Double.valueOf(originData[1]));
         Log.d("LatLng", originPosition.toString());
         String[] destinationData = info.get("destinationLatLng").split(",");
         LatLng destinationPosition = new LatLng(Double.valueOf(destinationData[0]), Double.valueOf(destinationData[1]));
-//        LatLngBounds bounds = new LatLngBounds(originPosition, destinationPosition);
+        List<LatLng> polyline = PolyUtil.decode(results.get("polyline"));
+        Log.d("polyline", results.get("polyline"));
+        final LatLngBounds bounds = new LatLngBounds(originPosition, destinationPosition);
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.addMarker(new MarkerOptions().position(originPosition));
         mMap.addMarker(new MarkerOptions().position(destinationPosition));
 //        String[] polylineString = results.get("polyline").split("\\|");
@@ -128,11 +134,9 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
 //            String[] coord = polylineString[i].split(",");
 //            polyline.add(new LatLng(Double.valueOf(coord[0]), Double.valueOf(coord[1])));
 //        }
-        List<LatLng> polyline = PolyUtil.decode(results.get("polyline"));
-        Log.d("polyline", results.get("polyline"));
         mMap.addPolyline(new PolylineOptions().addAll(polyline).width(10).color(Color.RED));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(originPosition, 15));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 15))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(originPosition, 10));
         //mMap.animateCamera(CameraUpdateFactory.zoomIn());
     }
 }

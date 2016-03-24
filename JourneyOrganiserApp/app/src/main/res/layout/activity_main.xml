@@ -56,6 +56,13 @@
                         android:singleLine="true"
                         android:completionThreshold="3" />
 
+                    <ImageButton
+                        android:id="@+id/from_clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/close"
+                        android:layout_gravity="center"/>
+
                     <Button
                         android:id="@+id/from_map"
                         android:layout_width="60dp"
@@ -88,6 +95,13 @@
                         android:layout_weight="1"
                         android:singleLine="true"
                         android:completionThreshold="3" />
+
+                    <ImageButton
+                        android:id="@+id/to_clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/close"
+                        android:layout_gravity="center"/>
 
                     <Button
                         android:id="@+id/to_map"
