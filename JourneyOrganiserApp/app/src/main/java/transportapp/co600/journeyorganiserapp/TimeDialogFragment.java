@@ -17,11 +17,12 @@ public class TimeDialogFragment extends DialogFragment implements TimePickerDial
 
     private MainActivity activity;
     private EditText timeText;
+    private Calendar c;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         activity = (MainActivity) getActivity();
-        final Calendar c = Calendar.getInstance();
+        c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
         timeText = (EditText) activity.findViewById(R.id.time);
@@ -33,6 +34,7 @@ public class TimeDialogFragment extends DialogFragment implements TimePickerDial
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         String timeAddedZero = activity.addMissingZero(hourOfDay) + ":" + activity.addMissingZero(minute);
         timeText.setText(timeAddedZero);
-        activity.getRequest().setTime(timeAddedZero + ":00");
+        timeAddedZero = timeAddedZero + ":" + activity.addMissingZero(c.get(Calendar.SECOND));
+        activity.getRequest().setTime(timeAddedZero);
     }
 }
