@@ -160,17 +160,19 @@ public class RequestHandler extends Thread {
 			Element originLatLng = xmlDoc.createElement(DirectionsRequest.ORIGIN_LATLNG);
 			Element destinationLatLng = xmlDoc.createElement(DirectionsRequest.DESTINATION_LATLNG);
 			Element sortingPreference = xmlDoc.createElement(DirectionsRequest.SORTING_PREFERENCE);
+    		Element departureOption = xmlDoc.createElement(DirectionsRequest.DEPARTURE_OPTION);
 			origin.appendChild(xmlDoc.createTextNode(res.getOriginForRoute(0)));
 			destination.appendChild(xmlDoc.createTextNode(res.getDestinationForRoute(0)));
 			originLatLng.appendChild(xmlDoc.createTextNode(res.getOriginLatLng()));
 			destinationLatLng.appendChild(xmlDoc.createTextNode(res.getDestinationLatLng()));
 			sortingPreference.appendChild(xmlDoc.createTextNode(res.getSortingPreference()));
+    		departureOption.appendChild(xmlDoc.createTextNode(res.getDepartureOption()));
 			info.appendChild(origin);
 			info.appendChild(destination);
 			info.appendChild(originLatLng);
 			info.appendChild(destinationLatLng);
 			info.appendChild(sortingPreference);
-			
+			info.appendChild(departureOption);
 			//results
 			Element results = xmlDoc.createElement(RESULTS);
 			response.appendChild(results);
@@ -208,9 +210,6 @@ public class RequestHandler extends Thread {
 	    		Element departureTimeInSeconds = xmlDoc.createElement(DirectionsRequest.DEPARTURE_TIME_IN_SECONDS);
 	    		departureTimeInSeconds.appendChild(xmlDoc.createTextNode(res.getDepartureTimeInSecondsForRoute(k)));
 	    		result.appendChild(departureTimeInSeconds);
-	    		Element departureOption = xmlDoc.createElement(DirectionsRequest.DEPARTURE_OPTION);
-	    		departureOption.appendChild(xmlDoc.createTextNode(res.getDepartureOption()));
-	    		result.appendChild(departureOption);
 	    		Element polyline = xmlDoc.createElement(DirectionsRequest.POLYLINE);
 	    		polyline.appendChild(xmlDoc.createTextNode(res.getPolylineForRoute(k)));
 	    		result.appendChild(polyline);
