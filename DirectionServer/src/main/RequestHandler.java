@@ -177,11 +177,9 @@ public class RequestHandler extends Thread {
 			Element results = xmlDoc.createElement(RESULTS);
 			response.appendChild(results);
 			for(int k = 0; k < res.getNumberOfRoutes(); k++)	{
-				String travelMode = res.getTransitModeForRoute(k).toUpperCase();
-				
 	    		Element result = xmlDoc.createElement(RESULT);
 	    		Element transitMode = xmlDoc.createElement(DirectionsRequest.TRANSIT_MODE);
-	    		transitMode.appendChild(xmlDoc.createTextNode(travelMode));
+	    		transitMode.appendChild(xmlDoc.createTextNode(res.getTransitModeForRoute(k).toUpperCase()));
 	    		result.appendChild(transitMode);
 	    		Element distance = xmlDoc.createElement(DirectionsRequest.DISTANCE);
 	    		distance.appendChild(xmlDoc.createTextNode(res.getDistanceForRoute(k)));

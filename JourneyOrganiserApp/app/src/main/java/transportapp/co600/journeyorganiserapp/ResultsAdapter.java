@@ -53,7 +53,7 @@ public class ResultsAdapter extends ArrayAdapter<String> {
                     break;
                 case "arrivalTimeInSeconds":
                     value = values;
-                        if(results.get(0).get("departureOption").startsWith("Arrive"))  {
+                        if(info.get("departureOption").startsWith("Arrive"))  {
                             valuesArray[j] = Double.valueOf(value);
                         }
                         else {
@@ -63,7 +63,7 @@ public class ResultsAdapter extends ArrayAdapter<String> {
                     break;
                 case "departureTimeInSeconds":
                     value = values;
-                    if(results.get(0).get("departureOption").startsWith("Depart"))  {
+                    if(info.get("departureOption").startsWith("Depart"))  {
                         valuesArray[j] = Double.valueOf(value);
                     }
                     else {
