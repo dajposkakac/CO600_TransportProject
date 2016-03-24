@@ -39,6 +39,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
     private Socket socket;
     private int status;
     private String errorMessage;
+    private PrintWriter printwriter;
 
     public RequestDirectionsTask(Activity pActivity, Request pReq)   {
         activity = pActivity;
@@ -51,7 +52,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
         try {
             socket = new Socket();
             socket.connect(new InetSocketAddress(ip, SERVER_PORT), SERVER_TIMEOUT_MS);
-            PrintWriter printwriter = new PrintWriter(socket.getOutputStream(), true);
+            printwriter = new PrintWriter(socket.getOutputStream(), true);
             String xmlReq = createXMLRequest(req);
             Log.d(TAG, xmlReq);
             printwriter.write(xmlReq); //write the message to output stream
@@ -70,8 +71,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
         if(status == 0) {
             activity.findViewById(R.id.loading).setVisibility(View.VISIBLE);
-            new ReceiveDirectionsTask(activity, socket).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
-            //        printwriter.close();
+            new ReceiveDirectionsTask(activity, socket, printwriter).execute();
             Log.d("RequestRES", result);
         }   else    {
             ErrorDialogFragment.errorDialog(activity, "Error", status, errorMessage);

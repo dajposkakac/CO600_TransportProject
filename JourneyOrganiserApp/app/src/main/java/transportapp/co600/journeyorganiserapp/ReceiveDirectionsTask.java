@@ -15,6 +15,7 @@ import org.xml.sax.InputSource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.StringReader;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
 
     private static final String TAG = "ReceiveDIR";
+    private final PrintWriter printwriter;
     private Activity activity;
     private Socket socket;
     private BufferedReader bufferedReader;
@@ -40,9 +42,10 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
     private HashMap<String, String> info;
     private LinkedHashMap<Integer, HashMap<String, String>> results;
 
-    public ReceiveDirectionsTask(Activity pActivity, Socket pSocket)   {
+    public ReceiveDirectionsTask(Activity pActivity, Socket pSocket, PrintWriter pPrintwriter)   {
         activity = pActivity;
         socket = pSocket;
+        printwriter = pPrintwriter;
     }
 
     @Override
@@ -61,6 +64,7 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }   finally {
+            printwriter.close();
             try {
                 if(bufferedReader != null) {
                     bufferedReader.close();

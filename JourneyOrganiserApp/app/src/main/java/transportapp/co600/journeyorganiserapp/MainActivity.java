@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
-            new RequestDirectionsTask(this, req).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
+            new RequestDirectionsTask(this, req).execute();
         } else {
             Log.d("CONN", "No network connection");
         }
