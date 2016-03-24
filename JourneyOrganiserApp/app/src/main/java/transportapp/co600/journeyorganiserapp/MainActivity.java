@@ -224,6 +224,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 newFragment.show(getFragmentManager(), "timePicker");
             }
         });
+        timePicker.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                timePicker.setText("");
+                return true;
+            }
+        });
         timePicker.setFocusable(false);
         datePicker = (EditText) findViewById(R.id.date);
         datePicker.setInputType(InputType.TYPE_NULL);
@@ -232,6 +239,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             public void onClick(View v) {
                 DialogFragment newFragment = new DateDialogFragment();
                 newFragment.show(getFragmentManager(), "datePicker");
+            }
+        });
+        datePicker.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                datePicker.setText("");
+                return true;
             }
         });
         datePicker.setFocusable(false);
