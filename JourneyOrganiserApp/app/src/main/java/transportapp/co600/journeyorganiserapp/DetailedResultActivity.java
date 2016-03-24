@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.util.Log;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -93,7 +95,7 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
                 break;
         }
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        SupportMapFragment mapFragment = (InterceptTouchMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -102,6 +104,15 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        final ScrollView sv = (ScrollView) findViewById(R.id.scroll_view);
+        ((InterceptTouchMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+                .setListener(new InterceptTouchMapFragment.OnTouchListener() {
+                    @Override
+                    public void onTouch() {
+                        sv.requestDisallowInterceptTouchEvent(true);
+                    }
+                });
         String oll = info.get("originLatLng");
         String[] originData = oll.split(",");
         LatLng originPosition = new LatLng(Double.valueOf(originData[0]), Double.valueOf(originData[1]));

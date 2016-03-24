@@ -14,7 +14,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <ScrollView
-        android:id="@+id/ScrollView"
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <RelativeLayout
@@ -185,7 +185,7 @@
             tools:context=".DetailedResultActivity"
             android:layout_below="@id/to_result"
             android:layout_margin="10dp"
-            android:name="com.google.android.gms.maps.SupportMapFragment" />
+            android:name="transportapp.co600.journeyorganiserapp.InterceptTouchMapFragment" />
 
         </RelativeLayout>
     </ScrollView>
