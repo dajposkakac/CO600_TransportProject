@@ -211,7 +211,9 @@ public class DirectionsResults {
 				price = priceData.get(transitMode);
 			}
 		}	else if(transitMode.equalsIgnoreCase(TravelMode.DRIVING.toString()))	{
-			price = priceData.get(DRIVE);
+			if(priceData.containsKey(DRIVE))	{
+				price = priceData.get(DRIVE);
+			}
 		}
 		return String.valueOf(price);
 	}
