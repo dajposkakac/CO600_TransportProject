@@ -4,6 +4,14 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 
+/*
+ * Server will open a ServerSocket on port 4444, listen
+ * for an incoming connection and use a separate thread
+ * to handle the request, so it can go back to listening
+ * as soon as possible.
+ * 
+ * @author jg404
+ */
 public class Server {
 	private static ServerSocket serverSocket;
     

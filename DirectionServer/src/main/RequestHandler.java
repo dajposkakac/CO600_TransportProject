@@ -30,10 +30,21 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+/*
+ * Thread used to handle requests.
+ * Reads XML from the socket, parses the information into maps
+ * and creates a new DirectionsRequest for every travel mode 
+ * specified in the request. This is followed by creating a 
+ * DirectionsResult using DirectionsRequests output, which is then
+ * converted to XML format and sent back to the client.
+ * 
+ * @author jg404
+ */
 public class RequestHandler extends Thread {
 	
 	public static final String XML_SCHEMA_PATH = "./request_schema.xsd";
 	
+	//XML tags
 	public static final String RESPONSE = "response";
 	public static final String STATUS = "status";
 	public static final String ERROR_MESSAGE = "errorMessage";
@@ -45,6 +56,9 @@ public class RequestHandler extends Thread {
 	private BufferedReader bufferedReader;
 	private PrintWriter printWriter;
 	
+	/*
+	 * Standard constructor, initialises socket.
+	 */
 	public RequestHandler(Socket pSocket)	{
 		socket = pSocket;
 	}
@@ -81,8 +95,8 @@ public class RequestHandler extends Thread {
 //		    String resultString = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><request><origin>London, UK</origin><destination>Oxford, Oxford, UK</destination><distance>85.3 km</distance><duration>1 hour 35 mins</duration><transitMode>transit</transitMode><price>33</price></request>";
 		    printWriter = new PrintWriter(socket.getOutputStream(), true);
 		    System.out.println(resultString);
-		    printWriter.write(resultString);
-		    printWriter.flush();
+		    printWriter.write(resultString); 
+		    printWriter.flush(); //send response
 		}	catch(Exception e)	{
 			e.printStackTrace();
 		}	finally {
@@ -94,6 +108,10 @@ public class RequestHandler extends Thread {
 		}
 	}
 	
+	/*
+	 * Takes an XML document and parses children of the first node
+	 * into a HashMap<String, String>.
+	 */
 	private HashMap<String,String> parseToMap(Document doc)	{
 		NodeList nodes = doc.getFirstChild().getChildNodes();
 		HashMap<String, String> map = new HashMap<>();
@@ -105,6 +123,10 @@ public class RequestHandler extends Thread {
 		return map;
 	}
 	
+	/*
+	 * Takes an XML document and parses prices for trains, buses and
+	 * driving into a HashMap<String, Integer>
+	 */
 	private HashMap<String, Integer> parseR2RXml(Document doc)	{
 		HashMap<String, Integer> priceMap = new HashMap<>();
 		NodeList nodes = doc.getFirstChild().getChildNodes();
@@ -125,6 +147,9 @@ public class RequestHandler extends Thread {
 		return priceMap;
 	}
 	
+	/*
+	 * Checks whether the request was correctly formatted.
+	 */
 	private boolean validateRequest(StreamSource streamSource) {
 		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		Schema schema;
@@ -139,6 +164,10 @@ public class RequestHandler extends Thread {
 		return true;
 	}
 	
+	/*
+	 * Creates a String containing the response to the request, in format
+	 * specified in the template files in the templates folder.
+	 */
 	private String createXMLResponse(DirectionsResults res) throws ParserConfigurationException, IOException, TransformerException, SAXException {
 		Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 		

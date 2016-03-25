@@ -32,6 +32,14 @@ import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 
+/*
+ * Handles making requests to external APIs, collecting the
+ * data into HashMaps. Also handles exceptions and sets appropriate
+ * fields so errors can be reported back to the client. Defines response
+ * XML tag constants and some other ones for convenience.
+ * 
+ * @author jg404
+ */
 public class DirectionsRequest {
 
 	//Data constants
@@ -84,6 +92,10 @@ public class DirectionsRequest {
 	private TravelMode travelMode;
 	private DateTime time;
 	
+	/*
+	 * Constructor sets reads API key for GoogleAPI and initialises
+	 * object.
+	 */
 	public DirectionsRequest(HashMap<String, String> data)	{
 		status = 0;
 		request = data;
@@ -93,6 +105,12 @@ public class DirectionsRequest {
 		gatherAdditionalData();
 	}
 	
+	/*
+	 * Converts origin and destination to coordinates if necessary, makes a Google Maps
+	 * Directions API request and if a route exists makes a Rome2Rio Search API requests
+	 * to look for a price for all routes. Handles all exceptions, which set error status,
+	 * a readable error message and stops the request.
+	 */
 	private void makeRequests()	{
 		String origin = request.get(ORIGIN);
 		String destination = request.get(DESTINATION);
@@ -153,6 +171,10 @@ public class DirectionsRequest {
 		}
 	}
 	
+	/*
+	 * Convenient method which specifies a single place in code to add some
+	 * additional information to the request.
+	 */
 	private void gatherAdditionalData()	{
 		if(status == 0)	{
 			additionalData.put(TRANSIT_MODE, request.get(TRANSIT_MODE).toUpperCase());
@@ -164,6 +186,10 @@ public class DirectionsRequest {
 		}
 	}
 	
+	/*
+	 * Makes the Rome2Rio Search API request using origin and destination coordinates 
+	 * and the specified travel mode.
+	 */
 	private String r2rSearch(LatLng originLatLng, LatLng destinationLatLng, TravelMode travelMode) throws IOException {
 		String sUrl = R2RURL1 + readKey("R2R_key") + R2RURL2 + originLatLng.toString() + R2RURL3 + destinationLatLng.toString() + R2RURL4 + "GBP" + R2RURL5 + getTravelModeFlags(travelMode);
 		System.out.println(sUrl);
@@ -184,16 +210,26 @@ public class DirectionsRequest {
 		return response.toString();
 	}
 
+	/*
+	 * Returns routes found by Google Maps Directions API request.
+	 */
 	public DirectionsResult getRoutes() {
 		return routes;
 	}
 	
+	/*
+	 * Checks whether any routes were found, if not, throws RouteNotFoundException.
+	 */
 	private void routeExists(DirectionsResult routes) throws RouteNotFoundException {
 		if(routes.routes.length == 0)	{
 			throw new RouteNotFoundException(3, "No route found");
 		}
 	}
 	
+	/*
+	 * Uses time and date information from the client request to create an object which 
+	 * is easier to operate with.
+	 */
 	public DateTime extractDateTime(String time, String date) throws DateInPastException	{
 		DateTime dt = new DateTime();
 		if(time != null)	{
@@ -212,6 +248,10 @@ public class DirectionsRequest {
 		return dt;
 	}
 	
+	/*
+	 * Takes an address and returns its LatLng. If the location is not found throws 
+	 * LocationNotFoundException.
+	 */
 	private LatLng geocodeAddress(String address) throws NotFoundException, Exception	{
 		GeocodingResult[] results =  GeocodingApi.newRequest(gaContext).address(address).await();
 		if(results.length < 1)	{
@@ -220,6 +260,9 @@ public class DirectionsRequest {
 		return results[0].geometry.location;
 	}
 	
+	/*
+	 * Returns Rome2Rio travel mode flags for the specified travel mode.
+	 */
 	private String getTravelModeFlags(TravelMode tm)	{
 		String flags = R2R_TRAVEL_MODE_FLAGS_DEFAULT;
 		if(tm == TravelMode.DRIVING)	{
@@ -230,22 +273,37 @@ public class DirectionsRequest {
 		return flags;
 	}
 	
+	/*
+	 * Returns output of Rome2Rio Search API request.
+	 */
 	public String getR2RData()	{
 		return r2rData;
 	}
 
+	/*
+	 * Returns status of the request.
+	 */
 	public int getStatus() {
 		return status;
 	}
 	
+	/*
+	 * Returns a readable eror message if an error occurs.
+	 */
 	public String getErrorMessage()	{
 		return errorMessage;
 	}
 	
+	/*
+	 * Returns the map of additional data to be included in the response.
+	 */
 	public HashMap<String, String> getAdditionalData()	{
 		return additionalData;
 	}
 	
+	/*
+	 * Reads the key for the key type specified.
+	 */
 	private String readKey(String keyName)  {
         Document xmlDoc;
 		try {
