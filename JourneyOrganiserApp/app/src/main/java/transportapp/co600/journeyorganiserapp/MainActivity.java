@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -190,6 +191,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        LayoutInflater inflater = getLayoutInflater();
+        View listHeaderView = inflater.inflate(R.layout.header_view, null, false);
+        mDrawerList.addHeaderView(listHeaderView);
+
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, getResources().getStringArray(R.array.navigation_drawer_array)));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -370,7 +376,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void selectItem(int position)   {
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).addToBackStack(null).commit();
+        if(position == 1) {
+            getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).addToBackStack(null).commit();
+        }
+        else if(position == 2)  {
+            getFragmentManager().beginTransaction().replace(android.R.id.content, new AboutUsFragment()).addToBackStack(null).commit();
+        }
         mDrawerLayout.closeDrawer(mDrawerList);
         mDrawerList.setItemChecked(position, false);
     }

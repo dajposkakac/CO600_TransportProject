@@ -5,6 +5,7 @@
 
     <string-array name="navigation_drawer_array">
         <item>Settings</item>
+        <item>About Us</item>
     </string-array>
 
     <string name="pref_ip_server_title">Server IP</string>
