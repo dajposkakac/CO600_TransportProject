@@ -67,8 +67,7 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
         TextView price = (TextView) findViewById(R.id.price);
 
         if(priceValue.equals("-1"))  {
-            price.setVisibility(View.GONE);
-            findViewById(R.id.price_label).setVisibility(View.GONE);
+            findViewById(R.id.price_layout).setVisibility(View.GONE);
         }
 
         ImageView transitMode = (ImageView) findViewById(R.id.transit_mode);
