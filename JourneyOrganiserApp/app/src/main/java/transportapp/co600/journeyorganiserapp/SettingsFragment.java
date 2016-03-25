@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by daj on 14/03/2016.
+ * Fragment used for displaying the settings page.
+ *
+ * @author jg404
  */
 public class SettingsFragment extends PreferenceFragment{
 

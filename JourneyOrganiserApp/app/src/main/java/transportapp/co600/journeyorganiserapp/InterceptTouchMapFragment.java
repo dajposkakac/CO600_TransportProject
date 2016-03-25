@@ -12,8 +12,13 @@ import android.widget.FrameLayout;
 import com.google.android.gms.maps.SupportMapFragment;
 
 /**
- * Created by daj on 24/03/2016.
+ * Custom SupportMapFragment, with a transparent overlay which transfers touch events to the map,
+ * allowing it to be used inside a ScrollView.
+ *
+ * Workaround found on:
  * http://stackoverflow.com/questions/30525066/how-to-set-google-map-fragment-inside-scroll-view
+ *
+ * @author jg404
  */
 public class InterceptTouchMapFragment extends SupportMapFragment {
     private OnTouchListener listener;

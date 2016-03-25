@@ -28,7 +28,11 @@ import java.util.Set;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
- * Created by daj on 18/11/2015.
+ * Reads the response of the server and parses it into HashMaps. If the request was successful, ResultsActivity
+ * is started and the HashMaps containing the results are passed to it. If something went wrong, an error dialog
+ * with an error code and an error message is shown. Also cleans up objects for both AsyncTasks.
+ *
+ * @author jg404
  */
 public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
 
@@ -100,6 +104,10 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
         }
     }
 
+    /**
+     * Parses the status out of the response XML doc
+     * @param doc XML response
+     */
     private void parseStatus(Document doc)  {
         NodeList nl = doc.getFirstChild().getChildNodes();
         boolean found = false;
@@ -114,6 +122,10 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
         }
     }
 
+    /**
+     * Parses the error message out of the XML doc
+     * @param doc XML response
+     */
     private void parseErrorMesage(Document doc) {
         NodeList nl = doc.getFirstChild().getChildNodes();
         boolean found = false;
@@ -128,6 +140,11 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
         }
     }
 
+    /**
+     * Parses data from under Info tag out of the XML doc into
+     * the info HashMap
+     * @param doc XML response
+     */
     private void parseInfo(Document doc)    {
         NodeList nl = doc.getFirstChild().getChildNodes();
         boolean found = false;
@@ -142,6 +159,11 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
         }
     }
 
+    /**
+     * Parses data from under the Results tag out of the XML doc into
+     * the results HashMap
+     * @param doc XML response
+     */
     private void parseResults(Document doc) {
         NodeList nl = doc.getFirstChild().getChildNodes();
         results = new LinkedHashMap<>(nl.getLength());
@@ -161,6 +183,11 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
         }
     }
 
+    /**
+     * Parses all children of the specified node into the returned HashMap
+     * @param node parent of children to be parsed
+     * @return HashMap of tags mapped to values
+     */
     private HashMap<String,String> parseToMap(Node node)	{
         NodeList nodes = node.getChildNodes();
         HashMap<String, String> map = new HashMap<>();
@@ -172,6 +199,11 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
         return map;
     }
 
+    /**
+     *
+     * @param doc XML response
+     * @return parsed map
+     */
     private LinkedHashMap<String,String> parseToMap(Document doc)	{
         NodeList nodes = doc.getFirstChild().getChildNodes();
         LinkedHashMap<String, String> map = new LinkedHashMap<>();

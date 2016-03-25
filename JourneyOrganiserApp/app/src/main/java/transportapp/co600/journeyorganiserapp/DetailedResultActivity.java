@@ -27,7 +27,10 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by daj on 15/03/2016.
+ * Displays a detailed view for a single route, including all of the information contained in the
+ * request and displays a map of the route.
+ *
+ * @author jg404, mfm9
  */
 public class DetailedResultActivity extends AppCompatActivity implements OnMapReadyCallback {
 

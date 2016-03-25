@@ -26,7 +26,11 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 /**
- * Created by daj on 18/11/2015.
+ * AsyncTask which makes a socket connection to the server and writes the
+ * request in XML form. If the connection was successful, then ReceiveDirectionsTask
+ * is started, otherwise an error message is shown.
+ *
+ * @author jg404
  */
 public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
 
@@ -78,6 +82,9 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
         }
     }
 
+    /**
+     * Converts Request into a single line XML string ended with a new line.
+     */
     private String createXMLRequest(Request req) throws ParserConfigurationException, IOException, SAXException, TransformerException {
         Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 

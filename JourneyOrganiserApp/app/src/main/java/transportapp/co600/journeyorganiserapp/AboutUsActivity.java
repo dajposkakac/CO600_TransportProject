@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created Mateusz Maly on 24/03/2016.
+ * Displays the About Us page.
+ *
+ * @author mfm9
  */
 public class AboutUsActivity extends AppCompatActivity {
 

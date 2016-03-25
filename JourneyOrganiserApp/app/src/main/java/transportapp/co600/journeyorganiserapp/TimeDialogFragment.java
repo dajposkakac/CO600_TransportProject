@@ -11,7 +11,9 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 /**
- * Created by Homo King on 04/03/2016.
+ * Displays a TimePicker dialog and updates the Request with the specified time.
+ *
+ * @author mfm9
  */
 public class TimeDialogFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 

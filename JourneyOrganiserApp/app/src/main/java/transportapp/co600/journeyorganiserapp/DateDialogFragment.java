@@ -10,7 +10,9 @@ import android.widget.EditText;
 import java.util.Calendar;
 
 /**
- * Created by Homo King on 08/03/2016.
+ * Displays a DatePicker dialog and updates the Request with the specified date.
+ *
+ * @author mfm9
  */
 public class DateDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
@@ -27,7 +29,6 @@ public class DateDialogFragment extends DialogFragment implements DatePickerDial
         int day = c.get(Calendar.DAY_OF_MONTH);
         dateText = (EditText) activity.findViewById(R.id.date);
         return new DatePickerDialog(activity, this, year, month, day);
-
     }
 
     @Override

@@ -21,6 +21,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
+/**
+ * Activity displays a MultiStateButton used to select sorting of the request results
+ * in the ListView below it. Each position on the list basic information about its route
+ * and can be clicked on to bring up more detailed information.
+ *
+ * @author jg404, mfm9
+ */
 public class ResultsActivity extends AppCompatActivity {
 
     public static final String INFO_TAG = "info";
@@ -96,6 +103,10 @@ public class ResultsActivity extends AppCompatActivity {
         Log.d("adapter", "" + distanceAdapter.getCount());
     }
 
+    /**
+     * Returns an instance of this activity, used to save state onPause and onStop.
+     * @return instance
+     */
     public static ResultsActivity getInstance() {
         if(instance == null)    {
             instance = new ResultsActivity();
@@ -103,10 +114,18 @@ public class ResultsActivity extends AppCompatActivity {
         return instance;
     }
 
+    /**
+     * Sets the state data to be restored later.
+     * @param bundle
+     */
     void setSavedData(Bundle bundle)    {
         savedData = bundle;
     }
 
+    /**
+     * Return state data to be restored.
+     * @return
+     */
     public Bundle getSavedData()    {
         return savedData;
     }
@@ -128,6 +147,10 @@ public class ResultsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * ResultClickListener for the ListView. It starts the DetailedResultsActivity
+     * with the data for the selected route.
+     */
     private class ResultClickListener implements AdapterView.OnItemClickListener    {
 
         @Override
@@ -200,6 +223,12 @@ public class ResultsActivity extends AppCompatActivity {
         outState.putSerializable(RESULTS_VALUES_TAG, values);
     }
 
+    /**
+     * Recreates the Results LinkedHashMap from the list of keys and values, after passing it through a bundle.
+     * @param keys
+     * @param values
+     * @return
+     */
     private LinkedHashMap<Integer, HashMap<String, String>> initResults(ArrayList<Integer> keys, ArrayList<HashMap<String, String>> values)  {
         LinkedHashMap<Integer, HashMap<String, String>> map = new LinkedHashMap<>(keys.size());
         for(int i = 0; i < keys.size(); i++)    {
@@ -208,6 +237,10 @@ public class ResultsActivity extends AppCompatActivity {
         return map;
     }
 
+    /**
+     * Flips the ViewFlipper containing differently sorted results lists according to the specified preference.
+     * @param preference
+     */
     private void flipToList(String preference)    {
         int pos = 0;
         String[] names = getResources().getStringArray(R.array.sorting_preference_names);
@@ -224,6 +257,10 @@ public class ResultsActivity extends AppCompatActivity {
         listSwitcher.setValue(pos);
     }
 
+    /**
+     * Returns the currently selected sorting preference.
+     * @return
+     */
     private int getSelectedList()   {
         return viewFlipper.getDisplayedChild();
     }

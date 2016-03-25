@@ -8,10 +8,19 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 
 /**
- * Created by daj on 21/02/2016.
+ * ErrorDialog fragment, which can be used by calling its static method.
+ *
+ * @author jg404
  */
 public class ErrorDialogFragment extends DialogFragment {
 
+    /**
+     * Displays an AlertDialog with the information specified in the parameters.
+     * @param a Activity to show the dialog on.
+     * @param title title of the dialog window
+     * @param status status code of the error
+     * @param message error message
+     */
     public static void errorDialog(Activity a, String title, int status, String message)    {
         AlertDialog.Builder builder = new AlertDialog.Builder(a);
         builder.setTitle(title).setMessage(message + "\n" + "code: " + status).setNeutralButton("Close", new DialogInterface.OnClickListener() {

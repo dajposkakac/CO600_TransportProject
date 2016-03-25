@@ -115,10 +115,6 @@ public class PlaceAutocompleteAdapter
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = super.getView(position, convertView, parent);
 
-        // Sets the primary and secondary text for a row.
-        // Note that getPrimaryText() and getSecondaryText() return a CharSequence that may contain
-        // styling based on the given CharacterStyle.
-
         AutocompletePrediction item = getItem(position);
 
         TextView textView1 = (TextView) row.findViewById(android.R.id.text1);
@@ -138,12 +134,9 @@ public class PlaceAutocompleteAdapter
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
-                // Skip the autocomplete query if no constraints are given.
                 if (constraint != null) {
-                    // Query the autocomplete API for the (constraint) search string.
                     mResultList = getAutocomplete(constraint);
                     if (mResultList != null) {
-                        // The API successfully returned results.
                         results.values = mResultList;
                         results.count = mResultList.size();
                     }
@@ -154,18 +147,14 @@ public class PlaceAutocompleteAdapter
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (results != null && results.count > 0) {
-                    // The API returned at least one result, update the data.
                     notifyDataSetChanged();
                 } else {
-                    // The API did not return any results, invalidate the data set.
                     notifyDataSetInvalidated();
                 }
             }
 
             @Override
             public CharSequence convertResultToString(Object resultValue) {
-                // Override this method to display a readable result in the AutocompleteTextView
-                // when clicked.
                 if (resultValue instanceof AutocompletePrediction) {
                     return ((AutocompletePrediction) resultValue).getFullText(null);
                 } else {
@@ -192,37 +181,22 @@ public class PlaceAutocompleteAdapter
      */
     private ArrayList<AutocompletePrediction> getAutocomplete(CharSequence constraint) {
         if (mGoogleApiClient.isConnected()) {
-            //Log.i(TAG, "Starting autocomplete query for: " + constraint);
-
-            // Submit the query to the autocomplete API and retrieve a PendingResult that will
-            // contain the results when the query completes.
             PendingResult<AutocompletePredictionBuffer> results =
                     Places.GeoDataApi
                             .getAutocompletePredictions(mGoogleApiClient, constraint.toString(),
                                     mBounds, mPlaceFilter);
-
-            // This method should have been called off the main UI thread. Block and wait for at most 60s
-            // for a result from the API.
             AutocompletePredictionBuffer autocompletePredictions = results
                     .await(60, TimeUnit.SECONDS);
 
-            // Confirm that the query completed successfully, otherwise return null
             final Status status = autocompletePredictions.getStatus();
             if (!status.isSuccess()) {
                 Toast.makeText(getContext(), "Error contacting API: " + status.toString(),
                         Toast.LENGTH_SHORT).show();
-               // Log.e(TAG, "Error getting autocomplete prediction API call: " + status.toString());
                 autocompletePredictions.release();
                 return null;
             }
-
-            //Log.i(TAG, "Query completed. Received " + autocompletePredictions.getCount()
-            //        + " predictions.");
-
-            // Freeze the results immutable representation that can be stored safely.
             return DataBufferUtils.freezeAndClose(autocompletePredictions);
         }
-        //Log.e(TAG, "Google API client is not connected for autocomplete query.");
         return null;
     }
 

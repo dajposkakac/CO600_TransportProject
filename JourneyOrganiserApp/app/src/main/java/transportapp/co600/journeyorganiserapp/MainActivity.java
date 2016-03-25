@@ -58,6 +58,13 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+/**
+ * The first activity presented to the user. Allows the user to set details for the journey search,
+ * such as origin, destination, time, travel mode, etc. It is also the starting point of an AsyncTask
+ * which makes a request to the server.
+ *
+ * @author jg404, mfm9
+ */
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemSelectedListener {
 
     private GeoApiContext geoApicontext;
@@ -88,6 +95,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private ImageButton fromClearButton;
     private ImageButton toClearButton;
 
+    /**
+     * Initialises GoogleApiClient and the UI elements.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +118,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     }
 
+    /**
+     * Checks network connection and starts the RequestDirectionsTask.
+     */
     public void goHandler(View view) {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
@@ -118,6 +131,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
+    /**
+     * Builds GoogleApiClient by adding necessary Apis.
+     */
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -128,6 +144,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 .build();
     }
 
+    /**
+     * Initialises text input fields for origin and destination, autocomplete adapters,
+     * clear text buttons and map buttons.
+     */
     private void initLocationPickers()  {
         from = (AutoCompleteTextView) findViewById(R.id.from);
         to = (AutoCompleteTextView) findViewById(R.id.to);
@@ -147,6 +167,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         initMapButtons();
     }
 
+    /**
+     * Initialises clear text buttons.
+     */
     private void initCloseButtons() {
         fromClearButton = (ImageButton) findViewById(R.id.from_clear);
         fromClearButton.setOnClickListener(new View.OnClickListener() {
@@ -165,6 +188,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         });
     }
 
+    /**
+     * Initialises map buttons for location picking.
+     */
     private void initMapButtons()   {
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
         try {
@@ -179,6 +205,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         toMapButton.setOnClickListener(mapButtonListener);
     }
 
+    /**
+     * Initialises navigation drawer, which contains settings and About us.
+     * Also intialisese the toolbar.
+     */
     private void initNavigationDrawer() {
         mDrawerTitle = getTitle().toString();
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -219,6 +249,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mDrawerToggle.setDrawerIndicatorEnabled(true);
     }
 
+    /**
+     * Initialises the time and date pickers as well as the departure option spinner.
+     */
     private void initTimePickers()  {
         timePicker = (EditText) findViewById(R.id.time);
         timePicker.setInputType(InputType.TYPE_NULL);
@@ -260,6 +293,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         dateSpinner.setOnItemSelectedListener(this);
     }
 
+    /**
+     * Initialises travel modes spinner.
+     */
     private void initModesSpinner() {
         transitModeSpinner = (Spinner) findViewById(R.id.transit_modes_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.transit_mode_names));
@@ -267,6 +303,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         transitModeSpinner.setOnItemSelectedListener(this);
     }
 
+    /**
+     * Initialises sorting preference spinner
+     */
     private void initSortingSpinner() {
         sortingPreferenceSpinner = (Spinner) findViewById(R.id.sorting_preference_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.sorting_preference_names));
@@ -274,6 +313,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         sortingPreferenceSpinner.setOnItemSelectedListener(this);
     }
 
+    /**
+     * Initialieses the search button.
+     */
     private void initGoButton() {
         Button goButton = (Button) findViewById(R.id.go);
         goButton.setOnClickListener(new View.OnClickListener() {
@@ -285,10 +327,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         });
     }
 
+    /**
+     * Initialiese the Request object.
+     */
     private void initRequest()   {
         req = new Request();
     }
 
+    /**
+     * Grabs data from user input fields and updates the Request.
+     */
     private void getUserInput() {
         req.setOrigin(from.getText().toString());
         req.setDestination(to.getText().toString());
@@ -307,26 +355,25 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 //        req.setTime("11:00:00");
     }
 
+    /**
+     * Initialies autocomplete click listener.
+     */
     private AdapterView.OnItemClickListener mAutocompleteClickListener
             = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             final AutocompletePrediction item = mAdapter.getItem(position);
             final String placeId = item.getPlaceId();
-            final CharSequence primaryText = item.getPrimaryText(null);
-
-            //Log.i(TAG, "Autocomplete item selected: " + primaryText);
 
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClient, placeId);
-//            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
 
-            Toast.makeText(getApplicationContext(), "Clicked: " + primaryText,
-                    Toast.LENGTH_SHORT).show();
-            //Log.i(TAG, "Called getPlaceById to get Place details for " + placeId);
         }
     };
 
+    /**
+     * Initialises the map button listener.
+     */
     private View.OnClickListener mapButtonListener
             = new View.OnClickListener() {
         @Override
@@ -341,6 +388,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     };
 
+    /**
+     * Sets the origin or destination field after location was selected on the map.
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
@@ -365,8 +415,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
-
-
+    /**
+     * Class containing navigation drawer item click listener.
+     */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
@@ -374,6 +425,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
+    /**
+     *  Makes the navigation drawer click happen.
+     */
     private void selectItem(int position)   {
         if(position == 1) {
             getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).addToBackStack(null).commit();
@@ -446,6 +500,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     }
 
+    /*
+    Gets current client location.
+     */
     @Override
     public void onConnected(Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -477,6 +534,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mDrawerToggle.syncState();
     }
 
+    /**
+     * Handles all spinners onItemSelected. Updates Request appropriately.
+     */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         int parentId = parent.getId();
@@ -506,6 +566,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
+    /**
+     * Adds leading 0s to single digits.
+	 */
     public String addMissingZero(int time)    {
         String timeString = String.valueOf(time);
         if(time < 10 && time > -1)  {
@@ -528,10 +591,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
+    /**
+     *  Returns Request object.
+     */
     public Request getRequest() {
         return req;
     }
 
+    /**
+     * Reads the key for the key type specified.
+     */
     private String readKey(String keyName)  {
         try {
             Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(getResources().openRawResource(R.raw.supersecretsecret));
