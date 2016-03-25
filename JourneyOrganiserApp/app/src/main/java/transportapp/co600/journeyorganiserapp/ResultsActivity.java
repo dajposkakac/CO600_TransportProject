@@ -157,16 +157,7 @@ public class ResultsActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(context, DetailedResultActivity.class);
             intent.putExtra(INFO_TAG, info);
-            LinkedHashMap<Integer, HashMap<String, String>> sortedResults = null;
-            int selectedList = getSelectedList();
-            if(selectedList == 0)  {
-                sortedResults = distanceAdapter.getSortedResults();
-            }   else if(selectedList == 1)  {
-                sortedResults = timeAdapter.getSortedResults();
-            }   else if(selectedList == 2)  {
-                sortedResults = costAdapter.getSortedResults();
-            }
-            intent.putExtra("result", sortedResults.get(position));
+            intent.putExtra("result", results.get(position));
             context.startActivity(intent);
         }
     }
@@ -252,6 +243,13 @@ public class ResultsActivity extends AppCompatActivity {
                 pos = i;
             }
             i++;
+        }
+        if(pos == 0)  {
+            results = distanceAdapter.getSortedResults();
+        }   else if(pos == 1)  {
+            results = timeAdapter.getSortedResults();
+        }   else if(pos == 2)  {
+            results = costAdapter.getSortedResults();
         }
         viewFlipper.setDisplayedChild(pos);
         listSwitcher.setValue(pos);
