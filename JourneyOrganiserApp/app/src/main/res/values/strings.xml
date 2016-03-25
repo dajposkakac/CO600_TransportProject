@@ -5,6 +5,7 @@
 
     <string-array name="navigation_drawer_array">
         <item>Settings</item>
+        <item>About Us</item>
     </string-array>
 
     <string name="pref_ip_server_title">Server IP</string>
@@ -30,6 +31,7 @@
 
     <string name="title_activity_results">Results</string>
     <string name="title_details_results_activity">Result</string>
+    <string name="title_About_Us_Activity"></string>
     <string name = "drawer_open">Open</string>
     <string name = "drawer_close">Close</string>
 
