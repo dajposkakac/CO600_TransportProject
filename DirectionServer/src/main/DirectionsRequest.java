@@ -158,12 +158,10 @@ public class DirectionsRequest {
 		}	catch (DateInPastException dipe)	{
 			status = dipe.getStatus();
 			errorMessage = dipe.getMessage();
-//			dipe.printStackTrace();
 			return;
 		}	catch (RouteNotFoundException rnfe)	{
 			status = rnfe.getStatus();
 			errorMessage = rnfe.getMessage();
-//			rnfe.printStackTrace();
 			return;
 		}	catch (Exception e) {
 			e.printStackTrace();
@@ -196,7 +194,6 @@ public class DirectionsRequest {
 		URL url = new URL(sUrl);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod(CONN_TYPE); 
-//		int respCode = con.getResponseCode();
 		BufferedReader in = new BufferedReader(
 		        new InputStreamReader(con.getInputStream()));
 		String inputLine;
