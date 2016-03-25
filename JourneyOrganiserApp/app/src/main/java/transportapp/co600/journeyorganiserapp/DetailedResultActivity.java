@@ -55,6 +55,7 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
         TextView departAt = null;
         TextView arriveAt = null;
 
+        String priceValue = results.get("price");
 
         setContentView(R.layout.detail_results_activity);
         departAt = (TextView) findViewById(R.id.depart_at_result);
@@ -64,6 +65,11 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
         TextView distance = (TextView) findViewById(R.id.distance);
         TextView duration = (TextView) findViewById(R.id.duration);
         TextView price = (TextView) findViewById(R.id.price);
+
+        if(priceValue.equals("-1"))  {
+            price.setVisibility(View.GONE);
+            findViewById(R.id.price_label).setVisibility(View.GONE);
+        }
 
         ImageView transitMode = (ImageView) findViewById(R.id.transit_mode);
 
