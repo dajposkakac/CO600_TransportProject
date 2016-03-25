@@ -9,7 +9,6 @@ import android.content.res.Resources;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -380,7 +379,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).addToBackStack(null).commit();
         }
         else if(position == 2)  {
-            getFragmentManager().beginTransaction().replace(android.R.id.content, new AboutUsFragment()).addToBackStack(null).commit();
+             startActivity(new Intent(this, AboutUsActivity.class));
         }
         mDrawerLayout.closeDrawer(mDrawerList);
         mDrawerList.setItemChecked(position, false);
