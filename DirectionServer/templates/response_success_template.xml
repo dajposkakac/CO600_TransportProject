@@ -7,6 +7,8 @@
     <destination></destination>
     <originLatLng></originLatLng>
     <destinationLatLng></destinationLatLng>
+    <originDisplay></originDisplay>
+    <destinationDisplay></destinationDisplay>
     <departureOption></departureOption>
     <sortingPreference></sortingPreference>
   </info>
