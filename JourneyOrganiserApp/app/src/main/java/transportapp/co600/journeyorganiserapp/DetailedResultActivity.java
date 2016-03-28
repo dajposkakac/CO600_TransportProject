@@ -50,6 +50,7 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
         info = (HashMap<String, String>) getIntent().getSerializableExtra(INFO_TAG);
         results = (HashMap<String, String>) getIntent().getSerializableExtra(RESULT_TAG);
 
+        setTitle(info.get("originDisplay") + " -> " + info.get("destinationDisplay"));
         String transitModeText = results.get("transitMode");
 
         TextView departAt = null;

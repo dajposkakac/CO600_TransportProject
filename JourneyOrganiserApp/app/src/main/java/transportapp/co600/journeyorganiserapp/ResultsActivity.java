@@ -86,19 +86,20 @@ public class ResultsActivity extends AppCompatActivity {
         ListView distanceList = (ListView) findViewById(R.id.list_distance);
         distanceAdapter = new ResultsAdapter(this, info, results, "distance");
         distanceList.setAdapter(distanceAdapter);
-        distanceList.setOnItemClickListener(new ResultClickListener());
+        distanceList.setOnItemClickListener(resultClickListener);
 
         ListView timeList = (ListView) findViewById(R.id.list_time);
         timeAdapter = new ResultsAdapter(this, info, results, "arrivalTimeInSeconds");
         timeList.setAdapter(timeAdapter);
-        timeList.setOnItemClickListener(new ResultClickListener());
+        timeList.setOnItemClickListener(resultClickListener);
 
         ListView costList = (ListView) findViewById(R.id.list_cost);
         costAdapter = new ResultsAdapter(this, info, results, "price");
         costList.setAdapter(costAdapter);
-        costList.setOnItemClickListener(new ResultClickListener());
+        costList.setOnItemClickListener(resultClickListener);
 
         flipToList(info.get("sortingPreference"));
+        setTitle(info.get("originDisplay") + " -> " + info.get("destinationDisplay"));
 
         Log.d("adapter", "" + distanceAdapter.getCount());
     }
