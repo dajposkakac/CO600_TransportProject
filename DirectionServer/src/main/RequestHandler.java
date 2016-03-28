@@ -188,20 +188,27 @@ public class RequestHandler extends Thread {
 			Element destination = xmlDoc.createElement(DirectionsRequest.DESTINATION);
 			Element originLatLng = xmlDoc.createElement(DirectionsRequest.ORIGIN_LATLNG);
 			Element destinationLatLng = xmlDoc.createElement(DirectionsRequest.DESTINATION_LATLNG);
+			Element originDisplay = xmlDoc.createElement(DirectionsRequest.ORIGIN_DISPLAY);
+			Element destinationDisplay = xmlDoc.createElement(DirectionsRequest.DESTINATION_DISPLAY);
 			Element sortingPreference = xmlDoc.createElement(DirectionsRequest.SORTING_PREFERENCE);
     		Element departureOption = xmlDoc.createElement(DirectionsRequest.DEPARTURE_OPTION);
 			origin.appendChild(xmlDoc.createTextNode(res.getOriginForRoute(0)));
 			destination.appendChild(xmlDoc.createTextNode(res.getDestinationForRoute(0)));
 			originLatLng.appendChild(xmlDoc.createTextNode(res.getOriginLatLng()));
 			destinationLatLng.appendChild(xmlDoc.createTextNode(res.getDestinationLatLng()));
+			originDisplay.appendChild(xmlDoc.createTextNode(res.getOriginDisplayName()));
+			destinationDisplay.appendChild(xmlDoc.createTextNode(res.getDestinationDisplayName()));
 			sortingPreference.appendChild(xmlDoc.createTextNode(res.getSortingPreference()));
     		departureOption.appendChild(xmlDoc.createTextNode(res.getDepartureOption()));
 			info.appendChild(origin);
 			info.appendChild(destination);
 			info.appendChild(originLatLng);
 			info.appendChild(destinationLatLng);
+			info.appendChild(originDisplay);
+			info.appendChild(destinationDisplay);
 			info.appendChild(sortingPreference);
 			info.appendChild(departureOption);
+			
 			//results
 			Element results = xmlDoc.createElement(RESULTS);
 			response.appendChild(results);

@@ -88,6 +88,20 @@ public class DirectionsResults {
 	}
 	
 	/*
+	 * Returns origin display name.
+	 */
+	public String getOriginDisplayName()	{
+		return additionalData.get(DirectionsRequest.ORIGIN_DISPLAY);
+	}
+	
+	/*
+	 * Returns destination display name.
+	 */
+	public String getDestinationDisplayName()	{
+		return additionalData.get(DirectionsRequest.DESTINATION_DISPLAY);
+	}
+	
+	/*
 	 * Returns distance in human readable form for specified route.
 	 */
 	public String getDistanceForRoute(int route)	{

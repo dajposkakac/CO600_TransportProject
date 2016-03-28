@@ -62,6 +62,8 @@ public class DirectionsRequest {
 	public static final String ARRIVAL_TIME_IN_SECONDS = "arrivalTimeInSeconds";
 	public static final String DEPARTURE_TIME_IN_SECONDS = "departureTimeInSeconds";
 	public static final String SORTING_PREFERENCE = "sortingPreference";
+	public static final String ORIGIN_DISPLAY = "originDisplay";
+	public static final String DESTINATION_DISPLAY = "destinationDisplay";
 	
 	//Misc
 	public static final String COMMA = ",";
@@ -181,6 +183,8 @@ public class DirectionsRequest {
 			additionalData.put(DESTINATION_LATLNG, destinationLatLng.lat + COMMA + destinationLatLng.lng);
 			additionalData.put(TIME, String.valueOf(time.getMillis() / 1000));
 			additionalData.put(SORTING_PREFERENCE, request.get(SORTING_PREFERENCE));
+			additionalData.put(ORIGIN_DISPLAY, request.get(ORIGIN));
+			additionalData.put(DESTINATION_DISPLAY, request.get(DESTINATION));
 		}
 	}
 	
