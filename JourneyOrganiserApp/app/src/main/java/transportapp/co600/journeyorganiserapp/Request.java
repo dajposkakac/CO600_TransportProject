@@ -49,9 +49,6 @@ public class Request {
      * @return travel mode
      */
     public String getTransitMode() {
-        if(transitMode.equalsIgnoreCase("unknown")) {
-            transitMode = "driving,transit,bicycling,walking";
-        }
         return transitMode;
     }
 

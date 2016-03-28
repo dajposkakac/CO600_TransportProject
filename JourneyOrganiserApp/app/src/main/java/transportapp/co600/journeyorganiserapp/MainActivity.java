@@ -544,22 +544,28 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             String[] departureSpinner = getResources().getStringArray(R.array.dateNames);
             req.setDepartureOption(departureSpinner[position]);
         }   else if(parentId == transitModeSpinner.getId()) {
-            TravelMode tm = TravelMode.UNKNOWN;
+            String tm = null;
             switch (position) {
+                case 0:
+                    tm = TravelMode.DRIVING.toString() + "," + TravelMode.TRANSIT.toString();
+                    break;
                 case 1:
-                    tm = TravelMode.DRIVING;
+                    tm = TravelMode.DRIVING.toString() + "," + TravelMode.TRANSIT.toString() + "," + TravelMode.BICYCLING.toString() + "," + TravelMode.WALKING.toString();
                     break;
                 case 2:
-                    tm = TravelMode.TRANSIT;
+                    tm = TravelMode.DRIVING.toString();
                     break;
                 case 3:
-                    tm = TravelMode.WALKING;
+                    tm = TravelMode.TRANSIT.toString();
                     break;
                 case 4:
-                    tm = TravelMode.BICYCLING;
+                    tm = TravelMode.WALKING.toString();
+                    break;
+                case 5:
+                    tm = TravelMode.BICYCLING.toString();
                     break;
             }
-            req.setTransitMode(tm.toString());
+            req.setTransitMode(tm);
         }   else if(parentId == sortingPreferenceSpinner.getId())  {
             String[] names = resources.getStringArray(R.array.sorting_preference_names);
             req.setSortingPreference(names[position]);
