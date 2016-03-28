@@ -270,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
         timePicker.setFocusable(false);
+        timePicker.setMaxWidth(timePicker.getWidth());
         datePicker = (EditText) findViewById(R.id.date);
         datePicker.setInputType(InputType.TYPE_NULL);
         datePicker.setOnClickListener(new View.OnClickListener() {
@@ -287,6 +288,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
         datePicker.setFocusable(false);
+        datePicker.setMaxWidth(datePicker.getWidth());
         dateSpinner = (Spinner) findViewById(R.id.dateSpinner);
         ArrayAdapter<String> dateAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.dateNames));
         dateSpinner.setAdapter(dateAdapter);
