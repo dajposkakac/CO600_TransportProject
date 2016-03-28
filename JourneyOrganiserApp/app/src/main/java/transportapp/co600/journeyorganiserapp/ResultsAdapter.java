@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Created by daj on 16/12/2015.
  */
-public class ResultsAdapter extends ArrayAdapter<String> {
+public class ResultsAdapter extends ArrayAdapter<HashMap<String, String>> {
 
     private final Context context;
     private static int layout;
@@ -91,16 +91,17 @@ public class ResultsAdapter extends ArrayAdapter<String> {
 //            results.add(i, resultsCopy.get(list[i]));
 //        }
 
-
-        for(int i = 0; i < results.size(); i++)   {
-            add(String.valueOf(i));
-        }
+        addAll(results);
+//        for(int i = 0; i < results.size(); i++)   {
+//            add(String.valueOf(i));
+//        }
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent)   {
         ViewHolder holder;
-        String price = results.get(position).get("price");
+        HashMap<String, String> result = getItem(position);
+
         if(convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(layout, parent, false);
@@ -111,25 +112,27 @@ public class ResultsAdapter extends ArrayAdapter<String> {
             holder.departAt = (TextView) convertView.findViewById(R.id.depart_at_result);
             holder.arriveAt = (TextView) convertView.findViewById(R.id.arrive_at_result);
             holder.transitModeImage = (ImageView) convertView.findViewById(R.id.transit_mode);
-//            if(price.equals("-1"))  {
-//                holder.price.setVisibility(View.GONE);
-//                convertView.findViewById(R.id.price_label).setVisibility(View.GONE);
-//            }
             convertView.setTag(holder);
         }   else    {
             holder = (ViewHolder) convertView.getTag();
         }
+        String price = result.get("price");
+        if(price.equals("-1"))  {
+            holder.price.setVisibility(View.GONE);
+            convertView.findViewById(R.id.price_label).setVisibility(View.GONE);
+        }   else    {
+            holder.price.setVisibility(View.VISIBLE);
+            convertView.findViewById(R.id.price_label).setVisibility(View.VISIBLE);
+            holder.price.setText("£" + price);
+        }
+        String transitMode = result.get("transitMode");
+        holder.distance.setText(result.get("distance"));
+        holder.duration.setText(result.get("duration"));
 
-        String transitMode = results.get(position).get("transitMode");
-
-        holder.distance.setText(results.get(position).get("distance"));
-        holder.duration.setText(results.get(position).get("duration"));
-        holder.price.setText("£" + results.get(position).get("price"));
-
-        String departureTime = String.valueOf(results.get(position).get("departureTime"));
-        String arrivalTime = String.valueOf(results.get(position).get("arrivalTime"));
-        String departureDate = String.valueOf(results.get(position).get("departureDate"));
-        String arrivalDate = String.valueOf(results.get(position).get("arrivalDate"));
+        String departureTime = result.get("departureTime");
+        String arrivalTime = result.get("arrivalTime");
+        String departureDate = result.get("departureDate");
+        String arrivalDate = result.get("arrivalDate");
         String departureTimeDate = departureTime + " - " + departureDate;
         String arrivalTimeDate = arrivalTime + " - " + arrivalDate;
         holder.departAt.setText(departureTimeDate);

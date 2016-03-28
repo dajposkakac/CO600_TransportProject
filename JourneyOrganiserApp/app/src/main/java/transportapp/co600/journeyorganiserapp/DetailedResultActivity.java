@@ -68,6 +68,7 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
 
         if(priceValue.equals("-1"))  {
             findViewById(R.id.price_layout).setVisibility(View.GONE);
+            price.setText("£" + results.get("price"));
         }
 
         ImageView transitMode = (ImageView) findViewById(R.id.transit_mode);
@@ -76,7 +77,6 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
         destination.setText(info.get("destination"));
         distance.setText(results.get("distance"));
         duration.setText(results.get("duration"));
-        price.setText("£" + results.get("price"));
 
         String departureTime = String.valueOf(results.get("departureTime"));
         String arrivalTime = String.valueOf(results.get("arrivalTime"));
@@ -90,6 +90,7 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
         switch (transitModeText) {
             case "TRAIN":
                 transitMode.setImageResource(R.drawable.train);
+                break;
             case "BUS":
                 transitMode.setImageResource(R.drawable.bus);
                 break;

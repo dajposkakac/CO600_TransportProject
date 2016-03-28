@@ -86,17 +86,17 @@ public class ResultsActivity extends AppCompatActivity {
         ListView distanceList = (ListView) findViewById(R.id.list_distance);
         distanceAdapter = new ResultsAdapter(this, info, results, "distance");
         distanceList.setAdapter(distanceAdapter);
-        distanceList.setOnItemClickListener(resultClickListener);
+        distanceList.setOnItemClickListener(new ResultClickListener());
 
         ListView timeList = (ListView) findViewById(R.id.list_time);
         timeAdapter = new ResultsAdapter(this, info, results, "arrivalTimeInSeconds");
         timeList.setAdapter(timeAdapter);
-        timeList.setOnItemClickListener(resultClickListener);
+        timeList.setOnItemClickListener(new ResultClickListener());
 
         ListView costList = (ListView) findViewById(R.id.list_cost);
         costAdapter = new ResultsAdapter(this, info, results, "price");
         costList.setAdapter(costAdapter);
-        costList.setOnItemClickListener(resultClickListener);
+        costList.setOnItemClickListener(new ResultClickListener());
 
         flipToList(info.get("sortingPreference"));
 
