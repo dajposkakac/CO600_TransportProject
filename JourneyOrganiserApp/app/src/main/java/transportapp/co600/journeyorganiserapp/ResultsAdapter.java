@@ -22,23 +22,26 @@ public class ResultsAdapter extends ArrayAdapter<String> {
     private final Context context;
     private static int layout;
     private final HashMap<String, String> info;
-    private final LinkedHashMap<Integer, HashMap<String, String>> results;
+    private final ArrayList<HashMap<String, String>> results;
     private final double[] valuesArray;
-    private Integer[] list;
+    private int[] list;
 
-    public ResultsAdapter(Context pContext, HashMap<String, String> pInfo, LinkedHashMap<Integer, HashMap<String, String>> pResults, String sort) {
+    public ResultsAdapter(Context pContext, HashMap<String, String> pInfo, ArrayList<HashMap<String, String>> pResults, String sort) {
         super(pContext, layout = R.layout.result_row);
         context = pContext;
         info = pInfo;
-        results = new LinkedHashMap<>(pResults);
-        LinkedHashMap<Integer, HashMap<String, String>> resultsCopy = new LinkedHashMap<>();
-        resultsCopy.putAll(results);
+        results = new ArrayList<>(pResults);
+        ArrayList<HashMap<String, String>> resultsCopy = new ArrayList<>();
+        resultsCopy.addAll(results);
 
-        list = results.keySet().toArray(new Integer[results.size()]);
+//        list = new int[results.size()];
+//        for(int i =0; i < list.length; i++) {
+//            list[i] =  i;
+//        }
 
-        valuesArray = new double[list.length];
+        valuesArray = new double[results.size()];
 
-        for (int j = 0; j < list.length; j++)   {
+        for (int j = 0; j < results.size(); j++)   {
             String values = results.get(j).get(sort);
             String value = null;
             switch (sort) {
@@ -82,13 +85,14 @@ public class ResultsAdapter extends ArrayAdapter<String> {
                     break;
             }
         }
-        sort(0, list.length - 1);
+        sort(0, results.size() - 1);
 
-        for(int i = 0; i < list.length; i++) {
-            results.put(i, resultsCopy.get(list[i]));
-        }
+//        for(int i = 0; i < results.size(); i++) {
+//            results.add(i, resultsCopy.get(list[i]));
+//        }
 
-        for(int i : list)   {
+
+        for(int i = 0; i < results.size(); i++)   {
             add(String.valueOf(i));
         }
     }
@@ -171,14 +175,21 @@ public class ResultsAdapter extends ArrayAdapter<String> {
             }
 
             if(i <= j)  {
-                int ai = list[i];
-                double bi = valuesArray[i];
-                int aj = list[j];
-                double bj = valuesArray[j];
-                list[i] = aj;
-                valuesArray[i] = bj;
-                list[j] = ai;
-                valuesArray[j] = bi;
+                HashMap<String, String> resulti = results.get(i);
+                HashMap<String, String> resultj = results.get(j);
+
+                double vali = valuesArray[i];
+//                int listi = results.;
+                double valj = valuesArray[j];
+//                int listj = list[j];
+//                list[i] = listj;
+                valuesArray[i] = valj;
+//                list[j] = listi;
+                valuesArray[j] = vali;
+                results.remove(i);
+                results.add(i, resultj);
+                results.remove(j);
+                results.add(j, resulti);
                 i++;
                 j--;
             }
@@ -202,7 +213,7 @@ public class ResultsAdapter extends ArrayAdapter<String> {
         }
     }
 
-    public LinkedHashMap<Integer, HashMap<String, String>> getSortedResults()   {
+    public ArrayList<HashMap<String, String>> getSortedResults()   {
         return results;
     }
 

@@ -44,7 +44,7 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
     private int status;
     private String errorMessage;
     private HashMap<String, String> info;
-    private LinkedHashMap<Integer, HashMap<String, String>> results;
+    private ArrayList<HashMap<String, String>> results;
 
     public ReceiveDirectionsTask(Activity pActivity, Socket pSocket, PrintWriter pPrintwriter)   {
         activity = pActivity;
@@ -85,18 +85,19 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
         Log.d("ReceiveRES", result);
         if(status == 0) {
-            ArrayList<Integer> keys = new ArrayList<>();
-            ArrayList<HashMap<String, String>> values = new ArrayList<>();
-            Iterator<Integer> iterator = results.keySet().iterator();
-            while(iterator.hasNext())   {
-                Integer x = iterator.next();
-                keys.add(x);
-                values.add(results.get(x));
-            }
+//            ArrayList<Integer> keys = new ArrayList<>();
+//            ArrayList<HashMap<String, String>> values = new ArrayList<>();
+//            Iterator<Integer> iterator = results.keySet().iterator();
+//            while(iterator.hasNext())   {
+//                Integer x = iterator.next();
+//                keys.add(x);
+//                values.add(results.get(x));
+//            }
             Intent intent = new Intent(activity, ResultsActivity.class);
             intent.putExtra("info", info);
-            intent.putExtra("results_keys", keys);
-            intent.putExtra("results_values", values);
+            intent.putExtra("results", results);
+//            intent.putExtra("results_keys", keys);
+//            intent.putExtra("results_values", values);
             activity.startActivity(intent);
         }   else    {
             activity.findViewById(R.id.loading).setVisibility(View.INVISIBLE);
@@ -166,7 +167,7 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
      */
     private void parseResults(Document doc) {
         NodeList nl = doc.getFirstChild().getChildNodes();
-        results = new LinkedHashMap<>(nl.getLength());
+        results = new ArrayList<>(nl.getLength());
         boolean found = false;
         int i = 0;
         while(!found && i < nl.getLength()) {
@@ -175,7 +176,7 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
                 NodeList resultsNodeList = n.getChildNodes();
                 for(i = 0; i < resultsNodeList.getLength(); i++)    {
                     Node resultNode = resultsNodeList.item(i);
-                    results.put(i, parseToMap(resultNode));
+                    results.add(parseToMap(resultNode));
                 }
                 found = true;
             }

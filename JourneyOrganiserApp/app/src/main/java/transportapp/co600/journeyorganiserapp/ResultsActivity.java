@@ -34,12 +34,12 @@ public class ResultsActivity extends AppCompatActivity {
     static ResultsActivity instance;
     public Bundle savedData = null;
 
-    public static final String RESULTS_KEYS_TAG = "results_keys";
+    public static final String RESULTS_TAG = "results";
     public static final String RESULTS_VALUES_TAG = "results_values";
 
     private static final String TAG = "resultsActivity";
     private HashMap<String, String> info;
-    private LinkedHashMap<Integer, HashMap<String, String>> results;
+    private ArrayList<HashMap<String, String>> results;
 
     private ViewFlipper viewFlipper;
     private MultiStateToggleButton listSwitcher;
@@ -71,15 +71,15 @@ public class ResultsActivity extends AppCompatActivity {
         ResultClickListener resultClickListener = new ResultClickListener();
         if(savedInstanceState != null)  {
             info = (HashMap<String, String>) savedInstanceState.getSerializable(INFO_TAG);
-            ArrayList<Integer> keys = (ArrayList<Integer>) savedInstanceState.getSerializable(RESULTS_KEYS_TAG);
-            ArrayList<HashMap<String, String>> values = (ArrayList<HashMap<String, String>>) savedInstanceState.getSerializable(RESULTS_VALUES_TAG);
-            results = initResults(keys, values);
+//            ArrayList<Integer> keys = (ArrayList<Integer>) savedInstanceState.getSerializable(RESULTS_KEYS_TAG);
+//            ArrayList<HashMap<String, String>> values = (ArrayList<HashMap<String, String>>) savedInstanceState.getSerializable(RESULTS_VALUES_TAG);
+            results = (ArrayList<HashMap<String, String>>) savedInstanceState.getSerializable(RESULTS_TAG);
             Log.d(TAG, "savedinstance");
         }   else {
             info = (HashMap<String, String>) getIntent().getSerializableExtra(INFO_TAG);
-            ArrayList<Integer> keys = (ArrayList<Integer>) getIntent().getSerializableExtra(RESULTS_KEYS_TAG);
-            ArrayList<HashMap<String, String>> values = (ArrayList<HashMap<String, String>>) getIntent().getSerializableExtra(RESULTS_VALUES_TAG);
-            results = initResults(keys, values);
+//            ArrayList<Integer> keys = (ArrayList<Integer>) getIntent().getSerializableExtra(RESULTS_KEYS_TAG);
+//            ArrayList<HashMap<String, String>> values = (ArrayList<HashMap<String, String>>) getIntent().getSerializableExtra(RESULTS_VALUES_TAG);
+            results = (ArrayList<HashMap<String, String>>) getIntent().getSerializableExtra(RESULTS_TAG);
             Log.d(TAG, "intent");
         }
 
@@ -174,9 +174,9 @@ public class ResultsActivity extends AppCompatActivity {
         Bundle state = ResultsActivity.getInstance().getSavedData();
         if(state != null)   {
             info = (HashMap<String, String>) state.getSerializable(INFO_TAG);
-            ArrayList<Integer> keys = (ArrayList<Integer>) state.getSerializable(RESULTS_KEYS_TAG);
-            ArrayList<HashMap<String, String>> values = (ArrayList<HashMap<String, String>>) state.getSerializable(RESULTS_VALUES_TAG);
-            results = initResults(keys, values);
+//            ArrayList<Integer> keys = (ArrayList<Integer>) state.getSerializable(RESULTS_KEYS_TAG);
+//            ArrayList<HashMap<String, String>> values = (ArrayList<HashMap<String, String>>) state.getSerializable(RESULTS_VALUES_TAG);
+            results = (ArrayList<HashMap<String, String>>) state.getSerializable(RESULTS_TAG);
         }
     }
 
@@ -184,16 +184,17 @@ public class ResultsActivity extends AppCompatActivity {
     protected void onPause() {
         Bundle state = new Bundle();
         state.putSerializable(INFO_TAG, info);
-        ArrayList<Integer> keys = new ArrayList<>();
-        ArrayList<HashMap<String, String>> values = new ArrayList<>();
-        Iterator<Integer> iterator = results.keySet().iterator();
-        while(iterator.hasNext())   {
-            Integer x = iterator.next();
-            keys.add(x);
-            values.add(results.get(x));
-        }
-        state.putSerializable(RESULTS_KEYS_TAG, keys);
-        state.putSerializable(RESULTS_VALUES_TAG, values);
+//        ArrayList<Integer> keys = new ArrayList<>();
+//        ArrayList<HashMap<String, String>> values = new ArrayList<>();
+//        Iterator<Integer> iterator = results.keySet().iterator();
+//        while(iterator.hasNext())   {
+//            Integer x = iterator.next();
+//            keys.add(x);
+//            values.add(results.get(x));
+//        }
+//        state.putSerializable(RESULTS_KEYS_TAG, keys);
+//        state.putSerializable(RESULTS_VALUES_TAG, values);
+        state.putSerializable(RESULTS_TAG, results);
         ResultsActivity.getInstance().setSavedData(state);
         super.onPause();
     }
@@ -202,16 +203,17 @@ public class ResultsActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(INFO_TAG, info);
-        ArrayList<Integer> keys = new ArrayList<>();
-        ArrayList<HashMap<String, String>> values = new ArrayList<>();
-        Iterator<Integer> iterator = results.keySet().iterator();
-        while(iterator.hasNext())   {
-            Integer x = iterator.next();
-            keys.add(x);
-            values.add(results.get(x));
-        }
-        outState.putSerializable(RESULTS_KEYS_TAG, keys);
-        outState.putSerializable(RESULTS_VALUES_TAG, values);
+//        ArrayList<Integer> keys = new ArrayList<>();
+//        ArrayList<HashMap<String, String>> values = new ArrayList<>();
+//        Iterator<Integer> iterator = results.keySet().iterator();
+//        while(iterator.hasNext())   {
+//            Integer x = iterator.next();
+//            keys.add(x);
+//            values.add(results.get(x));
+//        }
+//        outState.putSerializable(RESULTS_KEYS_TAG, keys);
+//        outState.putSerializable(RESULTS_VALUES_TAG, values);
+        outState.putSerializable(RESULTS_TAG, results);
     }
 
     /**
@@ -220,13 +222,13 @@ public class ResultsActivity extends AppCompatActivity {
      * @param values
      * @return
      */
-    private LinkedHashMap<Integer, HashMap<String, String>> initResults(ArrayList<Integer> keys, ArrayList<HashMap<String, String>> values)  {
-        LinkedHashMap<Integer, HashMap<String, String>> map = new LinkedHashMap<>(keys.size());
-        for(int i = 0; i < keys.size(); i++)    {
-            map.put(keys.get(i), values.get(i));
-        }
-        return map;
-    }
+//    private ArrayList<HashMap<String, String>> initResults(ArrayList<Integer> keys, ArrayList<HashMap<String, String>> values)  {
+//        ArrayList<HashMap<String, String>> map = new LinkedHashMap<>(keys.size());
+//        for(int i = 0; i < keys.size(); i++)    {
+//            map.put(keys.get(i), values.get(i));
+//        }
+//        return map;
+//    }
 
     /**
      * Flips the ViewFlipper containing differently sorted results lists according to the specified preference.
