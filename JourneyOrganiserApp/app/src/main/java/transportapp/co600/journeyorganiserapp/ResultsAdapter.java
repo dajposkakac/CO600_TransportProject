@@ -111,10 +111,10 @@ public class ResultsAdapter extends ArrayAdapter<String> {
             holder.departAt = (TextView) convertView.findViewById(R.id.depart_at_result);
             holder.arriveAt = (TextView) convertView.findViewById(R.id.arrive_at_result);
             holder.transitModeImage = (ImageView) convertView.findViewById(R.id.transit_mode);
-            if(price.equals("-1"))  {
-                holder.price.setVisibility(View.GONE);
-                convertView.findViewById(R.id.price_label).setVisibility(View.GONE);
-            }
+//            if(price.equals("-1"))  {
+//                holder.price.setVisibility(View.GONE);
+//                convertView.findViewById(R.id.price_label).setVisibility(View.GONE);
+//            }
             convertView.setTag(holder);
         }   else    {
             holder = (ViewHolder) convertView.getTag();

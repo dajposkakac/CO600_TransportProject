@@ -64,7 +64,7 @@ public class ResultsActivity extends AppCompatActivity {
             @Override
             public void onValueChanged(int position) {
                 Log.d(TAG, "Button Selected : " + position);
-                viewFlipper.setDisplayedChild(position);
+                flipToList(position);
             }
         });
 
@@ -237,6 +237,7 @@ public class ResultsActivity extends AppCompatActivity {
     private void flipToList(String preference)    {
         int pos = 0;
         String[] names = getResources().getStringArray(R.array.sorting_preference_names);
+        boolean[] states = new boolean[names.length];
         boolean found = false;
         int i = 0;
         while(!found && i < names.length) {
@@ -244,8 +245,18 @@ public class ResultsActivity extends AppCompatActivity {
                 found = true;
                 pos = i;
             }
+            states[i] = found;
             i++;
         }
+        listSwitcher.setStates(states);
+        flipToList(pos);
+    }
+
+    /**
+     * Flips the ViewFlipper containing differently sorted results lists to the specified position.
+     * @param pos
+     */
+    private void flipToList(int pos)    {
         if(pos == 0)  {
             results = distanceAdapter.getSortedResults();
         }   else if(pos == 1)  {
@@ -254,7 +265,6 @@ public class ResultsActivity extends AppCompatActivity {
             results = costAdapter.getSortedResults();
         }
         viewFlipper.setDisplayedChild(pos);
-        listSwitcher.setValue(pos);
     }
 
     /**
