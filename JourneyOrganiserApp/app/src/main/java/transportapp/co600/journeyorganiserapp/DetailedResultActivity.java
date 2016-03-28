@@ -132,7 +132,7 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
         LatLng destinationPosition = new LatLng(Double.valueOf(destinationData[0]), Double.valueOf(destinationData[1]));
         List<LatLng> polyline = PolyUtil.decode(results.get("polyline"));
         Log.d("polyline", results.get("polyline"));
-        final LatLngBounds bounds = new LatLngBounds(originPosition, destinationPosition);
+//        final LatLngBounds bounds = new LatLngBounds(originPosition, destinationPosition);
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.addMarker(new MarkerOptions().position(originPosition));

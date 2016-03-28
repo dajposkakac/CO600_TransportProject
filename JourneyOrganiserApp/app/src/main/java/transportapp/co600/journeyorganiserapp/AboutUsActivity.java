@@ -21,6 +21,8 @@ public class AboutUsActivity extends AppCompatActivity {
 
         setContentView(R.layout.about_us);
 
+        setTitle("About Us");
+
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
     }
 }
