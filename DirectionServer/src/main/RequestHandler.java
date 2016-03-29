@@ -69,7 +69,7 @@ public class RequestHandler extends Thread {
 		    final String xmlString = bufferedReader.readLine();
 		    System.out.println(xmlString);
 		    DirectionsResults result = null;
-		    if(validateRequest(new StreamSource(new StringReader(xmlString))))	{
+		    if(validateRequest(xmlString))	{
 		    	final Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(xmlString)));
 		    	final HashMap<String, String> data = parseToMap(xmlDoc);
 		    	final String[] transitModes = data.get(DirectionsRequest.TRANSIT_MODE).split(",");
@@ -149,13 +149,13 @@ public class RequestHandler extends Thread {
 	/*
 	 * Checks whether the request was correctly formatted.
 	 */
-	private boolean validateRequest(StreamSource streamSource) {
+	private boolean validateRequest(final String xmlString) {
 		final SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		Schema schema;
 		try {
 			schema = factory.newSchema(new File(XML_SCHEMA_PATH));
 			final Validator validator = schema.newValidator();
-			validator.validate(streamSource);
+			validator.validate(new StreamSource(new StringReader(xmlString)));
 		} catch (final SAXException | IOException e) {
 			e.printStackTrace();
 			return false;
