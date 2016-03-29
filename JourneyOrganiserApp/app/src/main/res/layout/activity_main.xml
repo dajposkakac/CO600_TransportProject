@@ -211,6 +211,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/preferences"
                     android:layout_gravity="fill_horizontal"
+                    android:textColor="@color/button_color"
                     android:text="@string/search_button_text" />
 
                 <TextView
