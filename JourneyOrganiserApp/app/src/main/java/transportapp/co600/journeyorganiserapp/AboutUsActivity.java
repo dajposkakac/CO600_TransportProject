@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
  *
  * @author mfm9
  */
-public class AboutUsActivity extends AppCompatActivity {
+public final class AboutUsActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -16,8 +16,8 @@ public class AboutUsActivity extends AppCompatActivity {
 
         setContentView(R.layout.about_us);
 
-        setTitle("About Us");
+        setTitle(R.string.about_us_activity_title);
 
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
     }
 }

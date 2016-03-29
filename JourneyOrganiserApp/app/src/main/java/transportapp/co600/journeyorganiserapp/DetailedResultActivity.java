@@ -29,9 +29,6 @@ import java.util.List;
  */
 public class DetailedResultActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    public static final String INFO_TAG = "info";
-    public static final String RESULT_TAG = "result";
-
     private HashMap<String, String> info;
     private HashMap<String, String> results;
 
@@ -40,16 +37,16 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        info = (HashMap<String, String>) getIntent().getSerializableExtra(INFO_TAG);
-        results = (HashMap<String, String>) getIntent().getSerializableExtra(RESULT_TAG);
+        info = (HashMap<String, String>) getIntent().getSerializableExtra(getString(R.string.info_xml_tag));
+        results = (HashMap<String, String>) getIntent().getSerializableExtra(getString(R.string.detailed_result_xml_tag));
 
-        setTitle(info.get("originDisplay") + " -> " + info.get("destinationDisplay"));
-        String transitModeText = results.get("transitMode");
+        setTitle(info.get(getString(R.string.origin_display_xml_tag)) + getString(R.string.arrow_string) + info.get(getString(R.string.destination_display_xml_tag)));
+        final String transitModeText = results.get(getString(R.string.transit_mode_xml_tag));
 
         TextView departAt = null;
         TextView arriveAt = null;
 
-        String priceValue = results.get("price");
+        final String priceValue = results.get(getString(R.string.price_xml_tag));
 
         setContentView(R.layout.detail_results_activity);
         departAt = (TextView) findViewById(R.id.depart_at_result);
@@ -60,24 +57,25 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
         TextView duration = (TextView) findViewById(R.id.duration);
         TextView price = (TextView) findViewById(R.id.price);
 
-        if(priceValue.equals("-1"))  {
+        if(priceValue.equals(getString(R.string.missing_price)))  {
             findViewById(R.id.price_layout).setVisibility(View.GONE);
-            price.setText("£" + results.get("price"));
+        }   else    {
+            price.setText(getString(R.string.pound_sign) + priceValue);
         }
 
-        ImageView transitMode = (ImageView) findViewById(R.id.transit_mode);
+        final ImageView transitMode = (ImageView) findViewById(R.id.transit_mode);
 
-        origin.setText(info.get("origin"));
-        destination.setText(info.get("destination"));
-        distance.setText(results.get("distance"));
-        duration.setText(results.get("duration"));
+        origin.setText(info.get(getString(R.string.origin_xml_tag)));
+        destination.setText(info.get(getString(R.string.destination_xml_tag)));
+        distance.setText(results.get(getString(R.string.distance_xml_tag)));
+        duration.setText(results.get(getString(R.string.duration_xml_tag)));
 
-        String departureTime = String.valueOf(results.get("departureTime"));
-        String arrivalTime = String.valueOf(results.get("arrivalTime"));
-        String departureDate = String.valueOf(results.get("departureDate"));
-        String arrivalDate = String.valueOf(results.get("arrivalDate"));
-        String departureTimeDate = departureTime + " - " + departureDate;
-        String arrivalTimeDate = arrivalTime + " - " + arrivalDate;
+        final String departureTime = String.valueOf(results.get(getString(R.string.departure_time_xml_tag)));
+        final String arrivalTime = String.valueOf(results.get(getString(R.string.arrival_time_xml_tag)));
+        final String departureDate = String.valueOf(results.get(getString(R.string.departure_date_xml_tag)));
+        final String arrivalDate = String.valueOf(results.get(getString(R.string.arrival_date_xml_tag)));
+        final String departureTimeDate = departureTime + getString(R.string.spaced_dash) + departureDate;
+        final String arrivalTimeDate = arrivalTime + getString(R.string.spaced_dash) + arrivalDate;
         departAt.setText(departureTimeDate);
         arriveAt.setText(arrivalTimeDate);
 
@@ -106,7 +104,7 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
         final ScrollView sv = (ScrollView) findViewById(R.id.scroll_view);
         ((InterceptTouchMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                 .setListener(new InterceptTouchMapFragment.OnTouchListener() {
@@ -115,16 +113,12 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
                         sv.requestDisallowInterceptTouchEvent(true);
                     }
                 });
-
-
-        String oll = info.get("originLatLng");
-        String[] originData = oll.split(",");
-        LatLng originPosition = new LatLng(Double.valueOf(originData[0]), Double.valueOf(originData[1]));
-        Log.d("LatLng", originPosition.toString());
-        String[] destinationData = info.get("destinationLatLng").split(",");
-        LatLng destinationPosition = new LatLng(Double.valueOf(destinationData[0]), Double.valueOf(destinationData[1]));
-        List<LatLng> polyline = PolyUtil.decode(results.get("polyline"));
-        Log.d("polyline", results.get("polyline"));
+        final String oll = info.get(getString(R.string.origin_latlng_xml_tag));
+        final String[] originData = oll.split(getString(R.string.comma));
+        final LatLng originPosition = new LatLng(Double.valueOf(originData[0]), Double.valueOf(originData[1]));
+        final String[] destinationData = info.get(getString(R.string.destination_latlng_xml_tag)).split(getString(R.string.comma));
+        final LatLng destinationPosition = new LatLng(Double.valueOf(destinationData[0]), Double.valueOf(destinationData[1]));
+        final List<LatLng> polyline = PolyUtil.decode(results.get(getString(R.string.polyline_xml_tag)));
 //        final LatLngBounds bounds = new LatLngBounds(originPosition, destinationPosition);
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         googleMap.getUiSettings().setZoomControlsEnabled(true);

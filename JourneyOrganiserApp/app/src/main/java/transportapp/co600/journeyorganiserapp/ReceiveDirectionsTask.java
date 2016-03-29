@@ -32,7 +32,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
 
-    private static final String TAG = "ReceiveDIR";
+    private static final String TAG = "RECEIVE";
     private final PrintWriter printwriter;
     private Activity activity;
     private Socket socket;
@@ -42,7 +42,7 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
     private HashMap<String, String> info;
     private ArrayList<HashMap<String, String>> results;
 
-    public ReceiveDirectionsTask(Activity pActivity, Socket pSocket, PrintWriter pPrintwriter)   {
+    public ReceiveDirectionsTask(final Activity pActivity, final Socket pSocket, final PrintWriter pPrintwriter)   {
         activity = pActivity;
         socket = pSocket;
         printwriter = pPrintwriter;
@@ -52,7 +52,7 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
         try {
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream())); //get the client message
-            Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(bufferedReader.readLine())));
+            final Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(bufferedReader.readLine())));
             parseStatus(xmlDoc);
             if(status == 0) {
                 parseInfo(xmlDoc);
@@ -60,7 +60,6 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
             }   else    {
                 parseErrorMesage(xmlDoc);
             }
-            Log.d("result", "results parsed");
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }   finally {
@@ -79,11 +78,10 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        Log.d("ReceiveRES", result);
         if(status == 0) {
-            Intent intent = new Intent(activity, ResultsActivity.class);
-            intent.putExtra("info", info);
-            intent.putExtra("results", results);
+            final Intent intent = new Intent(activity, ResultsActivity.class);
+            intent.putExtra(activity.getString(R.string.info_xml_tag), info);
+            intent.putExtra(activity.getString(R.string.results_xml_tag), results);
             activity.startActivity(intent);
         }   else    {
             activity.findViewById(R.id.loading).setVisibility(View.INVISIBLE);
@@ -95,13 +93,13 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
      * Parses the status out of the response XML doc
      * @param doc XML response
      */
-    private void parseStatus(Document doc)  {
-        NodeList nl = doc.getFirstChild().getChildNodes();
+    private void parseStatus(final Document doc)  {
+        final NodeList nl = doc.getFirstChild().getChildNodes();
         boolean found = false;
         int i = 0;
         while(!found && i < nl.getLength()) {
-            Node n = nl.item(i);
-            if (n.getNodeName().equals("status")) {
+            final Node n = nl.item(i);
+            if (n.getNodeName().equals(activity.getString(R.string.status_xml_tag))) {
                 status = Integer.valueOf(n.getTextContent());
                 found = true;
             }
@@ -113,13 +111,13 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
      * Parses the error message out of the XML doc
      * @param doc XML response
      */
-    private void parseErrorMesage(Document doc) {
-        NodeList nl = doc.getFirstChild().getChildNodes();
+    private void parseErrorMesage(final Document doc) {
+        final NodeList nl = doc.getFirstChild().getChildNodes();
         boolean found = false;
         int i = 0;
         while(!found && i < nl.getLength()) {
-            Node n = nl.item(i);
-            if (n.getNodeName().equals("errorMessage")) {
+            final Node n = nl.item(i);
+            if (n.getNodeName().equals(activity.getString(R.string.error_message_xml_tag))) {
                 errorMessage = n.getTextContent();
                 found = true;
             }
@@ -132,13 +130,13 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
      * the info HashMap
      * @param doc XML response
      */
-    private void parseInfo(Document doc)    {
-        NodeList nl = doc.getFirstChild().getChildNodes();
+    private void parseInfo(final Document doc)    {
+        final NodeList nl = doc.getFirstChild().getChildNodes();
         boolean found = false;
         int i = 0;
         while(!found && i < nl.getLength()) {
-            Node n = nl.item(i);
-            if (n.getNodeName().equals("info")) {
+            final Node n = nl.item(i);
+            if (n.getNodeName().equals(activity.getString(R.string.info_xml_tag))) {
                 info = parseToMap(n);
                 found = true;
             }
@@ -151,17 +149,17 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
      * the results HashMap
      * @param doc XML response
      */
-    private void parseResults(Document doc) {
-        NodeList nl = doc.getFirstChild().getChildNodes();
+    private void parseResults(final Document doc) {
+        final NodeList nl = doc.getFirstChild().getChildNodes();
         results = new ArrayList<>(nl.getLength());
         boolean found = false;
         int i = 0;
         while(!found && i < nl.getLength()) {
-            Node n = nl.item(i);
-            if (n.getNodeName().equals("results")) {
-                NodeList resultsNodeList = n.getChildNodes();
+            final Node n = nl.item(i);
+            if (n.getNodeName().equals(activity.getString(R.string.results_xml_tag))) {
+                final NodeList resultsNodeList = n.getChildNodes();
                 for(i = 0; i < resultsNodeList.getLength(); i++)    {
-                    Node resultNode = resultsNodeList.item(i);
+                    final Node resultNode = resultsNodeList.item(i);
                     results.add(parseToMap(resultNode));
                 }
                 found = true;
@@ -175,12 +173,12 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
      * @param node parent of children to be parsed
      * @return HashMap of tags mapped to values
      */
-    private HashMap<String,String> parseToMap(Node node)	{
-        NodeList nodes = node.getChildNodes();
-        HashMap<String, String> map = new HashMap<>();
+    private HashMap<String,String> parseToMap(final Node node)	{
+        final NodeList nodes = node.getChildNodes();
+        final HashMap<String, String> map = new HashMap<>();
         for(int i = 0; i < nodes.getLength(); i++)  {
-            Node n = nodes.item(i);
-            String nodeName = n.getNodeName();
+            final Node n = nodes.item(i);
+            final String nodeName = n.getNodeName();
             map.put(nodeName, n.getTextContent());
         }
         return map;
@@ -191,12 +189,12 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
      * @param doc XML response
      * @return parsed map
      */
-    private LinkedHashMap<String,String> parseToMap(Document doc)	{
-        NodeList nodes = doc.getFirstChild().getChildNodes();
-        LinkedHashMap<String, String> map = new LinkedHashMap<>();
+    private LinkedHashMap<String,String> parseToMap(final Document doc)	{
+        final NodeList nodes = doc.getFirstChild().getChildNodes();
+        final LinkedHashMap<String, String> map = new LinkedHashMap<>();
         for(int i = 0; i < nodes.getLength(); i++)  {
-            Node n = nodes.item(i);
-            String nodeName = n.getNodeName();
+            final Node n = nodes.item(i);
+            final String nodeName = n.getNodeName();
             map.put(nodeName, n.getTextContent());
         }
         return map;

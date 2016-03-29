@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        geoApicontext = new GeoApiContext().setApiKey(readKey("google_key_android"));
+        geoApicontext = new GeoApiContext().setApiKey(readKey(getString(R.string.google_key_android)));
         buildGoogleApiClient();
         resources = getResources();
         context = this;
@@ -118,9 +118,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     /**
      * Checks network connection and starts the RequestDirectionsTask.
      */
-    public void goHandler(View view) {
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
+    public void goHandler(final View view) {
+        final ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        final NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
             new RequestDirectionsTask(this, req).execute();
         } else {
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      * Initialises clear text buttons.
      */
     private void initCloseButtons() {
-        ImageButton fromClearButton = (ImageButton) findViewById(R.id.from_clear);
+        final ImageButton fromClearButton = (ImageButton) findViewById(R.id.from_clear);
         fromClearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
 
-        ImageButton toClearButton = (ImageButton) findViewById(R.id.to_clear);
+        final ImageButton toClearButton = (ImageButton) findViewById(R.id.to_clear);
         toClearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,15 +189,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      * Initialises map buttons for location picking.
      */
     private void initMapButtons()   {
-        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        final PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
         try {
             ppIntent = builder.build(this);
         } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
         }
         mapButtonId = -1;
-        Button fromMapButton = (Button) findViewById(R.id.from_map);
-        Button toMapButton = (Button) findViewById(R.id.to_map);
+        final Button fromMapButton = (Button) findViewById(R.id.from_map);
+        final Button toMapButton = (Button) findViewById(R.id.to_map);
         fromMapButton.setOnClickListener(mapButtonListener);
         toMapButton.setOnClickListener(mapButtonListener);
     }
@@ -207,22 +207,22 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      * Also intialisese the toolbar.
      */
     private void initNavigationDrawer() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_action_menu);
-        toolbar.setTitle("Journey Organiser");
+        toolbar.setTitle(getString(R.string.app_name));
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-        LayoutInflater inflater = getLayoutInflater();
-        View listHeaderView = inflater.inflate(R.layout.header_view, null, false);
+        final LayoutInflater inflater = getLayoutInflater();
+        final View listHeaderView = inflater.inflate(R.layout.header_view, null, false);
         mDrawerList.addHeaderView(listHeaderView);
 
         mDrawerList.setAdapter(new ArrayAdapter<>(this,
                 R.layout.drawer_list_item, getResources().getStringArray(R.array.navigation_drawer_array)));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                toolbar, R.string.drawer_open, R.string.drawer_close) {
+                toolbar, R.string.open, R.string.close) {
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             @Override
             public void onClick(View v) {
                 DialogFragment newFragment = new TimeDialogFragment();
-                newFragment.show(getFragmentManager(), "timePicker");
+                newFragment.show(getFragmentManager(), getString(R.string.time_picker_tag));
             }
         });
         timePicker.setOnLongClickListener(new View.OnLongClickListener() {
@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             @Override
             public void onClick(View v) {
                 DialogFragment newFragment = new DateDialogFragment();
-                newFragment.show(getFragmentManager(), "datePicker");
+                newFragment.show(getFragmentManager(), getString(R.string.date_picker_tag));
             }
         });
         datePicker.setOnLongClickListener(new View.OnLongClickListener() {
@@ -281,7 +281,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         datePicker.setFocusable(false);
         datePicker.setMaxWidth(datePicker.getWidth());
         dateSpinner = (Spinner) findViewById(R.id.dateSpinner);
-        ArrayAdapter<String> dateAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.dateNames));
+        final ArrayAdapter<String> dateAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.dateNames));
         dateSpinner.setAdapter(dateAdapter);
         dateSpinner.setOnItemSelectedListener(this);
     }
@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      */
     private void initModesSpinner() {
         transitModeSpinner = (Spinner) findViewById(R.id.transit_modes_spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.transit_mode_names));
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.transit_mode_names));
         transitModeSpinner.setAdapter(adapter);
         transitModeSpinner.setOnItemSelectedListener(this);
     }
@@ -301,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      */
     private void initSortingSpinner() {
         sortingPreferenceSpinner = (Spinner) findViewById(R.id.sorting_preference_spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.sorting_preference_names));
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.sorting_preference_names));
         sortingPreferenceSpinner.setAdapter(adapter);
         sortingPreferenceSpinner.setOnItemSelectedListener(this);
     }
@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      * Initialises the search button.
      */
     private void initGoButton() {
-        Button goButton = (Button) findViewById(R.id.go);
+        final Button goButton = (Button) findViewById(R.id.go);
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -334,18 +334,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         req.setOrigin(from.getText().toString());
         req.setDestination(to.getText().toString());
         String time = timePicker.getText().toString();
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         if(time.isEmpty())  {
-            time = addMissingZero(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + addMissingZero(calendar.get(Calendar.MINUTE))  + ":" + addMissingZero(calendar.get(Calendar.SECOND));
+            String colon = getString(R.string.colon);
+            time = addMissingZero(calendar.get(Calendar.HOUR_OF_DAY)) + colon + addMissingZero(calendar.get(Calendar.MINUTE))  + colon + addMissingZero(calendar.get(Calendar.SECOND));
             req.setTime(time);
         }
         String date = datePicker.getText().toString();
         if(date.isEmpty())  {
-            date = calendar.get(Calendar.YEAR) + "-" + addMissingZero(calendar.get(Calendar.MONTH) + 1) + "-" + addMissingZero(calendar.get(Calendar.DAY_OF_MONTH));
+            String dash = getString(R.string.dash);
+            date = calendar.get(Calendar.YEAR) + dash + addMissingZero(calendar.get(Calendar.MONTH) + 1) + dash + addMissingZero(calendar.get(Calendar.DAY_OF_MONTH));
             req.setDate(date);
         }
-//        req.setDate("2016-03-22");
-//        req.setTime("11:00:00");
     }
 
     /**
@@ -384,14 +384,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     /**
      * Sets the origin or destination field after location was selected on the map.
      */
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 String result = null;
                 Place place = PlacePicker.getPlace(this, data);
-                String placeAddress = place.getAddress().toString();
+                final String placeAddress = place.getAddress().toString();
                 if(placeAddress.isEmpty())  {
-                    result = place.getLatLng().latitude + "," + place.getLatLng().longitude;
+                    result = place.getLatLng().latitude + getString(R.string.comma) + place.getLatLng().longitude;
                 }   else {
                     result = placeAddress;
                 }
@@ -421,7 +421,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     /**
      *  Makes the navigation drawer click happen.
      */
-    private void selectItem(int position)   {
+    private void selectItem(final int position)   {
         if(position == 1) {
             getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).addToBackStack(null).commit();
         }
@@ -496,7 +496,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                     mGoogleApiClient);
             if (mLastLocation != null) {
-                LatLng loc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                final LatLng loc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
                 boundsCurrentLocation = new LatLngBounds(loc, loc);
             }
         }
@@ -524,16 +524,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         int parentId = parent.getId();
         if(parentId == dateSpinner.getId()) {
-            String[] departureSpinner = getResources().getStringArray(R.array.dateNames);
+            final String[] departureSpinner = getResources().getStringArray(R.array.dateNames);
             req.setDepartureOption(departureSpinner[position]);
         }   else if(parentId == transitModeSpinner.getId()) {
             String tm = null;
             switch (position) {
                 case 0:
-                    tm = TravelMode.DRIVING.toString() + "," + TravelMode.TRANSIT.toString();
+                    tm = TravelMode.DRIVING.toString() + getString(R.string.comma) + TravelMode.TRANSIT.toString();
                     break;
                 case 1:
-                    tm = TravelMode.DRIVING.toString() + "," + TravelMode.TRANSIT.toString() + "," + TravelMode.BICYCLING.toString() + "," + TravelMode.WALKING.toString();
+                    String comma = getString(R.string.comma);
+                    tm = TravelMode.DRIVING.toString() + comma + TravelMode.TRANSIT.toString() + comma + TravelMode.BICYCLING.toString() + comma + TravelMode.WALKING.toString();
                     break;
                 case 2:
                     tm = TravelMode.DRIVING.toString();
@@ -550,7 +551,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
             req.setTransitMode(tm);
         }   else if(parentId == sortingPreferenceSpinner.getId())  {
-            String[] names = resources.getStringArray(R.array.sorting_preference_names);
+            final String[] names = resources.getStringArray(R.array.sorting_preference_names);
             req.setSortingPreference(names[position]);
         }
     }
@@ -558,10 +559,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     /**
      * Adds leading 0s to single digits.
 	 */
-    public String addMissingZero(int time)    {
+    public String addMissingZero(final int time)    {
         String timeString = String.valueOf(time);
         if(time < 10 && time > -1)  {
-            timeString = "0" + timeString;
+            timeString = getString(R.string.zero_string) + timeString;
         }
         return timeString;
     }
@@ -588,12 +589,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     /**
      * Reads the key for the key type specified.
      */
-    private String readKey(String keyName)  {
+    private String readKey(final String keyName)  {
         try {
-            Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(getResources().openRawResource(R.raw.supersecretsecret));
-            NodeList nodes = xmlDoc.getFirstChild().getChildNodes();
+            final Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(getResources().openRawResource(R.raw.supersecretsecret));
+            final NodeList nodes = xmlDoc.getFirstChild().getChildNodes();
             for(int i = 0; i < nodes.getLength(); i++)  {
-                Node node = nodes.item(i);
+                final Node node = nodes.item(i);
                 if(node.getNodeName().equals(keyName))    {
                     return node.getTextContent();
                 }

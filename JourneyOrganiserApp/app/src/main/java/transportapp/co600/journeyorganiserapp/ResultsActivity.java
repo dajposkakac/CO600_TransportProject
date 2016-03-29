@@ -26,10 +26,7 @@ import java.util.HashMap;
  */
 public class ResultsActivity extends AppCompatActivity {
 
-    public static final String INFO_TAG = "info";
-    public static final String RESULTS_TAG = "results";
-
-    private static final String TAG = "resultsActivity";
+    private static final String TAG = "RESULTS";
 
     private HashMap<String, String> info;
     private ArrayList<HashMap<String, String>> results;
@@ -56,39 +53,38 @@ public class ResultsActivity extends AppCompatActivity {
         listSwitcher.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
             @Override
             public void onValueChanged(int position) {
-                Log.d(TAG, "Button Selected : " + position);
                 flipToList(position);
             }
         });
 
+        final String infoTag = getString(R.string.info_xml_tag);
+        final String resultsTag = getString(R.string.results_xml_tag);
         if(savedInstanceState != null)  {
-            info = (HashMap<String, String>) savedInstanceState.getSerializable(INFO_TAG);
-            results = (ArrayList<HashMap<String, String>>) savedInstanceState.getSerializable(RESULTS_TAG);
+            info = (HashMap<String, String>) savedInstanceState.getSerializable(infoTag);
+            results = (ArrayList<HashMap<String, String>>) savedInstanceState.getSerializable(resultsTag);
         }   else {
-            info = (HashMap<String, String>) getIntent().getSerializableExtra(INFO_TAG);
-            results = (ArrayList<HashMap<String, String>>) getIntent().getSerializableExtra(RESULTS_TAG);
+            info = (HashMap<String, String>) getIntent().getSerializableExtra(infoTag);
+            results = (ArrayList<HashMap<String, String>>) getIntent().getSerializableExtra(resultsTag);
         }
 
-        ResultClickListener resultClickListener = new ResultClickListener();
-        ListView distanceList = (ListView) findViewById(R.id.list_distance);
-        distanceAdapter = new ResultsAdapter(this, info, results, "distance");
+        final ResultClickListener resultClickListener = new ResultClickListener();
+        final ListView distanceList = (ListView) findViewById(R.id.list_distance);
+        distanceAdapter = new ResultsAdapter(this, info, results, getString(R.string.distance_xml_tag));
         distanceList.setAdapter(distanceAdapter);
         distanceList.setOnItemClickListener(resultClickListener);
 
-        ListView timeList = (ListView) findViewById(R.id.list_time);
-        timeAdapter = new ResultsAdapter(this, info, results, "arrivalTimeInSeconds");
+        final ListView timeList = (ListView) findViewById(R.id.list_time);
+        timeAdapter = new ResultsAdapter(this, info, results, getString(R.string.arrival_time_in_sec_xml_tag));
         timeList.setAdapter(timeAdapter);
         timeList.setOnItemClickListener(resultClickListener);
 
-        ListView costList = (ListView) findViewById(R.id.list_cost);
-        costAdapter = new ResultsAdapter(this, info, results, "price");
+        final ListView costList = (ListView) findViewById(R.id.list_cost);
+        costAdapter = new ResultsAdapter(this, info, results, getString(R.string.price_xml_tag));
         costList.setAdapter(costAdapter);
         costList.setOnItemClickListener(resultClickListener);
 
-        flipToList(info.get("sortingPreference"));
-        setTitle(info.get("originDisplay") + " -> " + info.get("destinationDisplay"));
-
-        Log.d("adapter", "" + distanceAdapter.getCount());
+        flipToList(info.get(getString(R.string.sorting_preference_xml_tag)));
+        setTitle(info.get(getString(R.string.origin_display_xml_tag)) + getString(R.string.arrow_string) + info.get(getString(R.string.destination_display_xml_tag)));
     }
 
     @Override
@@ -110,9 +106,9 @@ public class ResultsActivity extends AppCompatActivity {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Intent intent = new Intent(context, DetailedResultActivity.class);
-            intent.putExtra(INFO_TAG, info);
-            intent.putExtra("result", results.get(position));
+            final Intent intent = new Intent(context, DetailedResultActivity.class);
+            intent.putExtra(getString(R.string.info_xml_tag), info);
+            intent.putExtra(getString(R.string.detailed_result_xml_tag), results.get(position));
             context.startActivity(intent);
         }
     }
@@ -120,17 +116,17 @@ public class ResultsActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(INFO_TAG, info);
-        outState.putSerializable(RESULTS_TAG, results);
+        outState.putSerializable(getString(R.string.info_xml_tag), info);
+        outState.putSerializable(getString(R.string.results_xml_tag), results);
     }
 
     /**
      * Flips the ViewFlipper containing differently sorted results lists according to the specified preference.
      * @param preference
      */
-    private void flipToList(String preference)    {
+    private void flipToList(final String preference)    {
         int pos = 0;
-        String[] names = getResources().getStringArray(R.array.sorting_preference_names);
+        final String[] names = getResources().getStringArray(R.array.sorting_preference_names);
         boolean[] states = new boolean[names.length];
         boolean found = false;
         int i = 0;
@@ -150,7 +146,7 @@ public class ResultsActivity extends AppCompatActivity {
      * Flips the ViewFlipper containing differently sorted results lists to the specified position.
      * @param pos
      */
-    private void flipToList(int pos)    {
+    private void flipToList(final int pos)    {
         if(pos == 0)  {
             results = distanceAdapter.getSortedResults();
         }   else if(pos == 1)  {

@@ -35,7 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:text="From"
+                    android:text="@string/from_label_text"
                     android:textColor="?android:textColorSecondary" />
 
                 <LinearLayout
@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/from_layout"
-                    android:text="To"
+                    android:text="@string/to_label_text"
                     android:textColor="?android:textColorSecondary"
                     />
 
@@ -135,7 +135,7 @@
                         android:gravity="center_horizontal"
                         android:textIsSelectable="true"
                         android:focusableInTouchMode="false"
-                        android:hint="Time"/>
+                        android:hint="@string/time_hint_text"/>
 
                     <EditText
                         android:id="@+id/date"
@@ -145,7 +145,7 @@
                         android:gravity="center_horizontal"
                         android:textIsSelectable="true"
                         android:focusableInTouchMode="false"
-                        android:hint="Date"/>
+                        android:hint="@string/date_hint_text"/>
 
                 </LinearLayout>
                 <LinearLayout
@@ -167,7 +167,7 @@
                             android:id="@+id/transit_modes_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Transit Mode:"
+                            android:text="@string/transit_mode_spinner_label_text"
                             android:textColor="?android:textColorSecondary" />
 
                         <Spinner
@@ -187,7 +187,7 @@
                             android:id="@+id/sorting_preference_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Sort by:"
+                            android:text="@string/sorting_preference_spinner_label_text"
                             android:textColor="?android:textColorSecondary"/>
 
                         <Spinner
@@ -204,14 +204,14 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/preferences"
                     android:layout_gravity="fill_horizontal"
-                    android:text="Show Travel Options" />
+                    android:text="@string/search_button_text" />
 
                 <TextView
                     android:id="@+id/loading"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/go"
-                    android:text="Loading..."
+                    android:text="@string/loading_text"
                     android:layout_gravity="center_horizontal"
                     android:visibility="invisible"/>
 

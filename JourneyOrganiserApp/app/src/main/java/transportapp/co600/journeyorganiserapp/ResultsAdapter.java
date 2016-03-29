@@ -24,7 +24,7 @@ public class ResultsAdapter extends ArrayAdapter<HashMap<String, String>> {
     private final ArrayList<HashMap<String, String>> results;
     private final double[] valuesArray;
 
-    public ResultsAdapter(Context pContext, HashMap<String, String> pInfo, ArrayList<HashMap<String, String>> pResults, String sort) {
+    public ResultsAdapter(final Context pContext, final HashMap<String, String> pInfo, final ArrayList<HashMap<String, String>> pResults, String sort) {
         super(pContext, layout = R.layout.result_row);
         context = pContext;
         info = pInfo;
@@ -32,7 +32,7 @@ public class ResultsAdapter extends ArrayAdapter<HashMap<String, String>> {
         valuesArray = new double[results.size()];
 
         for (int j = 0; j < results.size(); j++)   {
-            String values = results.get(j).get(sort);
+            final String values = results.get(j).get(sort);
             String value = null;
             switch (sort) {
                 case "distance":
@@ -46,21 +46,21 @@ public class ResultsAdapter extends ArrayAdapter<HashMap<String, String>> {
                     break;
                 case "arrivalTimeInSeconds":
                     value = values;
-                        if(info.get("departureOption").startsWith("Arrive"))  {
+                        if(info.get(context.getString(R.string.departure_option_xml_tag)).startsWith("Arrive"))  {
                             valuesArray[j] = Double.valueOf(value);
                         }
                         else {
-                            sort = "departureTimeInSeconds";
+                            sort = context.getString(R.string.departure_time_in_sec_xml_tag);
                             j--;
                         }
                     break;
                 case "departureTimeInSeconds":
                     value = values;
-                    if(info.get("departureOption").startsWith("Depart"))  {
+                    if(info.get(context.getString(R.string.departure_option_xml_tag)).startsWith("Depart"))  {
                         valuesArray[j] = Double.valueOf(value);
                     }
                     else {
-                        sort = "arrivalTimeInSeconds";
+                        sort = context.getString(R.string.arrival_time_in_sec_xml_tag);
                         j--;
                     }
                     break;
@@ -83,7 +83,7 @@ public class ResultsAdapter extends ArrayAdapter<HashMap<String, String>> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent)   {
         ViewHolder holder;
-        HashMap<String, String> result = getItem(position);
+        final HashMap<String, String> result = getItem(position);
 
         if(convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -99,25 +99,25 @@ public class ResultsAdapter extends ArrayAdapter<HashMap<String, String>> {
         }   else    {
             holder = (ViewHolder) convertView.getTag();
         }
-        String price = result.get("price");
-        if(price.equals("-1"))  {
+        final String price = result.get(context.getString(R.string.price_xml_tag));
+        if(price.equals(context.getString(R.string.missing_price)))  {
             holder.price.setVisibility(View.GONE);
             convertView.findViewById(R.id.price_label).setVisibility(View.GONE);
         }   else    {
             holder.price.setVisibility(View.VISIBLE);
             convertView.findViewById(R.id.price_label).setVisibility(View.VISIBLE);
-            holder.price.setText("£" + price);
+            holder.price.setText(context.getString(R.string.pound_sign) + price);
         }
-        String transitMode = result.get("transitMode");
-        holder.distance.setText(result.get("distance"));
-        holder.duration.setText(result.get("duration"));
+        final String transitMode = result.get(context.getString(R.string.transit_mode_xml_tag));
+        holder.distance.setText(result.get(context.getString(R.string.distance_xml_tag)));
+        holder.duration.setText(result.get(context.getString(R.string.duration_xml_tag)));
 
-        String departureTime = result.get("departureTime");
-        String arrivalTime = result.get("arrivalTime");
-        String departureDate = result.get("departureDate");
-        String arrivalDate = result.get("arrivalDate");
-        String departureTimeDate = departureTime + " - " + departureDate;
-        String arrivalTimeDate = arrivalTime + " - " + arrivalDate;
+        final String departureTime = result.get(context.getString(R.string.departure_time_xml_tag));
+        final String arrivalTime = result.get(context.getString(R.string.arrival_time_xml_tag));
+        final String departureDate = result.get(context.getString(R.string.departure_date_xml_tag));
+        final String arrivalDate = result.get(context.getString(R.string.arrival_date_xml_tag));
+        final String departureTimeDate = departureTime + context.getString(R.string.spaced_dash) + departureDate;
+        final String arrivalTimeDate = arrivalTime + context.getString(R.string.spaced_dash) + arrivalDate;
         holder.departAt.setText(departureTimeDate);
         holder.arriveAt.setText(arrivalTimeDate);
 
@@ -147,7 +147,7 @@ public class ResultsAdapter extends ArrayAdapter<HashMap<String, String>> {
      * @param min
      * @param max
      */
-    public void sort(int min, int max)  {
+    public void sort(final int min, final int max)  {
         int i = min;
         int j = max;
         double pivot = valuesArray[min + (max - min) / 2];
@@ -186,7 +186,7 @@ public class ResultsAdapter extends ArrayAdapter<HashMap<String, String>> {
         }
     }
 
-    boolean isDouble(String str) {
+    boolean isDouble(final String str) {
         try {
             Double.parseDouble(str);
             return true;

@@ -17,8 +17,7 @@
         android:id="@+id/mstb_multi_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        mstb:values="@array/travel_choices"
+        mstb:values="@array/sorting_preference_names"
         app:mstbPrimaryColor="@color/choice_1"
         app:mstbSecondaryColor="@color/choice_2"
         android:layout_marginBottom="5dp" />

@@ -24,7 +24,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
 
@@ -32,7 +32,7 @@
                 android:id="@+id/about_us_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Journey Organiser is designed to give its users the possibility of searching for the best routes to their destination. The user is able to specify what transport he wishes to use and the application will provide distance, time and cost of that journey. "
+                android:text="@string/about_us_text"
                 android:textSize="20sp"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
@@ -41,24 +41,24 @@
                 android:gravity="center"/>
 
             <TextView
-                android:id="@+id/Authors_label"
+                android:id="@+id/authors_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:layout_gravity="center"
-                android:text="Authors:"
+                android:text="@string/about_us_authors_title"
                 android:textSize="25sp"
                 android:textColor="@color/button_color"
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/Authors"
+                android:id="@+id/authors"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:text="Jan Gucwa \n Mateusz Maly \n Filip Borowiak \n Karol Baran \n Dawid Janelli"
+                android:text="@string/about_us_authors_text"
                 android:textSize="20sp"
                 android:textColor="@color/button_color" />
         </LinearLayout>

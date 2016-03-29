@@ -34,8 +34,7 @@ import javax.xml.transform.stream.StreamResult;
  */
 public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
 
-    private static final String TAG = "RequestDIR";
-    private static final String SERVER_IP_PREF_KEY = "pref_server_ip";
+    private static final String TAG = "REQUEST";
     private static final int SERVER_PORT = 4444;
     private static final int SERVER_TIMEOUT_MS = 5000;
     private final Activity activity;
@@ -45,25 +44,25 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
     private String errorMessage;
     private PrintWriter printwriter;
 
-    public RequestDirectionsTask(Activity pActivity, Request pReq)   {
+    public RequestDirectionsTask(final Activity pActivity, final Request pReq)   {
         activity = pActivity;
         req = pReq;
     }
 
     @Override
     protected String doInBackground(String... params) {
-        String ip = PreferenceManager.getDefaultSharedPreferences(activity).getString(SERVER_IP_PREF_KEY, activity.getResources().getString(R.string.default_server_ip));
+        String ip = PreferenceManager.getDefaultSharedPreferences(activity).getString(activity.getString(R.string.pref_ip_server_key), activity.getString(R.string.default_server_ip));
         try {
             socket = new Socket();
             socket.connect(new InetSocketAddress(ip, SERVER_PORT), SERVER_TIMEOUT_MS);
             printwriter = new PrintWriter(socket.getOutputStream(), true);
-            String xmlReq = createXMLRequest(req);
+            final String xmlReq = createXMLRequest(req);
             Log.d(TAG, xmlReq);
             printwriter.write(xmlReq); //write the message to output stream
             printwriter.flush();
         }   catch(SocketTimeoutException ste)   {
             status = -1;
-            errorMessage = "Server at " + ip + ":" + SERVER_PORT + " is unavailable.";
+            errorMessage = "Server at " + ip + activity.getString(R.string.colon) + SERVER_PORT + " is unavailable.";
             Log.e(TAG, errorMessage);
         }   catch (Exception e) {
             e.printStackTrace();
@@ -76,28 +75,27 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
         if(status == 0) {
             activity.findViewById(R.id.loading).setVisibility(View.VISIBLE);
             new ReceiveDirectionsTask(activity, socket, printwriter).execute();
-            Log.d("RequestRES", result);
         }   else    {
-            ErrorDialogFragment.errorDialog(activity, "Error", status, errorMessage);
+            ErrorDialogFragment.errorDialog(activity, "Server Error", status, errorMessage);
         }
     }
 
     /**
      * Converts Request into a single line XML string ended with a new line.
      */
-    private String createXMLRequest(Request req) throws ParserConfigurationException, IOException, SAXException, TransformerException {
-        Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+    private String createXMLRequest(final Request req) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+        final Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 
-        Element request = xmlDoc.createElement("request");
+        final Element request = xmlDoc.createElement(activity.getString(R.string.request_xml_tag));
         xmlDoc.appendChild(request);
 
-        Element origin = xmlDoc.createElement("origin");
-        Element destination = xmlDoc.createElement("destination");
-        Element transitMode = xmlDoc.createElement("transitMode");
-        Element time = xmlDoc.createElement("time");
-        Element date = xmlDoc.createElement("date");
-        Element departureOption = xmlDoc.createElement("departureOption");
-        Element sortingPreferences = xmlDoc.createElement("sortingPreference");
+        final Element origin = xmlDoc.createElement(activity.getString(R.string.origin_xml_tag));
+        final Element destination = xmlDoc.createElement(activity.getString(R.string.destination_xml_tag));
+        final Element transitMode = xmlDoc.createElement(activity.getString(R.string.transit_mode_xml_tag));
+        final Element time = xmlDoc.createElement(activity.getString(R.string.time_xml_tag));
+        final Element date = xmlDoc.createElement(activity.getString(R.string.date_xml_tag));
+        final Element departureOption = xmlDoc.createElement(activity.getString(R.string.departure_option_xml_tag));
+        final Element sortingPreferences = xmlDoc.createElement(activity.getString(R.string.sorting_preference_xml_tag));
 
         origin.appendChild(xmlDoc.createTextNode(req.getOrigin()));
         destination.appendChild(xmlDoc.createTextNode(req.getDestination()));
@@ -115,11 +113,11 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
         request.appendChild(departureOption);
         request.appendChild(sortingPreferences);
 
-        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        StreamResult sr = new StreamResult(new StringWriter());
-        DOMSource source = new DOMSource(xmlDoc);
+        final Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        final StreamResult sr = new StreamResult(new StringWriter());
+        final DOMSource source = new DOMSource(xmlDoc);
         transformer.transform(source, sr);
-        return sr.getWriter().toString() + "\n";
+        return sr.getWriter().toString() + activity.getString(R.string.new_line);
     }
 
 }

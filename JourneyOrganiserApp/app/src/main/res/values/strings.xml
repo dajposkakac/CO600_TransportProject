@@ -2,13 +2,12 @@
     <string name="app_name">Journey Organiser</string>
     <string name="default_server_ip">165.120.249.32</string>
     <string name="action_settings">Settings</string>
-
-    <string-array name="navigation_drawer_array">
-        <item>Settings</item>
-        <item>About Us</item>
-    </string-array>
-
     <string name="pref_ip_server_title">Server IP</string>
+    <string name="pref_ip_server_key">pref_server_ip</string>
+
+    <!-- Main -->
+    <string name="time_picker_tag">timePicker</string>
+    <string name="date_picker_tag">datePicker</string>
 
     <string-array name="dateNames">
         <item>Depart at</item>
@@ -29,19 +28,82 @@
         <item>Time</item>
         <item>Cost</item>
     </string-array>
+    
+    <string name="from_label_text">From:</string>
+    <string name="to_label_text">To:</string>
+    <string name="time_hint_text">Time</string>
+    <string name="date_hint_text">Date</string>
+    <string name="transit_mode_spinner_label_text">Transit Mode:</string>
+    <string name="sorting_preference_spinner_label_text">Sort by:</string>
+    <string name="search_button_text">Search</string>
+    <string name="loading_text">Loading...</string>
 
-    <string name="title_activity_results">Results</string>
-    <string name="title_details_results_activity">Result</string>
-    <string name="title_About_Us_Activity"></string>
-    <string name = "drawer_open">Open</string>
-    <string name = "drawer_close">Close</string>
+    <!-- Request -->
+    <string name="request_xml_tag">request</string>
+    <string name="origin_xml_tag">origin</string>
+    <string name="destination_xml_tag">destination</string>
+    <string name="transit_mode_xml_tag">transitMode</string>
+    <string name="time_xml_tag">time</string>
+    <string name="date_xml_tag">date</string>
+    <string name="departure_option_xml_tag">departureOption</string>
+    <string name="sorting_preference_xml_tag">sortingPreference</string>
 
-    <string name="date">Departure Date</string>
-    <string name="time">Time</string>
+    <!-- Results -->
+    <string name="results_activity_title">Results</string>
+    <string name="info_xml_tag">info</string>
+    <string name="results_xml_tag">results</string>
+    <string name="status_xml_tag">status</string>
+    <string name="error_message_xml_tag">errorMessage</string>
+    <string name="origin_display_xml_tag">originDisplay</string>
+    <string name="destination_display_xml_tag">destinationDisplay</string>
+    <string name="distance_xml_tag">distance</string>
+    <string name="duration_xml_tag">duration</string>
+    <string name="arrival_time_xml_tag">arrivalTime</string>
+    <string name="departure_time_xml_tag">departureTime</string>
+    <string name="arrival_date_xml_tag">arrivalDate</string>
+    <string name="departure_date_xml_tag">departureDate</string>
+    <string name="arrival_time_in_sec_xml_tag">arrivalTimeInSeconds</string>
+    <string name="departure_time_in_sec_xml_tag">departureTimeInSeconds</string>
+    <string name="price_xml_tag">price</string>
+    <string name="polyline_xml_tag">polyline</string>
+    <string name="missing_price">-1</string>
 
-    <string-array name="travel_choices">
-        <item>Distance</item>
-        <item>Time</item>
-        <item>Cost</item>
+
+    <!-- Detailed Result -->
+    <string name="detailed_result_activity_title">Result</string>
+    <string name="detailed_result_xml_tag">result</string>
+    <string name="origin_latlng_xml_tag">originLatLng</string>
+    <string name="destination_latlng_xml_tag">destinationLatLng</string>
+
+    <string name="departure_label">Departure:</string>
+    <string name="arrival_label">Arrival:</string>
+    <string name="distance_label">Distance</string>
+    <string name="duration_label">Duration:</string>
+    <string name="price_label">Price:</string>
+    <!-- Navigation drawer -->
+    <string-array name="navigation_drawer_array">
+        <item>Settings</item>
+        <item>About Us</item>
     </string-array>
+
+    <!-- About Us -->
+    <string name="about_us_activity_title">About Us</string>
+    <string name="about_us_text">Journey Organiser is designed to give its users the possibility of searching for the best routes to their destination. The user is able to specify what transport he wishes to use and the application will provide distance, time and cost of that journey. </string>
+    <string name="about_us_authors_title">Authors:</string>
+    <string name="about_us_authors_text">Jan Gucwa \n Mateusz Maly \n Filip Borowiak \n Karol Baran \n Dawid Janelli</string>
+
+    <!-- Misc -->
+    <string name="google_key_android">google_key_android</string>
+    <string name="comma">,</string>
+    <string name="colon">:</string>
+    <string name="dash">-</string>
+    <string name="new_line">\n</string>
+    <string name="zero_string">0</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="status_code_string">code: </string>
+    <string name="arrow_string"> -> </string>
+    <string name="pound_sign">£</string>
+    <string name="spaced_dash"> - </string>
+
 </resources>

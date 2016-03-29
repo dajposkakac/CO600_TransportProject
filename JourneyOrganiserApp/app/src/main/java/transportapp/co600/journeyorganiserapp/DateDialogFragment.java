@@ -16,7 +16,6 @@ import java.util.Calendar;
  */
 public class DateDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-    private static final String DASH = "-";
     private MainActivity activity;
     private EditText dateText;
 
@@ -24,20 +23,21 @@ public class DateDialogFragment extends DialogFragment implements DatePickerDial
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         activity = (MainActivity) getActivity();
         final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        final int year = c.get(Calendar.YEAR);
+        final int month = c.get(Calendar.MONTH);
+        final int day = c.get(Calendar.DAY_OF_MONTH);
         dateText = (EditText) activity.findViewById(R.id.date);
         return new DatePickerDialog(activity, this, year, month, day);
     }
 
     @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+    public void onDateSet(final DatePicker view, final int year, int monthOfYear, final int dayOfMonth) {
+        final String dash = getString(R.string.dash);
         monthOfYear++;
-        String monthAddedZeros = activity.addMissingZero(monthOfYear);
-        String dayAddedZeros = activity.addMissingZero(dayOfMonth);
-        String date = year + DASH + monthAddedZeros + DASH + dayAddedZeros;
-        String dateDisplay = dayAddedZeros + DASH + monthAddedZeros + DASH + year;
+        final String monthAddedZeros = activity.addMissingZero(monthOfYear);
+        final String dayAddedZeros = activity.addMissingZero(dayOfMonth);
+        final String date = year + dash + monthAddedZeros + dash + dayAddedZeros;
+        final String dateDisplay = dayAddedZeros + dash + monthAddedZeros + dash + year;
         dateText.setText(dateDisplay);
         activity.getRequest().setDate(date);
     }

@@ -26,7 +26,7 @@ public class Request implements Serializable{
      * Sets the origin location field.
      * @param origin
      */
-    public void setOrigin(String origin) {
+    public void setOrigin(final String origin) {
         this.origin = origin;
     }
 
@@ -42,7 +42,7 @@ public class Request implements Serializable{
      * Sets the destination location field.
      * @param destination
      */
-    public void setDestination(String destination) {
+    public void setDestination(final String destination) {
         this.destination = destination;
     }
 
@@ -58,7 +58,7 @@ public class Request implements Serializable{
      * Sets the travel mode field.
      * @param transitMode
      */
-    public void setTransitMode(String transitMode) {
+    public void setTransitMode(final String transitMode) {
         this.transitMode = transitMode;
     }
 
@@ -72,7 +72,7 @@ public class Request implements Serializable{
      * Sets the time field.
      * @param time
      */
-    public void setTime(String time) {this.time = time;}
+    public void setTime(final String time) {this.time = time;}
 
     /**
      * Returns the date specified by the user.
@@ -84,7 +84,7 @@ public class Request implements Serializable{
      * Sets the date field.
      * @param date
      */
-    public void setDate(String date) {this.date = date;}
+    public void setDate(final String date) {this.date = date;}
 
     /**
      * Returns departure option specified by the user.
@@ -96,7 +96,7 @@ public class Request implements Serializable{
      * Sets the departureOption field.
      * @param departureOption
      */
-    public void setDepartureOption(String departureOption) {this.departureOption = departureOption;}
+    public void setDepartureOption(final String departureOption) {this.departureOption = departureOption;}
 
     /**
      * Returns the sorting preference specified by the user.
@@ -108,5 +108,5 @@ public class Request implements Serializable{
      * Sets the sortingPreference field.
      * @param sortingPreference
      */
-    public void setSortingPreference(String sortingPreference) {this.sortingPreference = sortingPreference;}
+    public void setSortingPreference(final String sortingPreference) {this.sortingPreference = sortingPreference;}
 }
