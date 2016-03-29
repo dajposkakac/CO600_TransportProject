@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Journey Organiser</string>
-    <string name="default_server_ip">165.120.249.32</string>
+    <string name="default_server_ip">52.37.113.133</string>
     <string name="action_settings">Settings</string>
     <string name="pref_ip_server_title">Server IP</string>
     <string name="pref_ip_server_key">pref_server_ip</string>
@@ -102,8 +102,8 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="status_code_string">code: </string>
-    <string name="arrow_string"> -> </string>
+    <string name="arrow_string">" -> "</string>
     <string name="pound_sign">£</string>
-    <string name="spaced_dash"> - </string>
+    <string name="spaced_dash">" - "</string>
 
 </resources>
