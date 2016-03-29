@@ -7,7 +7,7 @@ package main;
  */
 public class RouteNotFoundException extends StatusException{
 
-	public RouteNotFoundException(int pStatus, String errorMessage) {
+	public RouteNotFoundException(final int pStatus, final String errorMessage) {
 		super(pStatus, errorMessage);
 	}
 

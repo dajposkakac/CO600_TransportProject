@@ -98,7 +98,7 @@ public class DirectionsRequest {
 	 * Constructor sets reads API key for GoogleAPI and initialises
 	 * object.
 	 */
-	public DirectionsRequest(HashMap<String, String> data)	{
+	public DirectionsRequest(final HashMap<String, String> data)	{
 		status = 0;
 		request = data;
 		additionalData = new HashMap<>();
@@ -114,36 +114,36 @@ public class DirectionsRequest {
 	 * a readable error message and stops the request.
 	 */
 	private void makeRequests()	{
-		String origin = request.get(ORIGIN);
-		String destination = request.get(DESTINATION);
-		String departureOption = request.get(DEPARTURE_OPTION);
+		final String origin = request.get(ORIGIN);
+		final String destination = request.get(DESTINATION);
+		final String departureOption = request.get(DEPARTURE_OPTION);
 		travelMode = TravelMode.valueOf(request.get(TRANSIT_MODE).toUpperCase());
 		if(origin.matches(LATLNG_REGEXP))	{
-			String[] originTemp = origin.split(COMMA);
+			final String[] originTemp = origin.split(COMMA);
 			originLatLng = new LatLng(Double.valueOf(originTemp[0]), Double.valueOf(originTemp[1]));
 		}	else	{
 			try {
 				originLatLng = geocodeAddress(origin);
-			} catch (LocationNotFoundException e) {
+			} catch (final LocationNotFoundException e) {
 				status = e.getStatus();
 				errorMessage = e.getMessage();
 				return;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				e.printStackTrace();
 				return;
 			}
 		}
 		if(destination.matches(LATLNG_REGEXP))	{
-			String[] destinationTemp = destination.split(COMMA);
+			final String[] destinationTemp = destination.split(COMMA);
 			destinationLatLng = new LatLng(Double.valueOf(destinationTemp[0]), Double.valueOf(destinationTemp[1]));
 		}	else	{
 			try {
 				destinationLatLng = geocodeAddress(destination);
-			} catch (LocationNotFoundException e) {
+			} catch (final LocationNotFoundException e) {
 				status = e.getStatus();
 				errorMessage = e.getMessage();
 				return;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				e.printStackTrace();
 				return;
 			}
@@ -157,15 +157,15 @@ public class DirectionsRequest {
 			}
 			routeExists(routes);
 			r2rData = r2rSearch(originLatLng, destinationLatLng, travelMode);
-		}	catch (DateInPastException dipe)	{
+		}	catch (final DateInPastException dipe)	{
 			status = dipe.getStatus();
 			errorMessage = dipe.getMessage();
 			return;
-		}	catch (RouteNotFoundException rnfe)	{
+		}	catch (final RouteNotFoundException rnfe)	{
 			status = rnfe.getStatus();
 			errorMessage = rnfe.getMessage();
 			return;
-		}	catch (Exception e) {
+		}	catch (final Exception e) {
 			e.printStackTrace();
 			return;
 		}
@@ -192,16 +192,16 @@ public class DirectionsRequest {
 	 * Makes the Rome2Rio Search API request using origin and destination coordinates 
 	 * and the specified travel mode.
 	 */
-	private String r2rSearch(LatLng originLatLng, LatLng destinationLatLng, TravelMode travelMode) throws IOException {
-		String sUrl = R2RURL1 + readKey("R2R_key") + R2RURL2 + originLatLng.toString() + R2RURL3 + destinationLatLng.toString() + R2RURL4 + "GBP" + R2RURL5 + getTravelModeFlags(travelMode);
+	private String r2rSearch(final LatLng originLatLng, final LatLng destinationLatLng, final TravelMode travelMode) throws IOException {
+		final String sUrl = R2RURL1 + readKey("R2R_key") + R2RURL2 + originLatLng.toString() + R2RURL3 + destinationLatLng.toString() + R2RURL4 + "GBP" + R2RURL5 + getTravelModeFlags(travelMode);
 		System.out.println(sUrl);
-		URL url = new URL(sUrl);
-		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		final URL url = new URL(sUrl);
+		final HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod(CONN_TYPE); 
-		BufferedReader in = new BufferedReader(
+		final BufferedReader in = new BufferedReader(
 		        new InputStreamReader(con.getInputStream()));
 		String inputLine;
-		StringBuffer response = new StringBuffer();
+		final StringBuffer response = new StringBuffer();
 
 		while ((inputLine = in.readLine()) != null) {
 			response.append(inputLine);
@@ -221,7 +221,7 @@ public class DirectionsRequest {
 	/*
 	 * Checks whether any routes were found, if not, throws RouteNotFoundException.
 	 */
-	private void routeExists(DirectionsResult routes) throws RouteNotFoundException {
+	private void routeExists(final DirectionsResult routes) throws RouteNotFoundException {
 		if(routes.routes.length == 0)	{
 			throw new RouteNotFoundException(3, "No route found");
 		}
@@ -231,20 +231,19 @@ public class DirectionsRequest {
 	 * Uses time and date information from the client request to create an object which 
 	 * is easier to operate with.
 	 */
-	public DateTime extractDateTime(String time, String date) throws DateInPastException	{
+	public DateTime extractDateTime(final String time, final String date) throws DateInPastException	{
 		DateTime dt = new DateTime();
 		if(time != null)	{
-			int[] timeData = Arrays.stream(time.split(":")).mapToInt(Integer::parseInt).toArray();
+			final int[] timeData = Arrays.stream(time.split(":")).mapToInt(Integer::parseInt).toArray();
 			dt = dt.withHourOfDay(timeData[0]).withMinuteOfHour(timeData[1]);
 		}
 		if(date != null)	{
-			int[] dateData = Arrays.stream(date.split("-")).mapToInt(Integer::parseInt).toArray();
+			final int[] dateData = Arrays.stream(date.split("-")).mapToInt(Integer::parseInt).toArray();
 			dt = dt.withYear(dateData[0]).withMonthOfYear(dateData[1]).withDayOfMonth(dateData[2]);
 		}
 		dt = dt.plusMillis(5000);
 		if(!dt.isAfterNow())	{
 			throw new DateInPastException(2, dt.toString() + " is in the past");
-//			dt = DateTime.now().plusMillis(250);
 		}
 		return dt;
 	}
@@ -253,8 +252,8 @@ public class DirectionsRequest {
 	 * Takes an address and returns its LatLng. If the location is not found throws 
 	 * LocationNotFoundException.
 	 */
-	private LatLng geocodeAddress(String address) throws NotFoundException, Exception	{
-		GeocodingResult[] results =  GeocodingApi.newRequest(gaContext).address(address).await();
+	private LatLng geocodeAddress(final String address) throws NotFoundException, Exception	{
+		final GeocodingResult[] results =  GeocodingApi.newRequest(gaContext).address(address).await();
 		if(results.length < 1)	{
 			throw new LocationNotFoundException(1, "Location not found:" + address);
 		}
@@ -264,7 +263,7 @@ public class DirectionsRequest {
 	/*
 	 * Returns Rome2Rio travel mode flags for the specified travel mode.
 	 */
-	private String getTravelModeFlags(TravelMode tm)	{
+	private String getTravelModeFlags(final TravelMode tm)	{
 		String flags = R2R_TRAVEL_MODE_FLAGS_DEFAULT;
 		if(tm == TravelMode.DRIVING)	{
 			flags = R2R_TRAVEL_MODE_FLAGS_DRIVING;
@@ -305,18 +304,18 @@ public class DirectionsRequest {
 	/*
 	 * Reads the key for the key type specified.
 	 */
-	private String readKey(String keyName)  {
+	private String readKey(final String keyName)  {
         Document xmlDoc;
 		try {
 			xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File("./supersecretsecret.xml"));
-			NodeList nodes = xmlDoc.getFirstChild().getChildNodes();
+			final NodeList nodes = xmlDoc.getFirstChild().getChildNodes();
 	        for(int i = 0; i < nodes.getLength(); i++)  {
-	            Node node = nodes.item(i);
+	        	final Node node = nodes.item(i);
 	            if(node.getNodeName().equals(keyName))    {
 	                return node.getTextContent();
 	            }
 	        }
-		} catch (SAXException | IOException | ParserConfigurationException e) {
+		} catch (final SAXException | IOException | ParserConfigurationException e) {
 			e.printStackTrace();
 		}
         return null;
