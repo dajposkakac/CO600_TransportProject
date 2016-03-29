@@ -60,14 +60,15 @@
                         android:id="@+id/from_clear"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/close"
+                        android:background="@drawable/delete_input_button"
                         android:layout_gravity="center"/>
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/from_map"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:text="map"/>
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="5dp"
+                        android:background="@drawable/globe" />
                 </LinearLayout>
 
                 <TextView
@@ -100,14 +101,15 @@
                         android:id="@+id/to_clear"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/close"
+                        android:background="@drawable/delete_input_button"
                         android:layout_gravity="center"/>
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/to_map"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:text="map"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="5dp"
+                        android:background="@drawable/globe"
                         />
                 </LinearLayout>
 

@@ -196,8 +196,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             e.printStackTrace();
         }
         mapButtonId = -1;
-        final Button fromMapButton = (Button) findViewById(R.id.from_map);
-        final Button toMapButton = (Button) findViewById(R.id.to_map);
+        final ImageButton fromMapButton = (ImageButton) findViewById(R.id.from_map);
+        final ImageButton toMapButton = (ImageButton) findViewById(R.id.to_map);
         fromMapButton.setOnClickListener(mapButtonListener);
         toMapButton.setOnClickListener(mapButtonListener);
     }
