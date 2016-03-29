@@ -91,6 +91,9 @@
     <string name="about_us_text">Journey Organiser is designed to give its users the possibility of searching for the best routes to their destination. The user is able to specify what transport he wishes to use and the application will provide distance, time and cost of that journey. </string>
     <string name="about_us_authors_title">Authors:</string>
     <string name="about_us_authors_text">Jan Gucwa \n Mateusz Maly \n Filip Borowiak \n Karol Baran \n Dawid Janelli</string>
+    <string name="copyright_r2r">Copyright</string>
+    <string name="copyright_text_r2r">Pricing information provided by: \n © 2016 Rome2rio Pty Ltd \n http://www.rome2rio.com/</string>
+    <string name="copyright_text_google">Route information provided by: \n © 2015 Google Inc. All Rights Reserved. \n https://www.google.com/</string>
 
     <!-- Misc -->
     <string name="google_key_android">google_key_android</string>

@@ -61,6 +61,44 @@
                 android:text="@string/about_us_authors_text"
                 android:textSize="20sp"
                 android:textColor="@color/button_color" />
+
+            <TextView
+                android:id="@+id/copyright_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="@string/copyright_r2r"
+                android:textSize="25sp"
+                android:textColor="@color/button_color"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/copyright_google"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/copyright_text_google"
+                android:textSize="20sp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:textColor="@color/button_color"
+                android:gravity="center"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/copyright_r2r"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/copyright_text_r2r"
+                android:textSize="20sp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/button_color"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
