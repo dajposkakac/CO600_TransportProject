@@ -44,7 +44,7 @@ public class DirectionsResults {
 	/*
 	 * Constructor for the successful response.
 	 */
-	public DirectionsResults(int status, HashMap<String, String> pAdditionalData)	{
+	public DirectionsResults(final int status, final HashMap<String, String> pAdditionalData)	{
 		setStatus(status);
 		additionalData = pAdditionalData;
 	}
@@ -52,7 +52,7 @@ public class DirectionsResults {
 	/*
 	 * Constructor for the error response.
 	 */
-	public DirectionsResults(int status, String pErrorMessage)	{
+	public DirectionsResults(final int status, final String pErrorMessage)	{
 		setStatus(status);
 		errorMessage = pErrorMessage;
 	}
@@ -60,7 +60,7 @@ public class DirectionsResults {
 	/*
 	 * Adds more routes and their prices.
 	 */
-	public void addResults(DirectionsResult directionsResult, HashMap<String, Integer> pPriceData)	{
+	public void addResults(final DirectionsResult directionsResult, final HashMap<String, Integer> pPriceData)	{
 		if(results == null)	{
 			results = new ArrayList<>(20);
 		}
@@ -76,14 +76,14 @@ public class DirectionsResults {
 	/*
 	 * Returns destination address for specified route.
 	 */
-	public String getDestinationForRoute(int route)	{
+	public String getDestinationForRoute(final int route)	{
 		return results.get(route).legs[0].endAddress;
 	}
 	
 	/*
 	 * Returns origin address for specified route.
 	 */
-	public String getOriginForRoute(int route)	{
+	public String getOriginForRoute(final int route)	{
 		return results.get(route).legs[0].startAddress;
 	}
 	
@@ -104,22 +104,22 @@ public class DirectionsResults {
 	/*
 	 * Returns distance in human readable form for specified route.
 	 */
-	public String getDistanceForRoute(int route)	{
+	public String getDistanceForRoute(final int route)	{
 		return results.get(route).legs[0].distance.humanReadable;
 	}
 	
 	/*
 	 * Returns distance in human readable for for specified route.
 	 */
-	public String getDurationForRoute(int route)	{
+	public String getDurationForRoute(final int route)	{
 		long seconds = results.get(route).legs[0].duration.inSeconds;
-		long days = TimeUnit.SECONDS.toDays(seconds);
+		final long days = TimeUnit.SECONDS.toDays(seconds);
 		seconds -= TimeUnit.DAYS.toSeconds(days);
-		long hours = TimeUnit.SECONDS.toHours(seconds);
+		final long hours = TimeUnit.SECONDS.toHours(seconds);
 		seconds -= TimeUnit.HOURS.toSeconds(hours);
-		long minutes = TimeUnit.SECONDS.toMinutes(seconds);
+		final long minutes = TimeUnit.SECONDS.toMinutes(seconds);
 		seconds -= TimeUnit.MINUTES.toSeconds(minutes);
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		if(days > 0)	{
 			builder.append(days + DAYS_SHORT + DirectionsRequest.SPACE);
 		}
@@ -135,18 +135,18 @@ public class DirectionsResults {
 	/*
 	 * Returns arrival time in human readable form for specified route.
 	 */
-	public String getArrivalTimeForRoute(int route)	{
+	public String getArrivalTimeForRoute(final int route)	{
 		String time = null;
-		String tm = getTransitModeForRoute(route);
+		final String tm = getTransitModeForRoute(route);
 		if(!tm.equalsIgnoreCase(TRAIN)
 				&& !tm.equalsIgnoreCase(TRAIN))	{
 			long timeSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
-			long durationSeconds = results.get(route).legs[0].duration.inSeconds;
+			final long durationSeconds = results.get(route).legs[0].duration.inSeconds;
 			timeSeconds = (timeSeconds + durationSeconds);
 			additionalData.put(DirectionsRequest.ARRIVAL_TIME_IN_SECONDS, String.valueOf(timeSeconds));
 			time = getTimeReadable(new DateTime(timeSeconds  * 1000));
 		}	else 	{
-			DateTime dt = results.get(route).legs[0].arrivalTime;
+			final DateTime dt = results.get(route).legs[0].arrivalTime;
 			additionalData.put(DirectionsRequest.ARRIVAL_TIME_IN_SECONDS, String.valueOf(dt.getMillis() / 1000));
 			time = getTimeReadable(dt);
 		}
@@ -156,16 +156,16 @@ public class DirectionsResults {
 	/*
 	 * Returns departure time in human readable form for specified route.
 	 */
-	public String getDepartureTimeForRoute(int route)	{
+	public String getDepartureTimeForRoute(final int route)	{
 		String time = null;
-		String tm = getTransitModeForRoute(route);
+		final String tm = getTransitModeForRoute(route);
 		if(!tm.equalsIgnoreCase(TRAIN)
 				&& !tm.equalsIgnoreCase(TRAIN))	{
-			long timeSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
+			final long timeSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
 			additionalData.put(DirectionsRequest.DEPARTURE_TIME_IN_SECONDS, String.valueOf(timeSeconds));
 			time = getTimeReadable(new DateTime(timeSeconds * 1000));
 		}	else	{
-			DateTime dt = results.get(route).legs[0].arrivalTime;
+			final DateTime dt = results.get(route).legs[0].arrivalTime;
 			additionalData.put(DirectionsRequest.DEPARTURE_TIME_IN_SECONDS, String.valueOf(dt.getMillis() / 1000));
 			time = getTimeReadable(results.get(route).legs[0].departureTime);
 		}
@@ -175,13 +175,13 @@ public class DirectionsResults {
 	/*
 	 * Returns arrival date in human readable form for specified route.
 	 */
-	public String getArrivalDateForRoute(int route)	{
+	public String getArrivalDateForRoute(final int route)	{
 		String date = null;
-		String tm = getTransitModeForRoute(route);
+		final String tm = getTransitModeForRoute(route);
 		if(!tm.equalsIgnoreCase(TRAIN)
 				&& !tm.equalsIgnoreCase(TRAIN))	{
-			long dateSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
-			long durationSeconds = results.get(route).legs[0].duration.inSeconds;
+			final long dateSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
+			final long durationSeconds = results.get(route).legs[0].duration.inSeconds;
 			date = getDateReadable(new DateTime((dateSeconds + durationSeconds)* 1000));
 		}	else 	{
 			date = getDateReadable(results.get(route).legs[0].arrivalTime);
@@ -192,12 +192,12 @@ public class DirectionsResults {
 	/*
 	 * Returns departure date in human readable form for specified route.
 	 */
-	public String getDepartureDateForRoute(int route)	{
+	public String getDepartureDateForRoute(final int route)	{
 		String date = null;
-		String tm = getTransitModeForRoute(route);
+		final String tm = getTransitModeForRoute(route);
 		if(!tm.equalsIgnoreCase(TRAIN)
 				&& !tm.equalsIgnoreCase(TRAIN))	{
-			long dateSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
+			final long dateSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
 			date = getDateReadable(new DateTime((dateSeconds)* 1000));
 		}	else 	{
 			date = getDateReadable(results.get(route).legs[0].departureTime);
@@ -208,14 +208,14 @@ public class DirectionsResults {
 	/*
 	 * Returns arrival time in seconds for specified route.
 	 */
-	public String getArrivalTimeInSecondsForRoute(int route)	{
+	public String getArrivalTimeInSecondsForRoute(final int route)	{
 		return additionalData.get(DirectionsRequest.ARRIVAL_TIME_IN_SECONDS);
 	}
 	
 	/*
 	 * Returns arrival time in seconds for specified route.
 	 */
-	public String getDepartureTimeInSecondsForRoute(int route)	{
+	public String getDepartureTimeInSecondsForRoute(final int route)	{
 		return additionalData.get(DirectionsRequest.DEPARTURE_TIME_IN_SECONDS);
 	}
 	
@@ -242,7 +242,7 @@ public class DirectionsResults {
 	/*
 	 * Returns encoded and smoothed polyline for specified route
 	 */
-	public String getPolylineForRoute(int route)	{
+	public String getPolylineForRoute(final int route)	{
 		return results.get(route).overviewPolyline.getEncodedPath();
 	}
 	
@@ -263,8 +263,8 @@ public class DirectionsResults {
 	/*
 	 * Returns price for specified route.
 	 */
-	public String getPriceForRoute(int route)	{
-		String transitMode = getTransitModeForRoute(route);
+	public String getPriceForRoute(final int route)	{
+		final String transitMode = getTransitModeForRoute(route);
 		int price = -1;
 		if(transitMode.equals(TRAIN) || transitMode.equals(BUS))	{
 			if(priceData.containsKey(transitMode))	{
@@ -288,18 +288,18 @@ public class DirectionsResults {
 	/*
 	 * Returns transit mode for the specified route
 	 */
-	public String getTransitModeForRoute(int route) {
+	public String getTransitModeForRoute(final int route) {
 		String travelMode = "unknown";
-		DirectionsStep[] steps = results.get(route).legs[0].steps;
+		final DirectionsStep[] steps = results.get(route).legs[0].steps;
 		int i = 0;
 		boolean found = false;
 		while(i < steps.length && !found)	{
-			TravelMode stepTravelMode = steps[i].travelMode;
+			final TravelMode stepTravelMode = steps[i].travelMode;
 			if(stepTravelMode == TravelMode.DRIVING  || stepTravelMode == (TravelMode.BICYCLING))	{
 				travelMode = stepTravelMode.toString();
 				found = true;
 			}	else if(stepTravelMode == TravelMode.TRANSIT)	{
-				String vehicleName = steps[i].transitDetails.line.vehicle.name;
+				final String vehicleName = steps[i].transitDetails.line.vehicle.name;
 				if(vehicleName.equals(TRAIN) || vehicleName.equals(BUS))	{
 					travelMode = vehicleName;
 					found = true;
@@ -350,7 +350,7 @@ public class DirectionsResults {
 	/*
 	 * Updates value of the status of the request.
 	 */
-	public void setStatus(int status) {
+	public void setStatus(final int status) {
 		this.status = status;
 	}
 	
@@ -364,28 +364,28 @@ public class DirectionsResults {
 	/*
 	 * Updates value of the error message.
 	 */
-	public void setErrorMessage(String errorMessage) {
+	public void setErrorMessage(final String errorMessage) {
 		this.errorMessage = errorMessage;
 	}
 
 	/*
 	 * Converts DateTime object into a human readable time.
 	 */
-	private String getTimeReadable(DateTime dt)	{
+	private String getTimeReadable(final DateTime dt)	{
 		return addMissingZero(dt.getHourOfDay()) + COLON + addMissingZero(dt.getMinuteOfHour());
 	}
 	
 	/*
 	 * Converts DateTime object into a human readable date.
 	 */
-	private String getDateReadable(DateTime dt)	{
+	private String getDateReadable(final DateTime dt)	{
 		return addMissingZero(dt.getDayOfMonth()) + DASH + addMissingZero(dt.getMonthOfYear()) + DASH + dt.getYear();
 	}
 	
 	/*
 	 * Adds leading 0s to single digits.
 	 */
-	private String addMissingZero(int time)    {
+	private String addMissingZero(final int time)    {
         String timeString = String.valueOf(time);
         if(time < 10 && time > -1)  {
             timeString = "0" + timeString;

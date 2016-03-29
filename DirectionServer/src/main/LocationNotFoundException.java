@@ -7,7 +7,7 @@ package main;
  */
 public class LocationNotFoundException extends StatusException{
 
-	public LocationNotFoundException(int pStatus, String pErrorMessage) {
+	public LocationNotFoundException(final int pStatus, final String pErrorMessage) {
 		super(pStatus, pErrorMessage);
 	}
 

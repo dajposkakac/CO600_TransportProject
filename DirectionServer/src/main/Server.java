@@ -24,16 +24,16 @@ public class Server {
     			while(true)	{
     				new RequestHandler(serverSocket.accept()).start();//accept the client connection
     			}
-    		} catch(IOException e)	{
+    		} catch(final IOException e)	{
     			System.out.println("Problem in message reading");
-    		} catch (Exception e) {
+    		} catch (final Exception e) {
     			e.printStackTrace();
     		}	finally	{
     			try {
     				serverSocket.close();
-    			} catch (IOException e) {}
+    			} catch (final IOException e) {}
     		}
-	    } catch (IOException e) {
+	    } catch (final IOException e) {
     	    System.out.println("Could not listen on port: 4444");
 	    }
     }

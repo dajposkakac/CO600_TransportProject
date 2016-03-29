@@ -8,7 +8,7 @@ package main;
 public class Main {
 	
 	public Main() {
-		Server server = new Server();
+		final Server server = new Server();
 	}
 
 	/*

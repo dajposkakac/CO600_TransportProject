@@ -7,7 +7,7 @@ package main;
  */
 public class DateInPastException extends StatusException{
 	
-	public DateInPastException(int pStatus, String pErrorMessage) {
+	public DateInPastException(final int pStatus, final String pErrorMessage) {
 		super(pStatus, pErrorMessage);
 	}
 }

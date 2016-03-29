@@ -52,6 +52,17 @@ public class RequestHandler extends Thread {
 	public static final String RESULTS = "results";
 	public static final String RESULT = "result";
 	
+	//Errors
+	public static final int STATUS_SUCCESS = 0;
+	public static final int STATUS_INVALID_REQUEST = -10;
+	public static final int STATUS_LOCATION_NOT_FOUND = 1;
+	public static final int STATUS_TIME_DATE_IS_IN_THE_PAST = 2;
+	public static final int STATUS_ROUTE_NOT_FOUND = 3;
+	public static final String STATUS_INVALID_REQUEST_MESSAGE = "Invalid request";
+	public static final String STATUS_LOCATION_NOT_FOUND_MESSAGE = "Location not found:";
+	public static final String STATUS_TIME_DATE_IS_IN_THE_PAST_MESSAGE = " is in the past";
+	public static final String STATUS_ROUTE_NOT_FOUND_MESSAGE = "No route found: \n";
+	
 	private Socket socket;
 	private BufferedReader bufferedReader;
 	private PrintWriter printWriter;
@@ -59,29 +70,29 @@ public class RequestHandler extends Thread {
 	/*
 	 * Standard constructor, initialises socket.
 	 */
-	public RequestHandler(Socket pSocket)	{
+	public RequestHandler(final Socket pSocket)	{
 		socket = pSocket;
 	}
 	
 	public void run()	{
 		try	{
 		    bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream())); //get the client message
-		    String xmlString = bufferedReader.readLine();
+		    final String xmlString = bufferedReader.readLine();
 		    System.out.println(xmlString);
 		    DirectionsResults result = null;
-		    if(validateRequest(new StreamSource(new StringReader(xmlString))))	{
-		    	Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(xmlString)));
-			    HashMap<String, String> data = parseToMap(xmlDoc);
-			    String[] transitModes = data.get(DirectionsRequest.TRANSIT_MODE).split(",");
+		    if(validateRequest(xmlString))	{
+		    	final Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(xmlString)));
+		    	final HashMap<String, String> data = parseToMap(xmlDoc);
+		    	final String[] transitModes = data.get(DirectionsRequest.TRANSIT_MODE).split(",");
 			    for(int i = 0; i < transitModes.length; i++)	{
 			    	data.put(DirectionsRequest.TRANSIT_MODE, transitModes[i]);
-			    	DirectionsRequest request = new DirectionsRequest(data);
+			    	final DirectionsRequest request = new DirectionsRequest(data);
 				    
 				    if(request.getStatus() == 0)	{
 				    	if(result == null)	{
 				    		result = new DirectionsResults(request.getStatus(), request.getAdditionalData());
 				    	}
-				    	Document r2rXmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(request.getR2RData())));
+				    	final Document r2rXmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(request.getR2RData())));
 			    		result.addResults(request.getRoutes(), parseR2RXml(r2rXmlDoc));
 				    }	else	{
 				    	result = new DirectionsResults(request.getStatus(), request.getErrorMessage());
@@ -89,15 +100,14 @@ public class RequestHandler extends Thread {
 				    }
 			    }
 		    }	else	{
-		    	result = new DirectionsResults(-10, "Invalid request");
+		    	result = new DirectionsResults(STATUS_INVALID_REQUEST, STATUS_INVALID_REQUEST_MESSAGE);
 		    }
-		    String resultString = createXMLResponse(result);
-//		    String resultString = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><request><origin>London, UK</origin><destination>Oxford, Oxford, UK</destination><distance>85.3 km</distance><duration>1 hour 35 mins</duration><transitMode>transit</transitMode><price>33</price></request>";
+		    final String resultString = createXMLResponse(result);
 		    printWriter = new PrintWriter(socket.getOutputStream(), true);
 		    System.out.println(resultString);
 		    printWriter.write(resultString); 
 		    printWriter.flush(); //send response
-		}	catch(Exception e)	{
+		}	catch(final Exception e)	{
 			e.printStackTrace();
 		}	finally {
 			printWriter.close();
@@ -112,12 +122,12 @@ public class RequestHandler extends Thread {
 	 * Takes an XML document and parses children of the first node
 	 * into a HashMap<String, String>.
 	 */
-	private HashMap<String,String> parseToMap(Document doc)	{
-		NodeList nodes = doc.getFirstChild().getChildNodes();
-		HashMap<String, String> map = new HashMap<>();
+	private HashMap<String,String> parseToMap(final Document doc)	{
+		final NodeList nodes = doc.getFirstChild().getChildNodes();
+		final HashMap<String, String> map = new HashMap<>();
 		for(int i = 0; i < nodes.getLength(); i++)  {
-            Node n = nodes.item(i);
-            String nodeName = n.getNodeName();
+			final Node n = nodes.item(i);
+			final String nodeName = n.getNodeName();
         	map.put(nodeName, n.getTextContent());
         }
 		return map;
@@ -127,14 +137,14 @@ public class RequestHandler extends Thread {
 	 * Takes an XML document and parses prices for trains, buses and
 	 * driving into a HashMap<String, Integer>
 	 */
-	private HashMap<String, Integer> parseR2RXml(Document doc)	{
-		HashMap<String, Integer> priceMap = new HashMap<>();
-		NodeList nodes = doc.getFirstChild().getChildNodes();
+	private HashMap<String, Integer> parseR2RXml(final Document doc)	{
+		final HashMap<String, Integer> priceMap = new HashMap<>();
+		final NodeList nodes = doc.getFirstChild().getChildNodes();
 		for(int i = 0; i < nodes.getLength(); i++)	{
-			Node n = nodes.item(i);
+			final Node n = nodes.item(i);
 			String nn = n.getNodeName();
 			if(nn.equals("Route"))	{
-				String travelModeName = n.getAttributes().getNamedItem("name").getTextContent();
+				final String travelModeName = n.getAttributes().getNamedItem("name").getTextContent();
 				if(travelModeName.contains(DirectionsResults.TRAIN)) {
 					priceMap.put(DirectionsResults.TRAIN, Integer.valueOf(n.getFirstChild().getAttributes().getNamedItem("price").getTextContent()));
 				}	else if(travelModeName.contains(DirectionsResults.BUS))	{ 
@@ -150,14 +160,14 @@ public class RequestHandler extends Thread {
 	/*
 	 * Checks whether the request was correctly formatted.
 	 */
-	private boolean validateRequest(StreamSource streamSource) {
-		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+	private boolean validateRequest(final String xmlString) {
+		final SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		Schema schema;
 		try {
 			schema = factory.newSchema(new File(XML_SCHEMA_PATH));
-			Validator validator = schema.newValidator();
-			validator.validate(streamSource);
-		} catch (SAXException | IOException e) {
+			final Validator validator = schema.newValidator();
+			validator.validate(new StreamSource(new StringReader(xmlString)));
+		} catch (final SAXException | IOException e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -168,30 +178,30 @@ public class RequestHandler extends Thread {
 	 * Creates a String containing the response to the request, in format
 	 * specified in the template files in the templates folder.
 	 */
-	private String createXMLResponse(DirectionsResults res) throws ParserConfigurationException, IOException, TransformerException, SAXException {
-		Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+	private String createXMLResponse(final DirectionsResults res) throws ParserConfigurationException, IOException, TransformerException, SAXException {
+		final Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 		
 		//root
-		Element response = xmlDoc.createElement(RESPONSE);
+		final Element response = xmlDoc.createElement(RESPONSE);
 		xmlDoc.appendChild(response);
 	
 		//status
-		Element status = xmlDoc.createElement(STATUS);
+		final Element status = xmlDoc.createElement(STATUS);
 		status.appendChild(xmlDoc.createTextNode(String.valueOf(res.getStatus())));
 		response.appendChild(status);
 		
 		if(res.getStatus() == 0)	{
 			//info
-			Element info = xmlDoc.createElement(INFO);
+			final Element info = xmlDoc.createElement(INFO);
 			response.appendChild(info);
-			Element origin = xmlDoc.createElement(DirectionsRequest.ORIGIN);
-			Element destination = xmlDoc.createElement(DirectionsRequest.DESTINATION);
-			Element originLatLng = xmlDoc.createElement(DirectionsRequest.ORIGIN_LATLNG);
-			Element destinationLatLng = xmlDoc.createElement(DirectionsRequest.DESTINATION_LATLNG);
-			Element originDisplay = xmlDoc.createElement(DirectionsRequest.ORIGIN_DISPLAY);
-			Element destinationDisplay = xmlDoc.createElement(DirectionsRequest.DESTINATION_DISPLAY);
-			Element sortingPreference = xmlDoc.createElement(DirectionsRequest.SORTING_PREFERENCE);
-    		Element departureOption = xmlDoc.createElement(DirectionsRequest.DEPARTURE_OPTION);
+			final Element origin = xmlDoc.createElement(DirectionsRequest.ORIGIN);
+			final Element destination = xmlDoc.createElement(DirectionsRequest.DESTINATION);
+			final Element originLatLng = xmlDoc.createElement(DirectionsRequest.ORIGIN_LATLNG);
+			final Element destinationLatLng = xmlDoc.createElement(DirectionsRequest.DESTINATION_LATLNG);
+			final Element originDisplay = xmlDoc.createElement(DirectionsRequest.ORIGIN_DISPLAY);
+			final Element destinationDisplay = xmlDoc.createElement(DirectionsRequest.DESTINATION_DISPLAY);
+			final Element sortingPreference = xmlDoc.createElement(DirectionsRequest.SORTING_PREFERENCE);
+			final Element departureOption = xmlDoc.createElement(DirectionsRequest.DEPARTURE_OPTION);
 			origin.appendChild(xmlDoc.createTextNode(res.getOriginForRoute(0)));
 			destination.appendChild(xmlDoc.createTextNode(res.getDestinationForRoute(0)));
 			originLatLng.appendChild(xmlDoc.createTextNode(res.getOriginLatLng()));
@@ -210,54 +220,54 @@ public class RequestHandler extends Thread {
 			info.appendChild(departureOption);
 			
 			//results
-			Element results = xmlDoc.createElement(RESULTS);
+			final Element results = xmlDoc.createElement(RESULTS);
 			response.appendChild(results);
 			for(int k = 0; k < res.getNumberOfRoutes(); k++)	{
-	    		Element result = xmlDoc.createElement(RESULT);
-	    		Element transitMode = xmlDoc.createElement(DirectionsRequest.TRANSIT_MODE);
+				final Element result = xmlDoc.createElement(RESULT);
+				final Element transitMode = xmlDoc.createElement(DirectionsRequest.TRANSIT_MODE);
 	    		transitMode.appendChild(xmlDoc.createTextNode(res.getTransitModeForRoute(k).toUpperCase()));
 	    		result.appendChild(transitMode);
-	    		Element distance = xmlDoc.createElement(DirectionsRequest.DISTANCE);
+	    		final Element distance = xmlDoc.createElement(DirectionsRequest.DISTANCE);
 	    		distance.appendChild(xmlDoc.createTextNode(res.getDistanceForRoute(k)));
 	    		result.appendChild(distance);
-	    		Element duration = xmlDoc.createElement(DirectionsRequest.DURATION);
+	    		final Element duration = xmlDoc.createElement(DirectionsRequest.DURATION);
 	    		duration.appendChild(xmlDoc.createTextNode(res.getDurationForRoute(k)));
 	    		result.appendChild(duration);
-	    		Element price = xmlDoc.createElement(DirectionsRequest.PRICE);
+	    		final Element price = xmlDoc.createElement(DirectionsRequest.PRICE);
 	    		price.appendChild(xmlDoc.createTextNode(res.getPriceForRoute(k)));
 	    		result.appendChild(price);
-	    		Element arrivalTime = xmlDoc.createElement(DirectionsRequest.ARRIVAL_TIME);
+	    		final Element arrivalTime = xmlDoc.createElement(DirectionsRequest.ARRIVAL_TIME);
 	    		arrivalTime.appendChild(xmlDoc.createTextNode(res.getArrivalTimeForRoute(k)));
 	    		result.appendChild(arrivalTime);
-	    		Element departureTime = xmlDoc.createElement(DirectionsRequest.DEPARTURE_TIME);
+	    		final Element departureTime = xmlDoc.createElement(DirectionsRequest.DEPARTURE_TIME);
 	    		departureTime.appendChild(xmlDoc.createTextNode(res.getDepartureTimeForRoute(k)));
 	    		result.appendChild(departureTime);
-	    		Element arrivalDate = xmlDoc.createElement(DirectionsRequest.ARRIVAL_DATE);
+	    		final Element arrivalDate = xmlDoc.createElement(DirectionsRequest.ARRIVAL_DATE);
 	    		arrivalDate.appendChild(xmlDoc.createTextNode(res.getArrivalDateForRoute(k)));
 	    		result.appendChild(arrivalDate);
-	    		Element departureDate = xmlDoc.createElement(DirectionsRequest.DEPARTURE_DATE);
+	    		final Element departureDate = xmlDoc.createElement(DirectionsRequest.DEPARTURE_DATE);
 	    		departureDate.appendChild(xmlDoc.createTextNode(res.getDepartureDateForRoute(k)));
 	    		result.appendChild(departureDate);
-	    		Element arrivalTimeInSeconds = xmlDoc.createElement(DirectionsRequest.ARRIVAL_TIME_IN_SECONDS);
+	    		final Element arrivalTimeInSeconds = xmlDoc.createElement(DirectionsRequest.ARRIVAL_TIME_IN_SECONDS);
 	    		arrivalTimeInSeconds.appendChild(xmlDoc.createTextNode(res.getArrivalTimeInSecondsForRoute(k)));
 	    		result.appendChild(arrivalTimeInSeconds);
-	    		Element departureTimeInSeconds = xmlDoc.createElement(DirectionsRequest.DEPARTURE_TIME_IN_SECONDS);
+	    		final Element departureTimeInSeconds = xmlDoc.createElement(DirectionsRequest.DEPARTURE_TIME_IN_SECONDS);
 	    		departureTimeInSeconds.appendChild(xmlDoc.createTextNode(res.getDepartureTimeInSecondsForRoute(k)));
 	    		result.appendChild(departureTimeInSeconds);
-	    		Element polyline = xmlDoc.createElement(DirectionsRequest.POLYLINE);
+	    		final Element polyline = xmlDoc.createElement(DirectionsRequest.POLYLINE);
 	    		polyline.appendChild(xmlDoc.createTextNode(res.getPolylineForRoute(k)));
 	    		result.appendChild(polyline);
 	    		
 	    		results.appendChild(result);
 			}
 		}	else	{
-			Element errorMessage = xmlDoc.createElement(ERROR_MESSAGE);
+			final Element errorMessage = xmlDoc.createElement(ERROR_MESSAGE);
 			errorMessage.appendChild(xmlDoc.createTextNode(res.getErrorMessage()));
 			response.appendChild(errorMessage);
 		}
-        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        StreamResult sr = new StreamResult(new StringWriter());
-        DOMSource source = new DOMSource(xmlDoc);
+		final Transformer transformer = TransformerFactory.newInstance().newTransformer();
+		final StreamResult sr = new StreamResult(new StringWriter());
+		final DOMSource source = new DOMSource(xmlDoc);
         transformer.transform(source, sr);
         return sr.getWriter().toString().trim().replaceAll("[\n\t\r]+", "") + "\n";
     }
