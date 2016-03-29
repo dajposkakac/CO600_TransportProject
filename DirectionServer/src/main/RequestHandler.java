@@ -52,6 +52,17 @@ public class RequestHandler extends Thread {
 	public static final String RESULTS = "results";
 	public static final String RESULT = "result";
 	
+	//Errors
+	public static final int STATUS_SUCCESS = 0;
+	public static final int STATUS_INVALID_REQUEST = -10;
+	public static final int STATUS_LOCATION_NOT_FOUND = 1;
+	public static final int STATUS_TIME_DATE_IS_IN_THE_PAST = 2;
+	public static final int STATUS_ROUTE_NOT_FOUND = 3;
+	public static final String STATUS_INVALID_REQUEST_MESSAGE = "Invalid request";
+	public static final String STATUS_LOCATION_NOT_FOUND_MESSAGE = "Location not found:";
+	public static final String STATUS_TIME_DATE_IS_IN_THE_PAST_MESSAGE = " is in the past";
+	public static final String STATUS_ROUTE_NOT_FOUND_MESSAGE = "No route found: \n";
+	
 	private Socket socket;
 	private BufferedReader bufferedReader;
 	private PrintWriter printWriter;
@@ -89,7 +100,7 @@ public class RequestHandler extends Thread {
 				    }
 			    }
 		    }	else	{
-		    	result = new DirectionsResults(-10, "Invalid request");
+		    	result = new DirectionsResults(STATUS_INVALID_REQUEST, STATUS_INVALID_REQUEST_MESSAGE);
 		    }
 		    final String resultString = createXMLResponse(result);
 		    printWriter = new PrintWriter(socket.getOutputStream(), true);

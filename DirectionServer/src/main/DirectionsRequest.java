@@ -69,6 +69,8 @@ public class DirectionsRequest {
 	public static final String COMMA = ",";
 	public static final String SPACE = " ";
 	public static final String COMMASPACE = COMMA + SPACE; 
+	public static final String SPACED_DASH = " - ";
+	public static final String ARROW_STRING = " -> ";
 	private static final String LATLNG_REGEXP = "([+-]?\\d+\\.?\\d+)\\s*,\\s*([+-]?\\d+\\.?\\d+)";
 	
 	//R2R constants
@@ -223,7 +225,7 @@ public class DirectionsRequest {
 	 */
 	private void routeExists(final DirectionsResult routes) throws RouteNotFoundException {
 		if(routes.routes.length == 0)	{
-			throw new RouteNotFoundException(3, "No route found");
+			throw new RouteNotFoundException(RequestHandler.STATUS_ROUTE_NOT_FOUND, RequestHandler.STATUS_ROUTE_NOT_FOUND_MESSAGE + request.get(ORIGIN) + ARROW_STRING + request.get(DESTINATION));
 		}
 	}
 	
@@ -243,7 +245,7 @@ public class DirectionsRequest {
 		}
 		dt = dt.plusMillis(5000);
 		if(!dt.isAfterNow())	{
-			throw new DateInPastException(2, dt.toString() + " is in the past");
+			throw new DateInPastException(RequestHandler.STATUS_TIME_DATE_IS_IN_THE_PAST, time + SPACED_DASH + date + RequestHandler.STATUS_TIME_DATE_IS_IN_THE_PAST_MESSAGE);
 		}
 		return dt;
 	}
@@ -255,7 +257,7 @@ public class DirectionsRequest {
 	private LatLng geocodeAddress(final String address) throws NotFoundException, Exception	{
 		final GeocodingResult[] results =  GeocodingApi.newRequest(gaContext).address(address).await();
 		if(results.length < 1)	{
-			throw new LocationNotFoundException(1, "Location not found:" + address);
+			throw new LocationNotFoundException(RequestHandler.STATUS_LOCATION_NOT_FOUND, RequestHandler.STATUS_LOCATION_NOT_FOUND_MESSAGE + address);
 		}
 		return results[0].geometry.location;
 	}
