@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -64,7 +65,7 @@ import javax.xml.parsers.ParserConfigurationException;
  *
  * @author jg404, mfm9
  */
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
 
     private static final String REQUEST_TAG = "request";
 
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      * Checks network connection and starts the RequestDirectionsTask.
      */
     public void goHandler(final View view) {
+        hideSoftKeyboard();
         final ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
@@ -254,6 +256,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         timePicker.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                hideSoftKeyboard();
                 timePicker.setText("");
                 return true;
             }
@@ -272,6 +275,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         datePicker.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                hideSoftKeyboard();
                 datePicker.setText("");
                 return true;
             }
@@ -520,6 +524,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        hideSoftKeyboard();
         int parentId = parent.getId();
         if(parentId == dateSpinner.getId()) {
             final String[] departureSpinner = getResources().getStringArray(R.array.dateNames);
@@ -566,7 +571,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) { }
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        hideSoftKeyboard();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {}
 
     @Override
     public void onBackPressed() {
@@ -582,6 +592,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      */
     public Request getRequest() {
         return req;
+    }
+
+    public void hideSoftKeyboard() {
+        final InputMethodManager inputMethodManager = (InputMethodManager)  getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
 
     /**
