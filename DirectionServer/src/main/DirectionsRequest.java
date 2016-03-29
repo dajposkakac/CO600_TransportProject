@@ -241,7 +241,7 @@ public class DirectionsRequest {
 			int[] dateData = Arrays.stream(date.split("-")).mapToInt(Integer::parseInt).toArray();
 			dt = dt.withYear(dateData[0]).withMonthOfYear(dateData[1]).withDayOfMonth(dateData[2]);
 		}
-		dt = dt.plusMillis(250);
+		dt = dt.plusMillis(5000);
 		if(!dt.isAfterNow())	{
 			throw new DateInPastException(2, dt.toString() + " is in the past");
 //			dt = DateTime.now().plusMillis(250);
