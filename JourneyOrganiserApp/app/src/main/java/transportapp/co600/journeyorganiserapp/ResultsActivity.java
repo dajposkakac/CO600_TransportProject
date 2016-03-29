@@ -3,8 +3,6 @@ package transportapp.co600.journeyorganiserapp;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -18,8 +16,6 @@ import org.honorato.multistatetogglebutton.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 
 /**
  * Activity displays a MultiStateButton used to select sorting of the request results
@@ -31,13 +27,10 @@ import java.util.LinkedHashMap;
 public class ResultsActivity extends AppCompatActivity {
 
     public static final String INFO_TAG = "info";
-    static ResultsActivity instance;
-    public Bundle savedData = null;
-
     public static final String RESULTS_TAG = "results";
-    public static final String RESULTS_VALUES_TAG = "results_values";
 
     private static final String TAG = "resultsActivity";
+
     private HashMap<String, String> info;
     private ArrayList<HashMap<String, String>> results;
 
@@ -68,21 +61,15 @@ public class ResultsActivity extends AppCompatActivity {
             }
         });
 
-        ResultClickListener resultClickListener = new ResultClickListener();
         if(savedInstanceState != null)  {
             info = (HashMap<String, String>) savedInstanceState.getSerializable(INFO_TAG);
-//            ArrayList<Integer> keys = (ArrayList<Integer>) savedInstanceState.getSerializable(RESULTS_KEYS_TAG);
-//            ArrayList<HashMap<String, String>> values = (ArrayList<HashMap<String, String>>) savedInstanceState.getSerializable(RESULTS_VALUES_TAG);
             results = (ArrayList<HashMap<String, String>>) savedInstanceState.getSerializable(RESULTS_TAG);
-            Log.d(TAG, "savedinstance");
         }   else {
             info = (HashMap<String, String>) getIntent().getSerializableExtra(INFO_TAG);
-//            ArrayList<Integer> keys = (ArrayList<Integer>) getIntent().getSerializableExtra(RESULTS_KEYS_TAG);
-//            ArrayList<HashMap<String, String>> values = (ArrayList<HashMap<String, String>>) getIntent().getSerializableExtra(RESULTS_VALUES_TAG);
             results = (ArrayList<HashMap<String, String>>) getIntent().getSerializableExtra(RESULTS_TAG);
-            Log.d(TAG, "intent");
         }
 
+        ResultClickListener resultClickListener = new ResultClickListener();
         ListView distanceList = (ListView) findViewById(R.id.list_distance);
         distanceAdapter = new ResultsAdapter(this, info, results, "distance");
         distanceList.setAdapter(distanceAdapter);
@@ -104,45 +91,12 @@ public class ResultsActivity extends AppCompatActivity {
         Log.d("adapter", "" + distanceAdapter.getCount());
     }
 
-    /**
-     * Returns an instance of this activity, used to save state onPause and onStop.
-     * @return instance
-     */
-    public static ResultsActivity getInstance() {
-        if(instance == null)    {
-            instance = new ResultsActivity();
-        }
-        return instance;
-    }
-
-    /**
-     * Sets the state data to be restored later.
-     * @param bundle
-     */
-    void setSavedData(Bundle bundle)    {
-        savedData = bundle;
-    }
-
-    /**
-     * Return state data to be restored.
-     * @return
-     */
-    public Bundle getSavedData()    {
-        return savedData;
-    }
-
-    @Override
-    public void onBackPressed() {
-//        moveTaskToBack(true);
-        finish();
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                this.finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -164,72 +118,11 @@ public class ResultsActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Bundle state = ResultsActivity.getInstance().getSavedData();
-        if(state != null)   {
-            info = (HashMap<String, String>) state.getSerializable(INFO_TAG);
-//            ArrayList<Integer> keys = (ArrayList<Integer>) state.getSerializable(RESULTS_KEYS_TAG);
-//            ArrayList<HashMap<String, String>> values = (ArrayList<HashMap<String, String>>) state.getSerializable(RESULTS_VALUES_TAG);
-            results = (ArrayList<HashMap<String, String>>) state.getSerializable(RESULTS_TAG);
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        Bundle state = new Bundle();
-        state.putSerializable(INFO_TAG, info);
-//        ArrayList<Integer> keys = new ArrayList<>();
-//        ArrayList<HashMap<String, String>> values = new ArrayList<>();
-//        Iterator<Integer> iterator = results.keySet().iterator();
-//        while(iterator.hasNext())   {
-//            Integer x = iterator.next();
-//            keys.add(x);
-//            values.add(results.get(x));
-//        }
-//        state.putSerializable(RESULTS_KEYS_TAG, keys);
-//        state.putSerializable(RESULTS_VALUES_TAG, values);
-        state.putSerializable(RESULTS_TAG, results);
-        ResultsActivity.getInstance().setSavedData(state);
-        super.onPause();
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(INFO_TAG, info);
-//        ArrayList<Integer> keys = new ArrayList<>();
-//        ArrayList<HashMap<String, String>> values = new ArrayList<>();
-//        Iterator<Integer> iterator = results.keySet().iterator();
-//        while(iterator.hasNext())   {
-//            Integer x = iterator.next();
-//            keys.add(x);
-//            values.add(results.get(x));
-//        }
-//        outState.putSerializable(RESULTS_KEYS_TAG, keys);
-//        outState.putSerializable(RESULTS_VALUES_TAG, values);
         outState.putSerializable(RESULTS_TAG, results);
     }
-
-    /**
-     * Recreates the Results LinkedHashMap from the list of keys and values, after passing it through a bundle.
-     * @param keys
-     * @param values
-     * @return
-     */
-//    private ArrayList<HashMap<String, String>> initResults(ArrayList<Integer> keys, ArrayList<HashMap<String, String>> values)  {
-//        ArrayList<HashMap<String, String>> map = new LinkedHashMap<>(keys.size());
-//        for(int i = 0; i < keys.size(); i++)    {
-//            map.put(keys.get(i), values.get(i));
-//        }
-//        return map;
-//    }
 
     /**
      * Flips the ViewFlipper containing differently sorted results lists according to the specified preference.

@@ -2,12 +2,10 @@ package transportapp.co600.journeyorganiserapp;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.util.Log;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -15,14 +13,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,8 +34,6 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
 
     private HashMap<String, String> info;
     private HashMap<String, String> results;
-
-    private GoogleMap mMap;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -114,7 +107,6 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
         final ScrollView sv = (ScrollView) findViewById(R.id.scroll_view);
         ((InterceptTouchMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                 .setListener(new InterceptTouchMapFragment.OnTouchListener() {
@@ -134,19 +126,13 @@ public class DetailedResultActivity extends AppCompatActivity implements OnMapRe
         List<LatLng> polyline = PolyUtil.decode(results.get("polyline"));
         Log.d("polyline", results.get("polyline"));
 //        final LatLngBounds bounds = new LatLngBounds(originPosition, destinationPosition);
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.addMarker(new MarkerOptions().position(originPosition));
-        mMap.addMarker(new MarkerOptions().position(destinationPosition));
-//        String[] polylineString = results.get("polyline").split("\\|");
-//        List<LatLng> polyline = new ArrayList<>();
-//        for(int i = 0; i < polylineString.length; i++)  {
-//            String[] coord = polylineString[i].split(",");
-//            polyline.add(new LatLng(Double.valueOf(coord[0]), Double.valueOf(coord[1])));
-//        }
-        mMap.addPolyline(new PolylineOptions().addAll(polyline).width(10).color(Color.RED));
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.addMarker(new MarkerOptions().position(originPosition));
+        googleMap.addMarker(new MarkerOptions().position(destinationPosition));
+        googleMap.addPolyline(new PolylineOptions().addAll(polyline).width(10).color(Color.RED));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 15))
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(originPosition, 10));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(originPosition, 10));
         //mMap.animateCamera(CameraUpdateFactory.zoomIn());
     }
 }

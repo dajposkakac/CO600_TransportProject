@@ -25,14 +25,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
-import android.widget.EditText;
-
-import java.io.IOException;
-import java.util.Calendar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -55,6 +51,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import java.io.IOException;
+import java.util.Calendar;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -66,6 +65,8 @@ import javax.xml.parsers.ParserConfigurationException;
  * @author jg404, mfm9
  */
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemSelectedListener {
+
+    private static final String REQUEST_TAG = "request";
 
     private GeoApiContext geoApicontext;
     private Context context;
@@ -82,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private Request req;
 
     private ActionBarDrawerToggle mDrawerToggle;
-    private String mDrawerTitle;
 
     private Spinner transitModeSpinner;
     private Spinner sortingPreferenceSpinner;
@@ -92,8 +92,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
-    private ImageButton fromClearButton;
-    private ImageButton toClearButton;
 
     /**
      * Initialises GoogleApiClient and the UI elements.
@@ -115,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         initSortingSpinner();
         initGoButton();
         initRequest();
-
     }
 
     /**
@@ -171,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      * Initialises clear text buttons.
      */
     private void initCloseButtons() {
-        fromClearButton = (ImageButton) findViewById(R.id.from_clear);
+        ImageButton fromClearButton = (ImageButton) findViewById(R.id.from_clear);
         fromClearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
 
-        toClearButton = (ImageButton) findViewById(R.id.to_clear);
+        ImageButton toClearButton = (ImageButton) findViewById(R.id.to_clear);
         toClearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -210,10 +207,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      * Also intialisese the toolbar.
      */
     private void initNavigationDrawer() {
-        mDrawerTitle = getTitle().toString();
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setHomeButtonEnabled(true);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_action_menu);
         toolbar.setTitle("Journey Organiser");
@@ -225,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         View listHeaderView = inflater.inflate(R.layout.header_view, null, false);
         mDrawerList.addHeaderView(listHeaderView);
 
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+        mDrawerList.setAdapter(new ArrayAdapter<>(this,
                 R.layout.drawer_list_item, getResources().getStringArray(R.array.navigation_drawer_array)));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
@@ -233,15 +226,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                //getSupportActionBar().setTitle(mDrawerTitle);
-                //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                //getSupportActionBar().setTitle(mDrawerTitle);
-                //invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
 
@@ -316,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     /**
-     * Initialieses the search button.
+     * Initialises the search button.
      */
     private void initGoButton() {
         Button goButton = (Button) findViewById(R.id.go);
@@ -330,7 +321,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     /**
-     * Initialiese the Request object.
+     * Initialises the Request object.
      */
     private void initRequest()   {
         req = new Request();
@@ -358,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     /**
-     * Initialies autocomplete click listener.
+     * Initialises autocomplete click listener.
      */
     private AdapterView.OnItemClickListener mAutocompleteClickListener
             = new AdapterView.OnItemClickListener() {
@@ -446,12 +437,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         return super.onPrepareOptionsMenu(menu);
     }
 
-//    @Override
-//    public void setTitle(CharSequence title) {
-//        mTitle = title;
-//        getActionBar().setTitle(mTitle);
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -471,11 +456,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             return true;
         }
 
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -496,14 +477,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         findViewById(R.id.loading).setVisibility(View.INVISIBLE);
     }
 
-
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(REQUEST_TAG, req);
     }
 
-    /*
-    Gets current client location.
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {}
+
+    /**
+     * Gets current client location.
      */
     @Override
     public void onConnected(Bundle bundle) {
@@ -515,14 +499,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 LatLng loc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
                 boundsCurrentLocation = new LatLngBounds(loc, loc);
             }
-            return;
         }
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-
-    }
+    public void onConnectionSuspended(int i) {}
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -586,9 +567,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
+    public void onNothingSelected(AdapterView<?> parent) { }
 
     @Override
     public void onBackPressed() {

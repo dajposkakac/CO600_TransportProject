@@ -3,7 +3,6 @@ package transportapp.co600.journeyorganiserapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
@@ -20,10 +19,7 @@ import java.io.StringReader;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -85,19 +81,9 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
         Log.d("ReceiveRES", result);
         if(status == 0) {
-//            ArrayList<Integer> keys = new ArrayList<>();
-//            ArrayList<HashMap<String, String>> values = new ArrayList<>();
-//            Iterator<Integer> iterator = results.keySet().iterator();
-//            while(iterator.hasNext())   {
-//                Integer x = iterator.next();
-//                keys.add(x);
-//                values.add(results.get(x));
-//            }
             Intent intent = new Intent(activity, ResultsActivity.class);
             intent.putExtra("info", info);
             intent.putExtra("results", results);
-//            intent.putExtra("results_keys", keys);
-//            intent.putExtra("results_values", values);
             activity.startActivity(intent);
         }   else    {
             activity.findViewById(R.id.loading).setVisibility(View.INVISIBLE);

@@ -8,14 +8,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
- * Created by daj on 16/12/2015.
+ * Adapter displaying results sorted based on the sort parameter given to the constructor.
+ *
+ * @author jg404, mfm9
  */
 public class ResultsAdapter extends ArrayAdapter<HashMap<String, String>> {
 
@@ -24,21 +23,12 @@ public class ResultsAdapter extends ArrayAdapter<HashMap<String, String>> {
     private final HashMap<String, String> info;
     private final ArrayList<HashMap<String, String>> results;
     private final double[] valuesArray;
-    private int[] list;
 
     public ResultsAdapter(Context pContext, HashMap<String, String> pInfo, ArrayList<HashMap<String, String>> pResults, String sort) {
         super(pContext, layout = R.layout.result_row);
         context = pContext;
         info = pInfo;
         results = new ArrayList<>(pResults);
-        ArrayList<HashMap<String, String>> resultsCopy = new ArrayList<>();
-        resultsCopy.addAll(results);
-
-//        list = new int[results.size()];
-//        for(int i =0; i < list.length; i++) {
-//            list[i] =  i;
-//        }
-
         valuesArray = new double[results.size()];
 
         for (int j = 0; j < results.size(); j++)   {
@@ -87,14 +77,7 @@ public class ResultsAdapter extends ArrayAdapter<HashMap<String, String>> {
         }
         sort(0, results.size() - 1);
 
-//        for(int i = 0; i < results.size(); i++) {
-//            results.add(i, resultsCopy.get(list[i]));
-//        }
-
         addAll(results);
-//        for(int i = 0; i < results.size(); i++)   {
-//            add(String.valueOf(i));
-//        }
     }
 
     @Override
@@ -158,11 +141,12 @@ public class ResultsAdapter extends ArrayAdapter<HashMap<String, String>> {
         return convertView;
     }
 
-//    @Override
-//    public int getCount()   {
-//        return 1;
-//    }
-
+    /**
+     * Standart quicksort, with the exception that it sorts an ArrayList
+     * and an array at the same time.
+     * @param min
+     * @param max
+     */
     public void sort(int min, int max)  {
         int i = min;
         int j = max;
@@ -180,14 +164,9 @@ public class ResultsAdapter extends ArrayAdapter<HashMap<String, String>> {
             if(i <= j)  {
                 HashMap<String, String> resulti = results.get(i);
                 HashMap<String, String> resultj = results.get(j);
-
                 double vali = valuesArray[i];
-//                int listi = results.;
                 double valj = valuesArray[j];
-//                int listj = list[j];
-//                list[i] = listj;
                 valuesArray[i] = valj;
-//                list[j] = listi;
                 valuesArray[j] = vali;
                 results.remove(i);
                 results.add(i, resultj);

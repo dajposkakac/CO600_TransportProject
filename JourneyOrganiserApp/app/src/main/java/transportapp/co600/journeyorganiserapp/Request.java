@@ -1,9 +1,11 @@
 package transportapp.co600.journeyorganiserapp;
 
+import java.io.Serializable;
+
 /**
  * A representation of the user input, used to create XML response.
  */
-public class Request {
+public class Request implements Serializable{
     private String destination;
     private String origin;
     private String transitMode;
