@@ -16,6 +16,11 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"/>
         <!-- The main content view -->
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
         <FrameLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
@@ -219,6 +224,7 @@
 
             </RelativeLayout>
         </FrameLayout>
+        </ScrollView>
     </LinearLayout>
     <!-- The navigation drawer -->
     <ListView android:id="@+id/left_drawer"
