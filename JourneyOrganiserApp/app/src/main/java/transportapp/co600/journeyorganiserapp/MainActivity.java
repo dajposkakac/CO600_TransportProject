@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         if (netInfo != null && netInfo.isConnected()) {
             new RequestDirectionsTask(this, req).execute();
         } else {
-            Log.d("CONN", "No network connection");
+            ErrorDialogFragment.errorDialog(this, "Error", -2, "No Internet connection.");
         }
     }
 
@@ -151,8 +151,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         from.setOnItemClickListener(mAutocompleteClickListener);
         to.setOnItemClickListener(mAutocompleteClickListener);
-        from.setText("canterbury");
-        to.setText("faversham");
 
         mAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, boundsCurrentLocation,
                 null);

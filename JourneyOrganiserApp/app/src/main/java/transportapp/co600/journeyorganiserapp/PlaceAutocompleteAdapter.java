@@ -190,9 +190,6 @@ public class PlaceAutocompleteAdapter
 
             final Status status = autocompletePredictions.getStatus();
             if (!status.isSuccess()) {
-                Toast.makeText(getContext(), "Error contacting API: " + status.toString(),
-                        Toast.LENGTH_SHORT).show();
-                autocompletePredictions.release();
                 return null;
             }
             return DataBufferUtils.freezeAndClose(autocompletePredictions);
