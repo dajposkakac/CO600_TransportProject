@@ -31,7 +31,7 @@
     <application
         android:allowBackup="true"
         android:theme="@style/AppTheme"
-        android:icon="@mipmap/jo_logo"
+        android:icon="@mipmap/jo_logo_wb"
         android:label="@string/app_name">
 
         <meta-data
