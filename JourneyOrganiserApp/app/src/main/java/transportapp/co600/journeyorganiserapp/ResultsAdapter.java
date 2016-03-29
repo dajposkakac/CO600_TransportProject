@@ -36,7 +36,7 @@ public class ResultsAdapter extends ArrayAdapter<HashMap<String, String>> {
             String value = null;
             switch (sort) {
                 case "distance":
-                    value = values.replaceAll("[\\D+]+$", "");
+                    value = values.replaceAll("[\\D+]+$", "").replace(",", "");
                     if(isDouble(value)) {
                         valuesArray[j] = Double.valueOf(value);
                     }
