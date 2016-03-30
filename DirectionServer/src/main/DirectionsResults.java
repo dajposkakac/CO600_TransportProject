@@ -171,7 +171,7 @@ public class DirectionsResults {
 			additionalData.put(DirectionsRequest.DEPARTURE_TIME_IN_SECONDS, String.valueOf(timeSeconds));
 			time = getTimeReadable(new DateTime(timeSeconds * 1000));
 		}	else	{
-			final DateTime dt = results.get(route).legs[0].arrivalTime;
+			final DateTime dt = results.get(route).legs[0].departureTime;
 			additionalData.put(DirectionsRequest.DEPARTURE_TIME_IN_SECONDS, String.valueOf(dt.getMillis() / 1000));
 			time = getTimeReadable(results.get(route).legs[0].departureTime);
 		}
