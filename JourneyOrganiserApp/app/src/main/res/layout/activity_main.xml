@@ -214,15 +214,6 @@
                     android:textColor="@color/button_color"
                     android:text="@string/search_button_text" />
 
-                <TextView
-                    android:id="@+id/loading"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/go"
-                    android:text="@string/loading_text"
-                    android:layout_gravity="center_horizontal"
-                    android:visibility="invisible"/>
-
             </RelativeLayout>
         </FrameLayout>
         </ScrollView>

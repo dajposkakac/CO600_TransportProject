@@ -36,7 +36,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
     private static final String TAG = "REQUEST";
     private static final int SERVER_PORT = 4444;
     private static final int SERVER_TIMEOUT_MS = 5000;
-    private final Activity activity;
+    private final MainActivity activity;
     private final Request req;
     private Socket socket;
     private int status;
@@ -44,7 +44,7 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
     private PrintWriter printwriter;
 
     public RequestDirectionsTask(final Activity pActivity, final Request pReq)   {
-        activity = pActivity;
+        activity = (MainActivity) pActivity;
         req = pReq;
     }
 

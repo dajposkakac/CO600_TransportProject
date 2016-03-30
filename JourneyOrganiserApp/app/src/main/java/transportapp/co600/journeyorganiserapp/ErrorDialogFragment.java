@@ -19,7 +19,7 @@ public class ErrorDialogFragment extends DialogFragment {
      * @param status status code of the error
      * @param message error message
      */
-    public static void errorDialog(final Activity a, final String title, final int status, final String message)    {
+    public static void errorDialog(final MainActivity a, final String title, final int status, final String message)    {
         final AlertDialog.Builder builder = new AlertDialog.Builder(a);
         builder.setTitle(title).setMessage(message + a.getString(R.string.new_line) + a.getString(R.string.status_code_string) + status).setNeutralButton(a.getString(R.string.close), new DialogInterface.OnClickListener() {
             @Override
@@ -28,5 +28,6 @@ public class ErrorDialogFragment extends DialogFragment {
             }
         });
         builder.create().show();
+        a.dismissProgressSpinner();
     }
 }

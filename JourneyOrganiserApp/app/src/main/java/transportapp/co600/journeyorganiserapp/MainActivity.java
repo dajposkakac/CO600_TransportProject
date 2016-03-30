@@ -3,6 +3,7 @@ package transportapp.co600.journeyorganiserapp;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
 
-    public  ProgressDialog progressBar;
+    private ProgressDialog progressBar;
 
     /**
      * Initialises GoogleApiClient and the UI elements.
@@ -109,12 +110,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         buildGoogleApiClient();
         resources = getResources();
         context = this;
-
-        progressBar = new ProgressDialog(this);
-        progressBar.setCancelable(true);
-        progressBar.setMessage("Getting routes...");
-        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressBar.setIndeterminate(true);
 
         initNavigationDrawer();
         initLocationPickers();
@@ -137,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             new RequestDirectionsTask(this, req).execute();
         } else {
             ErrorDialogFragment.errorDialog(this, "Error", -2, "No Internet connection.");
+
         }
     }
 
@@ -322,6 +318,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      * Initialises the search button.
      */
     private void initGoButton() {
+        progressBar = new ProgressDialog(this);
+        progressBar.setCancelable(true);
+        progressBar.setMessage("Getting routes...");
+        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressBar.setIndeterminate(true);
+        progressBar.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+
+            }
+        });
         final Button goButton = (Button) findViewById(R.id.go);
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -336,7 +343,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      * Initialises the Request object.
      */
     private void initRequest()   {
-        progressBar.show();
         req = new Request();
     }
 
@@ -487,7 +493,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     protected void onResume() {
         super.onResume();
-        progressBar.dismiss();
+        dismissProgressSpinner();
     }
 
     @Override
@@ -513,7 +519,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 boundsCurrentLocation = new LatLngBounds(loc, loc);
             }
         }
-        progressBar.dismiss();
     }
 
     @Override
@@ -609,6 +614,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public void hideSoftKeyboard() {
         final InputMethodManager inputMethodManager = (InputMethodManager)  getSystemService(INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+    }
+
+    public void dismissProgressSpinner()    {
+        if(progressBar.isShowing()) {
+            progressBar.dismiss();
+        }
     }
 
     /**

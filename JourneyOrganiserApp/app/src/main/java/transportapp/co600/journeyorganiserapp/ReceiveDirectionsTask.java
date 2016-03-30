@@ -34,7 +34,7 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
 
     private static final String TAG = "RECEIVE";
     private final PrintWriter printwriter;
-    private Activity activity;
+    private MainActivity activity;
     private Socket socket;
     private BufferedReader bufferedReader;
     private int status;
@@ -43,7 +43,7 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
     private ArrayList<HashMap<String, String>> results;
 
     public ReceiveDirectionsTask(final Activity pActivity, final Socket pSocket, final PrintWriter pPrintwriter)   {
-        activity = pActivity;
+        activity = (MainActivity) pActivity;
         socket = pSocket;
         printwriter = pPrintwriter;
     }
@@ -84,7 +84,6 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
             intent.putExtra(activity.getString(R.string.results_xml_tag), results);
             activity.startActivity(intent);
         }   else    {
-            activity.findViewById(R.id.loading).setVisibility(View.INVISIBLE);
             ErrorDialogFragment.errorDialog(activity, "Error", status, errorMessage);
         }
     }
