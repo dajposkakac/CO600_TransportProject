@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ViewFlipper;
 
@@ -49,7 +50,6 @@ public class ResultsActivity extends AppCompatActivity {
         viewFlipper = (ViewFlipper) findViewById(R.id.view_flipper);
 
         listSwitcher = (MultiStateToggleButton) findViewById(R.id.mstb_multi_id);
-
         listSwitcher.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
             @Override
             public void onValueChanged(int position) {
@@ -126,12 +126,18 @@ public class ResultsActivity extends AppCompatActivity {
      */
     private void flipToList(final String preference)    {
         int pos = 0;
-        final String[] names = getResources().getStringArray(R.array.sorting_preference_names);
+        String[] names = null;
+        if(info.get(getString(R.string.departure_option_xml_tag)).startsWith("Arrive")) {
+            names = getResources().getStringArray(R.array.sorting_preference_arrive_names);
+        }   else    {
+            names = getResources().getStringArray(R.array.sorting_preference_depart_names);
+        }
+        listSwitcher.setElements(names);
         boolean[] states = new boolean[names.length];
         boolean found = false;
         int i = 0;
         while(!found && i < names.length) {
-            if (preference.equals(names[i])) {
+            if (names[i].startsWith(preference)) {
                 found = true;
                 pos = i;
             }

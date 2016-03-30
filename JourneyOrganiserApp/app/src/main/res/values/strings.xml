@@ -28,6 +28,18 @@
         <item>Time</item>
         <item>Cost</item>
     </string-array>
+
+    <string-array name="sorting_preference_arrive_names">
+        <item>Distance</item>
+        <item>Time\n(Arrive at)</item>
+        <item>Cost</item>
+    </string-array>
+
+    <string-array name="sorting_preference_depart_names">
+        <item>Distance</item>
+        <item>Time\n(Depart at)</item>
+        <item>Cost</item>
+    </string-array>
     
     <string name="from_label_text">From:</string>
     <string name="to_label_text">To:</string>
