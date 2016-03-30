@@ -64,6 +64,8 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
             errorMessage = "Server at " + ip + activity.getString(R.string.colon) + SERVER_PORT + " is unavailable.";
             Log.e(TAG, errorMessage);
         }   catch (Exception e) {
+            status = -1;
+            errorMessage = "Connection error, have you entered an ip?";
             e.printStackTrace();
         }
         return "";
