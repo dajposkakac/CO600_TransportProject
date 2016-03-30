@@ -21,31 +21,43 @@ if (empty($_POST['start']) || empty($_POST['end']))
 		$opt = "Distance"; 
 		$start = $_POST['start'];
 		$end = $_POST['end'];
-		if (empty($_POST['mode']))
+		$mode ="";
+		$mode1="";
+		$mode2="";
+		$mode3="";
+		$mode4="";
+		$mode5="";
+		if (empty($_POST['mode1'])&& empty($_POST['mode2'])&& empty($_POST['mode3'])&& empty($_POST['mode4'])&& empty($_POST['mode5']))
 		{
 			$mode = "unknown"; 
 		}
-		else if($_POST['mode'] == "transit") $mode = "transit";
-		else if($_POST['mode'] == "driving") $mode = "driving";
-		else if($_POST['mode'] == "walking") $mode = "walking";
-		else if($_POST['mode'] == "bicycling") $mode = "bicycling";
-		else{
-			$mode = "";
-			foreach ($_POST['mode'] as $selectedOption){
-				$mode = $mode . $selectedOption.",";
-			}
-			$mode = rtrim($mode, ",");
+		if (!empty($_POST['mode1']))
+		{
+			if($_POST['mode1'] == "driving") $mode = $mode . "driving". ","; 
 		}
+		if (!empty($_POST['mode2']) || !empty(!$_POST['mode2']))
+		{
+			if($_POST['mode2'] == "transit") $mode = $mode . "transit". ","; 
+		}
+		if (!empty($_POST['mode4']))
+		{
+			if($_POST['mode4'] == "walking") $mode = $mode . "walking". ",";
+		}
+		if (!empty($_POST['mode5']))
+		{
+			if($_POST['mode5'] == "bicycling") $mode = $mode . "bicycling" . ",";
+		}
+		$mode = rtrim($mode, ",");
 		$date = $_POST['date'];
 		$time = $_POST['time'];
 		if(empty($_POST['deparr'])){$ad = "Depart at";}
 		else {$ad = $_POST['deparr'];}
-		$message = "<?xml version = '1.0' encoding = 'UTF-8'?><request><origin>" . $start . "</origin><destination>" . $end . "</destination><transitMode>" . $mode . "</transitMode><time>" .$time. ":00</time><date>" .$date. "</date><departureOption>" .$ad. "</departureOption><sortingPreference>" .$opt. "</sortingPreference></request>" . PHP_EOL;
+		$message = "<?xml version = '1.0' encoding = 'UTF-8'?><request><origin>" . $start . "</origin><destination>" . $end . "</destination><transitMode>" . $mode . "</transitMode><time>" .$time. ":59</time><date>" .$date. "</date><departureOption>" .$ad. "</departureOption><sortingPreference>" .$opt. "</sortingPreference></request>" . PHP_EOL;
 	// send string to server
 		if($result) { 
 		socket_write($socket, $message, strlen($message)) or die("Could not send data to server\n");
 	// get server response
-		$result = socket_read ($socket, 10000) or die("Could not read server response\n");
+		$result = socket_read ($socket, 999999) or die("Could not read server response\n");
 		}
 		$xml = simplexml_load_string($result);
 		if($xml->status == "-10") header('Location: error-10.html');
