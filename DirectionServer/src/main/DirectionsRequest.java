@@ -26,6 +26,7 @@ import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
+import com.google.maps.model.Unit;
 
 /*
  * Handles making requests to external APIs, collecting the
@@ -148,9 +149,9 @@ public class DirectionsRequest {
 		try {
 			time = extractDateTime(request.get(TIME), request.get(DATE));
 			if(departureOption.startsWith("Arrive"))	{
-				routes = DirectionsApi.newRequest(gaContext).origin(originLatLng).destination(destinationLatLng).arrivalTime(time).mode(travelMode).alternatives(true).await();
+				routes = DirectionsApi.newRequest(gaContext).origin(originLatLng).destination(destinationLatLng).arrivalTime(time).mode(travelMode).units(Unit.IMPERIAL).alternatives(true).await();
 			}	else	{
-				routes = DirectionsApi.newRequest(gaContext).origin(originLatLng).destination(destinationLatLng).departureTime(time).mode(travelMode).alternatives(true).await();
+				routes = DirectionsApi.newRequest(gaContext).origin(originLatLng).destination(destinationLatLng).departureTime(time).mode(travelMode).units(Unit.IMPERIAL).alternatives(true).await();
 			}
 			routeExists(routes);
 			r2rData = r2rSearch(originLatLng, destinationLatLng, travelMode);
