@@ -1,6 +1,7 @@
 package transportapp.co600.journeyorganiserapp;
 
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -94,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
 
+    public  ProgressDialog progressBar;
+
     /**
      * Initialises GoogleApiClient and the UI elements.
      */
@@ -106,6 +109,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         buildGoogleApiClient();
         resources = getResources();
         context = this;
+
+        progressBar = new ProgressDialog(this);
+        progressBar.setCancelable(true);
+        progressBar.setMessage("Getting routes...");
+        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressBar.setIndeterminate(true);
 
         initNavigationDrawer();
         initLocationPickers();
@@ -124,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         final ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
+            progressBar.show();
             new RequestDirectionsTask(this, req).execute();
         } else {
             ErrorDialogFragment.errorDialog(this, "Error", -2, "No Internet connection.");
@@ -326,6 +336,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      * Initialises the Request object.
      */
     private void initRequest()   {
+        progressBar.show();
         req = new Request();
     }
 
@@ -476,7 +487,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     protected void onResume() {
         super.onResume();
-        findViewById(R.id.loading).setVisibility(View.INVISIBLE);
+        progressBar.dismiss();
     }
 
     @Override
@@ -502,6 +513,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 boundsCurrentLocation = new LatLngBounds(loc, loc);
             }
         }
+        progressBar.dismiss();
     }
 
     @Override

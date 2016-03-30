@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.View;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -73,7 +72,6 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         if(status == 0) {
-            activity.findViewById(R.id.loading).setVisibility(View.VISIBLE);
             new ReceiveDirectionsTask(activity, socket, printwriter).execute();
         }   else    {
             ErrorDialogFragment.errorDialog(activity, "Server Error", status, errorMessage);
