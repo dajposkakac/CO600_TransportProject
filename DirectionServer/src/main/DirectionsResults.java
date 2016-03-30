@@ -141,8 +141,10 @@ public class DirectionsResults {
 		if(!tm.equalsIgnoreCase(TRAIN)
 				&& !tm.equalsIgnoreCase(TRAIN))	{
 			long timeSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
-			final long durationSeconds = results.get(route).legs[0].duration.inSeconds;
-			timeSeconds = (timeSeconds + durationSeconds);
+			if(additionalData.get(DirectionsRequest.DEPARTURE_OPTION).startsWith("Depart"))	{	
+				final long durationSeconds = results.get(route).legs[0].duration.inSeconds;
+				timeSeconds = (timeSeconds + durationSeconds);
+			}
 			additionalData.put(DirectionsRequest.ARRIVAL_TIME_IN_SECONDS, String.valueOf(timeSeconds));
 			time = getTimeReadable(new DateTime(timeSeconds  * 1000));
 		}	else 	{
@@ -161,7 +163,11 @@ public class DirectionsResults {
 		final String tm = getTransitModeForRoute(route);
 		if(!tm.equalsIgnoreCase(TRAIN)
 				&& !tm.equalsIgnoreCase(TRAIN))	{
-			final long timeSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
+			long timeSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
+			if(additionalData.get(DirectionsRequest.DEPARTURE_OPTION).startsWith("Arrive"))	{	
+				final long durationSeconds = results.get(route).legs[0].duration.inSeconds;
+				timeSeconds = (timeSeconds - durationSeconds);
+			}
 			additionalData.put(DirectionsRequest.DEPARTURE_TIME_IN_SECONDS, String.valueOf(timeSeconds));
 			time = getTimeReadable(new DateTime(timeSeconds * 1000));
 		}	else	{
@@ -180,9 +186,12 @@ public class DirectionsResults {
 		final String tm = getTransitModeForRoute(route);
 		if(!tm.equalsIgnoreCase(TRAIN)
 				&& !tm.equalsIgnoreCase(TRAIN))	{
-			final long dateSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
-			final long durationSeconds = results.get(route).legs[0].duration.inSeconds;
-			date = getDateReadable(new DateTime((dateSeconds + durationSeconds)* 1000));
+			long dateSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
+			if(additionalData.get(DirectionsRequest.DEPARTURE_OPTION).startsWith("Depart"))	{	
+				final long durationSeconds = results.get(route).legs[0].duration.inSeconds;
+				dateSeconds = (dateSeconds + durationSeconds);
+			}
+			date = getDateReadable(new DateTime(dateSeconds * 1000));
 		}	else 	{
 			date = getDateReadable(results.get(route).legs[0].arrivalTime);
 		}
@@ -197,7 +206,11 @@ public class DirectionsResults {
 		final String tm = getTransitModeForRoute(route);
 		if(!tm.equalsIgnoreCase(TRAIN)
 				&& !tm.equalsIgnoreCase(TRAIN))	{
-			final long dateSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
+			long dateSeconds = Integer.valueOf(additionalData.get(DirectionsRequest.TIME));
+			if(additionalData.get(DirectionsRequest.DEPARTURE_OPTION).startsWith("Arrive"))	{	
+				final long durationSeconds = results.get(route).legs[0].duration.inSeconds;
+				dateSeconds = (dateSeconds - durationSeconds);
+			}
 			date = getDateReadable(new DateTime((dateSeconds)* 1000));
 		}	else 	{
 			date = getDateReadable(results.get(route).legs[0].departureTime);
