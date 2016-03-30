@@ -9,25 +9,20 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import javax.xml.crypto.Data;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.google.maps.DirectionsApi;
-import com.google.maps.DistanceMatrixApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.errors.NotFoundException;
-import com.google.maps.errors.ZeroResultsException;
 import com.google.maps.model.DirectionsResult;
-import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;

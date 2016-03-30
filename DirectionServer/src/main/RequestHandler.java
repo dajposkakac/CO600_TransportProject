@@ -78,7 +78,7 @@ public class RequestHandler extends Thread {
 		try	{
 		    bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream())); //get the client message
 		    final String xmlString = bufferedReader.readLine();
-		    System.out.println(xmlString);
+		    System.out.println(xmlString + "\n");
 		    DirectionsResults result = null;
 		    if(validateRequest(xmlString))	{
 		    	final Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(xmlString)));
@@ -104,7 +104,7 @@ public class RequestHandler extends Thread {
 		    }
 		    final String resultString = createXMLResponse(result);
 		    printWriter = new PrintWriter(socket.getOutputStream(), true);
-		    System.out.println(resultString);
+		    System.out.println(resultString + "\n\n");
 		    printWriter.write(resultString); 
 		    printWriter.flush(); //send response
 		}	catch(final Exception e)	{
