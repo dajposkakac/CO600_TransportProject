@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -55,6 +56,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -98,6 +100,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private ProgressDialog progressBar;
 
+    private ArrayList<AsyncTask> tasks;
+
     /**
      * Initialises GoogleApiClient and the UI elements.
      */
@@ -110,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         buildGoogleApiClient();
         resources = getResources();
         context = this;
+        tasks = new ArrayList<>();
 
         initNavigationDrawer();
         initLocationPickers();
@@ -129,7 +134,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         final NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
             progressBar.show();
-            new RequestDirectionsTask(this, req).execute();
+            AsyncTask<String, Void, String> requestTask = new RequestDirectionsTask(this, req).execute();
+            addTask(requestTask);
         } else {
             ErrorDialogFragment.errorDialog(this, "Error", -2, "No Internet connection.");
 
@@ -326,7 +332,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         progressBar.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-
+                cancelTasks();
             }
         });
         final Button goButton = (Button) findViewById(R.id.go);
@@ -609,6 +615,23 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
      */
     public Request getRequest() {
         return req;
+    }
+
+    public void addTask(AsyncTask task) {
+        tasks.add(task);
+    }
+
+    public void removeTask(AsyncTask task)  {
+        while(tasks.contains(task))    {
+            tasks.remove(task);
+        }
+    }
+
+    public void cancelTasks()   {
+        for(AsyncTask t : tasks)    {
+            t.cancel(true);
+            removeTask(t);
+        }
     }
 
     public void hideSoftKeyboard() {

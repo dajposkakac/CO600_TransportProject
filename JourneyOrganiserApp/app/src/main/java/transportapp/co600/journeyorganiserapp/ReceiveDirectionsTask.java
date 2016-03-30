@@ -86,6 +86,7 @@ public class ReceiveDirectionsTask extends AsyncTask<String, Void, String> {
         }   else    {
             ErrorDialogFragment.errorDialog(activity, "Error", status, errorMessage);
         }
+        activity.removeTask(this);
     }
 
     /**

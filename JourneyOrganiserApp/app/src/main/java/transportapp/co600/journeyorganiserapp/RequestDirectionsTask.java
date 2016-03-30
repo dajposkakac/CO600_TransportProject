@@ -72,10 +72,12 @@ public class RequestDirectionsTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         if(status == 0) {
-            new ReceiveDirectionsTask(activity, socket, printwriter).execute();
+            AsyncTask<String, Void, String> receiveTask = new ReceiveDirectionsTask(activity, socket, printwriter).execute();
+            activity.addTask(receiveTask);
         }   else    {
             ErrorDialogFragment.errorDialog(activity, "Server Error", status, errorMessage);
         }
+        activity.removeTask(this);
     }
 
     /**
