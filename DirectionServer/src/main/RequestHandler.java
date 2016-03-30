@@ -55,10 +55,12 @@ public class RequestHandler extends Thread {
 	//Errors
 	public static final int STATUS_SUCCESS = 0;
 	public static final int STATUS_INVALID_REQUEST = -10;
+	public static final int STATUS_UNKNOWN = -3;
 	public static final int STATUS_LOCATION_NOT_FOUND = 1;
 	public static final int STATUS_TIME_DATE_IS_IN_THE_PAST = 2;
 	public static final int STATUS_ROUTE_NOT_FOUND = 3;
 	public static final String STATUS_INVALID_REQUEST_MESSAGE = "Invalid request";
+	public static final String STATUS_UNKNOWN_MESSAGE = "Oops, something went wrong :(";
 	public static final String STATUS_LOCATION_NOT_FOUND_MESSAGE = "Location not found:";
 	public static final String STATUS_TIME_DATE_IS_IN_THE_PAST_MESSAGE = " is in the past";
 	public static final String STATUS_ROUTE_NOT_FOUND_MESSAGE = "No route found: \n";

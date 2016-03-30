@@ -127,6 +127,8 @@ public class DirectionsRequest {
 				errorMessage = e.getMessage();
 				return;
 			} catch (final Exception e) {
+				status = RequestHandler.STATUS_UNKNOWN;
+				errorMessage = RequestHandler.STATUS_UNKNOWN_MESSAGE;
 				e.printStackTrace();
 				return;
 			}
@@ -142,6 +144,8 @@ public class DirectionsRequest {
 				errorMessage = e.getMessage();
 				return;
 			} catch (final Exception e) {
+				status = RequestHandler.STATUS_UNKNOWN;
+				errorMessage = RequestHandler.STATUS_UNKNOWN_MESSAGE;
 				e.printStackTrace();
 				return;
 			}
@@ -164,6 +168,8 @@ public class DirectionsRequest {
 			errorMessage = rnfe.getMessage();
 			return;
 		}	catch (final Exception e) {
+			status = RequestHandler.STATUS_UNKNOWN;
+			errorMessage = RequestHandler.STATUS_UNKNOWN_MESSAGE;
 			e.printStackTrace();
 			return;
 		}
@@ -314,6 +320,8 @@ public class DirectionsRequest {
 	            }
 	        }
 		} catch (final SAXException | IOException | ParserConfigurationException e) {
+			status = RequestHandler.STATUS_UNKNOWN;
+			errorMessage = RequestHandler.STATUS_UNKNOWN_MESSAGE;
 			e.printStackTrace();
 		}
         return null;
