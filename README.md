@@ -6,8 +6,8 @@ On the app, the user selects the origin and destination locations, the travel da
 
 Group Members:
 
-Dajposkakac - jg404
-MalyPM - mfm9
-Shufflerx - djd4
-filipek123 - fb225
+Dajposkakac - jg404  
+MalyPM - mfm9  
+Shufflerx - djd4  
+filipek123 - fb225  
 kbaran007 - kb440
