@@ -12,13 +12,12 @@ if (empty($_POST['start']) || empty($_POST['end']))
 <link href="CSS/Cascade.css" rel="stylesheet" type="text/css">
 <style> .mapp {width:60%; height:600px; } </style>
 <?php
-		$host = '192.168.1.10';
+		$host = '52.37.113.133';
 		$port = 4444;
 	// create socket
 		$socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Could not create socket\n");
 	// connect to server
 		$result = socket_connect($socket, $host, $port) or die("Could not connect to server\n");
-		$opt = "Distance"; 
 		$start = $_POST['start'];
 		$end = $_POST['end'];
 		$mode ="";
@@ -52,7 +51,7 @@ if (empty($_POST['start']) || empty($_POST['end']))
 		$time = $_POST['time'];
 		if(empty($_POST['deparr'])){$ad = "Depart at";}
 		else {$ad = $_POST['deparr'];}
-		$message = "<?xml version = '1.0' encoding = 'UTF-8'?><request><origin>" . $start . "</origin><destination>" . $end . "</destination><transitMode>" . $mode . "</transitMode><time>" .$time. ":59</time><date>" .$date. "</date><departureOption>" .$ad. "</departureOption><sortingPreference>" .$opt. "</sortingPreference></request>" . PHP_EOL;
+		$message = "<?xml version = '1.0' encoding = 'UTF-8'?><request><origin>" . $start . "</origin><destination>" . $end . "</destination><transitMode>" . $mode . "</transitMode><time>" .$time. ":59</time><date>" .$date. "</date><departureOption>" .$ad. "</departureOption><sortingPreference>Distance</sortingPreference></request>" . PHP_EOL;
 	// send string to server
 		if($result) { 
 		socket_write($socket, $message, strlen($message)) or die("Could not send data to server\n");
@@ -60,6 +59,8 @@ if (empty($_POST['start']) || empty($_POST['end']))
 		$result = socket_read ($socket, 999999) or die("Could not read server response\n");
 		}
 		$xml = simplexml_load_string($result);
+		
+	   
 		if($xml->status == "-10") header('Location: error-10.html');
 		if($xml->status == "-2") header('Location: error-2.html');
 		if($xml->status == "-1") header('Location: error-1.html');
@@ -103,11 +104,22 @@ function btntest_onclick()
 
 <div id="container">
 <form id="form">
+<fieldset class="tabs">
+<div class="radio-toolbar tb2">
+<input type="radio" id="radio1" name="route" value="distance" checked>
+<label id="left" for="radio1" onclick="blyat()">Distance</label>
+<input type="radio" id="radio2" name="route" value="time">
+<label id="middle" for="radio2" onclick="blyat()">Time</label>
+<input type="radio" id="radio3" name="route" value="cost">
+<label id="right" for="radio3" onclick="blyat()">Cost</label>
+</div>
+</fieldset>
+
 <?php 
-    $idd = 0;
+$idd = 0;
 	foreach($xml->results->result as $rs) {
 $idreal = "map" . $idd;
-echo"<fieldset class=\"result\" onclick=\"drawMap( " . $rs->polyline .", ". $idreal.")\">" . PHP_EOL . "\n";
+echo"<fieldset class=\"result\" onclick=\"show('fs".$idd."')\">" . PHP_EOL . "\n";
 echo "<table class=\"result\"> \n";
 echo "<tr> \n";
 echo "<td> \n";
@@ -139,9 +151,10 @@ else $pprice = "£". $rs->price;
 echo "<h6 class=\"ext\">Price: ". $pprice . "</h6>" . PHP_EOL . "\n";
 echo "</td>\n";
 echo "</tr>\n";
+echo "</table>\n";
+echo "<table>\n";
 echo "<tr>\n";
-echo "<td style=\"display:none;\">\n";
-echo "<div class=\"mapp\" id=\"map" . $idd . "\">". PHP_EOL;
+echo "<td id=\"fs".$idd."\" style=\"display:none;\">\n";
 echo "<h6 class=\"two exth\">From: ". $origin ."</h6>". PHP_EOL . "\n";
 echo "<h6 class=\"exth\">To: ". $destination ."</h6>". PHP_EOL . "\n";
 echo "</td>\n";
@@ -154,11 +167,21 @@ $idd = $idd+1;
 <input class="button" id="btntest"  type="button" value="Back" onclick="return btntest_onclick()" />
 </form>
 </div>
-
 <div id="footer">
 </div>
 
-<div id="footer">
-</div>
+<script type="text/javascript">
+function show(idd)
+{
+	if(document.getElementById(idd).style.display == "none")
+	{
+		document.getElementById(idd).style.display = "initial";
+	}
+	else
+	{
+		document.getElementById(idd).style.display = "none";
+	}
+}
+</script>
 </body>
 </html>
