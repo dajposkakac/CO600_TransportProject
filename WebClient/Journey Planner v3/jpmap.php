@@ -104,17 +104,6 @@ function btntest_onclick()
 
 <div id="container">
 <form id="form">
-<fieldset class="tabs">
-<div class="radio-toolbar tb2">
-<input type="radio" id="radio1" name="route" value="distance" checked>
-<label id="left" for="radio1" onclick="blyat()">Distance</label>
-<input type="radio" id="radio2" name="route" value="time">
-<label id="middle" for="radio2" onclick="blyat()">Time</label>
-<input type="radio" id="radio3" name="route" value="cost">
-<label id="right" for="radio3" onclick="blyat()">Cost</label>
-</div>
-</fieldset>
-
 <?php 
 $idd = 0;
 	foreach($xml->results->result as $rs) {
