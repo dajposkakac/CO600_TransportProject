@@ -145,14 +145,24 @@ public class RequestHandler extends Thread {
 		for(int i = 0; i < nodes.getLength(); i++)	{
 			final Node n = nodes.item(i);
 			String nn = n.getNodeName();
-			if(nn.equals("Route"))	{
+			if(nn.equals("Route") && n.hasChildNodes())	{
+				NodeList cnds = n.getChildNodes();
 				final String travelModeName = n.getAttributes().getNamedItem("name").getTextContent();
-				if(travelModeName.contains(DirectionsResults.TRAIN)) {
-					priceMap.put(DirectionsResults.TRAIN, Integer.valueOf(n.getFirstChild().getAttributes().getNamedItem("price").getTextContent()));
-				}	else if(travelModeName.contains(DirectionsResults.BUS))	{ 
-					priceMap.put(DirectionsResults.BUS, Integer.valueOf(n.getFirstChild().getAttributes().getNamedItem("price").getTextContent()));
-				}	else if(travelModeName.contains(DirectionsResults.DRIVE))	{
-					priceMap.put(DirectionsResults.DRIVE, Integer.valueOf(n.getFirstChild().getAttributes().getNamedItem("price").getTextContent()));
+				for(int j = 0; j < cnds.getLength(); j++)	{
+					Node segmentNode = cnds.item(j);
+					NodeList list = segmentNode.getChildNodes();
+					if(segmentNode.getNodeName().contains("Segment"))	{
+						Node priceNode = segmentNode.getFirstChild().getAttributes().getNamedItem("price");
+						if (priceNode != null) {
+							if(travelModeName.contains(DirectionsResults.TRAIN)) {
+								priceMap.put(DirectionsResults.TRAIN, Integer.valueOf(priceNode.getTextContent()));
+							}	else if(travelModeName.contains(DirectionsResults.BUS))	{ 
+								priceMap.put(DirectionsResults.BUS, Integer.valueOf(priceNode.getTextContent()));
+							}	else if(travelModeName.contains(DirectionsResults.DRIVE))	{
+								priceMap.put(DirectionsResults.DRIVE, Integer.valueOf(priceNode.getTextContent()));
+							}
+						}
+					}
 				}
 			}
 		}
