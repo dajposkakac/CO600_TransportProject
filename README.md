@@ -8,6 +8,6 @@ Group Members:
 
 Dajposkakac - jg404  
 MalyPM - mfm9  
-Shufflerx - djd4  
+Shufflerx - ddj4  
 filipek123 - fb225  
 kbaran007 - kb440
